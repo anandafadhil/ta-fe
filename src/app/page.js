@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
+import './styles.css';
 
 export default function Home() {
   const router = useRouter();
@@ -20,36 +21,52 @@ export default function Home() {
     router.push('/PredictSingular');
   };
   return (
-    <div>
+    <ChakraProvider resetCSS={false}>
       <Navbar />
-      <Container bg='purple'>
-        <Box bg='yellow' h='125px' marginTop='20px'>
-          abc
-        </Box>
-        <Box bg='green' h='125px' marginTop='20px'>
-          cde
-        </Box>
-        <Box bg='red' h='300px' marginTop='150px'>
+      <Container
+        margin={0}
+        maxWidth='100vw'
+        w='100%'
+        bg='#3161A3'
+        bgImage="/assets/worldmap-bg.png"
+        bgSize="cover"
+        bgPosition="center"
+        h='100vh' display='flex' justifyContent='center' alignItems='center'>        {/* <Center>
+          <Box bg='#3161A3' w='70%' h='200px' marginTop='40px'>
+            <Text>
+              
+            </Text>
+          </Box>
+        </Center> */}
 
-          <Box bg='blue' h='100px'>
-            <Box bg='yellow' h='100px'>
+        <Center>
+          <Box w='100%' h='100%' display='flex' justifyContent='center' alignItems='center'>
+            <Text fontSize='100px' color='white'>
+              PDDIKTI
+            </Text>
+          </Box>
+        </Center>
+        {/* <Box h='200px' marginTop='80px'>
+
+          <Box  h='100px'>
+            <Box h='100px'>
               <Center>
-                <Button w='250px' h='75px' onClick={handlePredictClick}>Predict</Button>
+                <Button w='200px' h='50px' onClick={handlePredictClick}>Predict</Button>
               </Center>
             </Box>
 
           </Box>
-          <Box bg='blue' h='100px'>
-            <Box bg='yellow' h='100px'>
+          <Box h='100px'>
+            <Box  h='100px'>
               <Center>
                 <Button w='200px' h='50px' onClick={handleStatClick}>Statistic</Button>
               </Center>
             </Box>
 
           </Box>
-        </Box>
+        </Box> */}
       </Container>
 
-    </div>
+    </ChakraProvider>
   );
 }

@@ -1,49 +1,69 @@
 "use client"
-import Image from 'next/image';
+// import Image from 'next/image';
 import * as React from 'react';
 import {
     ChakraProvider, VStack, Container,
     Flex, Spacer, Center, Square, Text,
     Box, Grid, GridItem, Button, Input,
-    Link
+    Link, Image
 } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation'
+import '../app/styles.css';
 
 export default function Navbar() {
     return (
 
-        <Box bg='orange' w='100vh' h='100%'>
+        <Box w='100%' h='100%' >
             <Flex direction='row' justify='center' h='100%'>
                 {/* First box */}
-                <Box bgColor='green' w='100%' h='50px' mb='2' >
+                <Box bgColor='#EBFFFB' w='50%' h='100px' display='flex' alignItems='center' justifyContent='center'>
                     <Grid templateColumns='repeat(3, 1fr)' gap={6}>
-                        <GridItem w='100%' h='50px' bg='blue' >
+                        <GridItem w='100%' h='50px'  >
                             <Flex align='center' justify='center' h='100%'>
-                                <Link href='/' color='white'>
-                                    PDDIKTI
+                                <a href='/'>
+                                <Image
+                                    src='/assets/logopddikti-1.png'
+                                    alt='Logo PDDikti'
+                                />
+                                </a>
+                            </Flex>
+                        </GridItem>
+                    </Grid>
+                </Box>
+
+                {/* Second box */}
+                <Box bgColor='#EBFFFB' w='40%' h='100px' display='flex' alignItems='center' justifyContent='center'>
+                    <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+                        <GridItem w='100%' h='50px' >
+                            <Flex align='center' justify='center' h='100%'>
+                                <Link href='/StatisticPage' color='#3161A3'>
+                                    Statistik
                                 </Link>
                             </Flex>
                         </GridItem>
-                        <GridItem w='100%' h='50px' bg='blue' >
+                        <GridItem w='100%' h='50px' >
                             <Flex align='center' justify='center' h='100%'>
-                                <Link href='/StatisticPage' color='white'>
-                                    Statistics
+                                <Link href='/PredictSingular' color='#3161A3'>
+                                    Single Predict
                                 </Link>
                             </Flex>
                         </GridItem>
-                        <GridItem w='100%' h='50px' bg='blue' >
+                        <GridItem w='100%' h='50px' >
                             <Flex align='center' justify='center' h='100%'>
-                                <Link href='/PredictSingular' color='white'>
-                                    Predict
+                                <Link href='/PredictSingular' color='#3161A3'>
+                                    Grouped Predict
                                 </Link>
                             </Flex>
                         </GridItem>
                     </Grid>
                 </Box>
-                {/* Second box */}
-                <Box bgColor='red' w='100%' h='50px' mb='2' />
+                
                 {/* Third box */}
-                {/* <Box bgColor='tomato' w='100%' h='50px' mb='2' /> */}
+                <Box bgColor='#EBFFFB' w='10%' h='100px' display='flex' justifyContent='center' alignItems='center'>
+                    <Button color='#3161A3'>
+                        About
+                    </Button>
+                </Box>
             </Flex>
         </Box>
 
