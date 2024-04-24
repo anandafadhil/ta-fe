@@ -11,7 +11,7 @@ import {
     useDisclosure, FormLabel, Textarea
 } from "@chakra-ui/react";
 import Select from "react-select";
-import AsyncSelect from 'react-select/async';
+// import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
@@ -48,48 +48,39 @@ export default function PredictSingular() {
         "Sastra",
     ];
 
+    const [isProdiInputDisabled, setIsProdiInputDisabled] = useState(true);
+
     const [formData, setFormData] = useState({
-        sem1sksSemester: '',
-        sem1sksDPO: '',
-        sem1ipsKumulatif: '',
-        sem2sksSemester: '',
-        sem2sksDPO: '',
-        sem2ipsKumulatif: '',
-        sem3sksSemester: '',
-        sem3sksDPO: '',
-        sem3ipsKumulatif: '',
-        sem4sksSemester: '',
-        sem4sksDPO: '',
-        sem4ipsKumulatif: '',
+        univInput: '',
+        prodiInput: '',
     });
+    console.log(formData);
 
     const handleSubmit = (e) => {
-        e.preventDefault();
         // Handle form submission here, for example:
         console.log('Form submitted:', formData);
         // Reset form data if needed
         setFormData({
-            sem1sksSemester: '',
-            sem1sksDPO: '',
-            sem1ipsKumulatif: '',
-            sem2sksSemester: '',
-            sem2sksDPO: '',
-            sem2ipsKumulatif: '',
-            sem3sksSemester: '',
-            sem3sksDPO: '',
-            sem3ipsKumulatif: '',
-            sem4sksSemester: '',
-            sem4sksDPO: '',
-            sem4ipsKumulatif: '',
+            univInput: '',
+            prodiInput: '',
         });
-        // Close the modal
-        setIsOpen(false);
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    // const handleChange = (e) => {
+    //     console.log(e);
+    //     const { label, value } = e;
+    //     setFormData({ ...formData, label });
+    // };
+    const handleChange = (selectedOption, fieldName) => {
+        console.log(selectedOption);
+        console.log(fieldName);
+        if (selectedOption) {
+          const { label } = selectedOption;
+          setFormData({ ...formData, [fieldName.name]: label });
+        } else {
+          setFormData({ ...formData, [fieldName.name]: '' });
+        }
+      };
     // const handleChangeOptionsDOC = (selectedOptionDOC) => {
     //     setScnData((prevScnData) => ({
     //       ...prevScnData,
@@ -158,29 +149,13 @@ export default function PredictSingular() {
                                         Nama Universitas
                                     </Box>
                                     <Box p='2'>
-                                        {/* <AutoComplete openOnFocus>
-                                            <AutoCompleteInput variant="filled" color='black' w='100%' />
-                                            <AutoCompleteList>
-                                                {optionsUniversity.map((uni, cid) => (
-                                                    <AutoCompleteItem
-                                                        key={`option-${cid}`}
-                                                        value={uni}
-                                                        textTransform="capitalize"
-                                                    >
-                                                        {uni}
-                                                    </AutoCompleteItem>
-                                                ))}
-                                            </AutoCompleteList>
-                                        </AutoComplete> */}
                                         <Select
                                             className="w-full"
-                                            name="id_organization"
-                                            id={`single-select-id_organization`}
-                                            instanceId={`single-select-id_organization`}
-                                            // value={selectedOptionOrganization}
-                                            // onChange={handleChangeOrganization}
+                                            name="univInput"
+                                            value={formData.univInput}
+                                            onChange={handleChange}
                                             options={optionsUni}
-                                            placeholder="Input Universitas Pilihan"
+                                            placeholder={formData.univInput ? formData.univInput : 'Input Universitas Pilihan'}
                                             styles={{
                                                 control: (base) => ({
                                                     ...base,
@@ -217,41 +192,26 @@ export default function PredictSingular() {
                                 </SimpleGrid>
 
                                 {/* Prodi */}
-                                <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%' >
+                                <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
                                     <Box p='1' ml='1'>
                                         Nama Prodi/Jurusan
                                     </Box>
                                     <Box p='2'>
-                                        {/* <AutoComplete openOnFocus>
-                                            <AutoCompleteInput variant="filled" color='black' w='100%' />
-                                            <AutoCompleteList>
-                                                {optionsProgram.map((prod, cid) => (
-                                                    <AutoCompleteItem
-                                                        key={`option-${cid}`}
-                                                        value={prod}
-                                                        textTransform="capitalize"
-                                                    >
-                                                        {prod}
-                                                    </AutoCompleteItem>
-                                                ))}
-                                            </AutoCompleteList>
-                                        </AutoComplete> */}
-
                                         <Select
                                             className="w-full"
-                                            name="id_organization"
-                                            id={`single-select-id_organization`}
-                                            instanceId={`single-select-id_organization`}
-                                            // value={selectedOptionOrganization}
-                                            // onChange={handleChangeOrganization}
+                                            name="prodiInput"
+                                            value={formData.prodiInput}
+                                            onChange={handleChange}
                                             options={optionsProdi}
-                                            placeholder="Input Universitas Pilihan"
+                                            isDisabled={!formData.univInput ? true : false}
+                                            placeholder={!formData.univInput ? '' : (formData.prodiInput ? formData.prodiInput : 'Input Jurusan Pilihan')}
                                             styles={{
-                                                control: (base) => ({
+                                                control: (base, state) => ({
                                                     ...base,
                                                     borderRadius: "0.5rem",
                                                     paddingLeft: "0.2rem",
                                                     height: "55px",
+                                                    backgroundColor: state.isDisabled ? 'lightgray' : 'white'
                                                 }),
                                                 indicatorSeparator: (base) => ({
                                                     ...base,
@@ -278,7 +238,6 @@ export default function PredictSingular() {
                                                 }),
                                             }}
                                         />
-
                                     </Box>
                                 </SimpleGrid>
                             </Flex>
@@ -299,236 +258,7 @@ export default function PredictSingular() {
                                 </Button>
                             </Center>
                         </Box>
-
-
-                        {/* Modal */}
-
-                        {/* <Modal isOpen={isOpen} onClose={onClose} size='full'>
-                            <ModalOverlay />
-                            <ModalContent>
-                                <ModalHeader>Modal Title</ModalHeader>
-                                <ModalCloseButton />
-                                <form onSubmit={handleSubmit}>
-                                    <ModalBody pb={6}>
-                                        <SimpleGrid columns={[2, null, 4]} spacing='40px'>
-                                            <Box height='100px' display='flex' alignItems='center' justifyContent='center'>
-                                                Semester 1
-                                            </Box>
-                                            <Box height='100px' display='flex' alignItems='center' justifyContent='center'>
-                                                Semester 2
-                                            </Box>
-                                            <Box height='100px' display='flex' alignItems='center' justifyContent='center'>
-                                                Semester 3
-                                            </Box>
-                                            <Box height='100px' display='flex' alignItems='center' justifyContent='center'>
-                                                Semester 4
-                                            </Box>
-
-
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        SKS diambil
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem1sksSemester"
-                                                            value={formData.sem1sksSemester}
-                                                            onChange={handleChange}
-                                                            placeholder="Input SKS Semester 1"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%'>
-                                                    <Box p='2' >
-                                                        SKS diambil
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem2sksSemester"
-                                                            value={formData.sem2sksSemester}
-                                                            onChange={handleChange}
-                                                            placeholder="Input SKS Semester 2"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        SKS diambil
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem3sksSemester"
-                                                            value={formData.sem3sksSemester}
-                                                            onChange={handleChange}
-                                                            placeholder="Input SKS Semester 3"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%'>
-                                                    <Box p='2' >
-                                                        SKS diambil
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem4sksSemester"
-                                                            value={formData.sem4sksSemester}
-                                                            onChange={handleChange}
-                                                            placeholder="Input SKS Semester 4"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        SKS Lulus
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem1sksDPO"
-                                                            value={formData.sem1sksDPO}
-                                                            onChange={handleChange}
-                                                            placeholder="Total SKS Lulus di Semester 1"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        SKS Lulus
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem2sksDPO"
-                                                            value={formData.sem2sksDPO}
-                                                            onChange={handleChange}
-                                                            placeholder="Jumlah SKS Lulus di Semester 2"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        SKS Lulus
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem3sksDPO"
-                                                            value={formData.sem3sksDPO}
-                                                            onChange={handleChange}
-                                                            placeholder="Jumlah SKS Lulus di Semester 3"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        SKS Lulus
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem4sksDPO"
-                                                            value={formData.sem4sksDPO}
-                                                            onChange={handleChange}
-                                                            placeholder="Jumlah SKS Lulus di Semester 4"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        IPK
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem1ipsKumulatif"
-                                                            value={formData.sem1ipsKumulatif}
-                                                            onChange={handleChange}
-                                                            placeholder="IPK pada Semester 1"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        IPK
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem2ipsKumulatif"
-                                                            value={formData.sem2ipsKumulatif}
-                                                            onChange={handleChange}
-                                                            placeholder="IPK pada Semester 2"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        IPK
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem3ipsKumulatif"
-                                                            value={formData.sem3ipsKumulatif}
-                                                            onChange={handleChange}
-                                                            placeholder="IPK pada Semester 3"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                            <Box height='100px'>
-                                                <SimpleGrid columns='1' w='100%' >
-                                                    <Box p='2' >
-                                                        IPK
-                                                    </Box>
-                                                    <Box p='2'>
-                                                        <Input
-                                                            type="text"
-                                                            name="sem4ipsKumulatif"
-                                                            value={formData.sem4ipsKumulatif}
-                                                            onChange={handleChange}
-                                                            placeholder="IPK pada Semester 4"
-                                                        />
-                                                    </Box>
-                                                </SimpleGrid>
-                                            </Box>
-                                        </SimpleGrid>
-                                    </ModalBody>
-
-                                    <ModalFooter>
-                                        <Button colorScheme='blue' mr={3} onClick={onClose}>
-                                            Close
-                                        </Button>
-                                        <Button onClick={handleSubmit} variant='ghost'>Submit</Button>
-                                    </ModalFooter>
-                                </form>
-                            </ModalContent>
-                        </Modal> */}
+                    
                     </Box>
                 </Container>
 
