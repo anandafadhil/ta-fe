@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from 'next/image';
 import * as React from 'react';
 import {
@@ -6,6 +6,7 @@ import {
   Input, Button
 } from "@chakra-ui/react";
 import Navbar from '@/src/component/navbar';
+import { Chart } from 'react-google-charts'; // Import Chart component
 import { useRouter } from 'next/navigation'
 
 export default function StatisticPage() {
@@ -13,7 +14,8 @@ export default function StatisticPage() {
 
   const handleSearch = () => {
     router.push('/StatisticPage/University');
-};
+  };
+
   return (
     <div>
       <Navbar />
@@ -27,15 +29,30 @@ export default function StatisticPage() {
             </Box>
           </Flex>
         </Box>
-        <Box bg='red' h='500px'>
 
-        </Box>
-        <Box bg='green' h='10px'>
+        {/* Add Google GeoChart */}
+        <Chart
+          width={'600px'}
+          height={'300px'}
+          chartType="GeoChart"
+          data={[
+            ['Provinces', 'Popularity'],
+            ['ID-YO', 600],
+            ['ID-JK', 300],
+            ['West Sumatra', 400],
+            // Add more provinces here as needed
+          ]}
+          options={{
+            region: 'ID', // Asia,
+            resolution: "provinces",
+            colorAxis: { colors: ['#00853f', 'black', '#e31b23'] },
+            backgroundColor: '#81d4fa',
+            datalessRegionColor: '#f8bbd0',
+            defaultColor: '#f5f5f5',
+          }}
+          rootProps={{ 'data-testid': '1' }}
+        />
 
-        </Box>
-        <Box bg='yellow' h='50px'>
-
-        </Box>
         {/* Univ Input */}
         <Box bg='green' p={4} top={10} color='white' height='100px' alignItems='center'>
 

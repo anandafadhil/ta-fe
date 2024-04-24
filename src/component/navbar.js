@@ -14,9 +14,9 @@ export default function Navbar() {
     return (
 
         <Box w='100%' h='100%' >
-            <Flex direction='row' justify='center' h='100%'>
+            <Flex direction='row' justify='center' h='100%' >
                 {/* First box */}
-                <Box bgColor='#EBFFFB' w='50%' h='100px' display='flex' alignItems='center' justifyContent='center'>
+                <Box bgColor='#EBFFFB' w='50%' h='100px' display='flex' alignItems='center' justifyContent='center' boxShadow='0px 4px 6px rgba(0, 0, 0, 0.5)'>
                     <Grid templateColumns='repeat(3, 1fr)' gap={6}>
                         <GridItem w='100%' h='50px'  >
                             <Flex align='center' justify='center' h='100%'>
@@ -32,7 +32,7 @@ export default function Navbar() {
                 </Box>
 
                 {/* Second box */}
-                <Box bgColor='#EBFFFB' w='40%' h='100px' display='flex' alignItems='center' justifyContent='center'>
+                <Box bgColor='#EBFFFB' w='40%' h='100px' display='flex' alignItems='center' justifyContent='center' boxShadow='0px 4px 6px rgba(0, 0, 0, 0.5)'>
                     <Grid templateColumns='repeat(3, 1fr)' gap={6}>
                         <GridItem w='100%' h='50px' >
                             <Flex align='center' justify='center' h='100%'>
@@ -59,7 +59,7 @@ export default function Navbar() {
                 </Box>
                 
                 {/* Third box */}
-                <Box bgColor='#EBFFFB' w='10%' h='100px' display='flex' justifyContent='center' alignItems='center'>
+                <Box bgColor='#EBFFFB' w='10%' h='100px' display='flex' justifyContent='center' alignItems='center' boxShadow='0px 4px 6px rgba(0, 0, 0, 0.5)'>
                     <Button color='#3161A3'>
                         About
                     </Button>

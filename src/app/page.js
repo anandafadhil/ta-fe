@@ -31,7 +31,7 @@ export default function Home() {
         bgImage="/assets/worldmap-bg.png"
         bgSize="cover"
         bgPosition="center"
-        h='100vh' display='flex' justifyContent='center' alignItems='center'>        {/* <Center>
+        h='89vh' display='flex' justifyContent='center' alignItems='center'>        {/* <Center>
           <Box bg='#3161A3' w='70%' h='200px' marginTop='40px'>
             <Text>
               
