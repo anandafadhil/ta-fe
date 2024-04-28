@@ -86,7 +86,7 @@ export default function PredictForm() {
     };
 
     const handleChange = (e) => {
-        console.log(e);
+        // console.log(e);
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -164,14 +164,20 @@ export default function PredictForm() {
                                                     SKS Lulus
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem1sksDPO"
                                                         value={formData.sem1sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 1"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -180,14 +186,20 @@ export default function PredictForm() {
                                                     IPK
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem1ipsKumulatif"
                                                         value={formData.sem1ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 1"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -218,14 +230,20 @@ export default function PredictForm() {
                                                     SKS diambil
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem2sksSemester"
                                                         value={formData.sem2sksSemester}
                                                         onChange={handleChange}
                                                         placeholder="Input SKS Semester 2"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -234,14 +252,20 @@ export default function PredictForm() {
                                                     SKS Lulus
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem2sksDPO"
                                                         value={formData.sem2sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 2"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -250,14 +274,20 @@ export default function PredictForm() {
                                                     IPK
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem2ipsKumulatif"
                                                         value={formData.sem2ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 2"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -286,14 +316,20 @@ export default function PredictForm() {
                                                     SKS diambil
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem3sksSemester"
                                                         value={formData.sem3sksSemester}
                                                         onChange={handleChange}
                                                         placeholder="Input SKS Semester 3"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -302,14 +338,20 @@ export default function PredictForm() {
                                                     SKS Lulus
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem3sksDPO"
                                                         value={formData.sem3sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 3"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -318,14 +360,20 @@ export default function PredictForm() {
                                                     IPK
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem3ipsKumulatif"
                                                         value={formData.sem3ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 3"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -354,14 +402,20 @@ export default function PredictForm() {
                                                     SKS diambil
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem4sksSemester"
                                                         value={formData.sem4sksSemester}
                                                         onChange={handleChange}
                                                         placeholder="Input SKS Semester 4"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -370,14 +424,20 @@ export default function PredictForm() {
                                                     SKS Lulus
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem4sksDPO"
                                                         value={formData.sem4sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 4"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>
@@ -386,15 +446,20 @@ export default function PredictForm() {
                                                     IPK
                                                 </Box>
                                                 <Box p='2'>
-                                                    <Input
+                                                    <input
                                                         type="text"
                                                         name="sem4ipsKumulatif"
                                                         value={formData.sem4ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 4"
-                                                        variant="filled"
-                                                        bg="#EBFFFB"
-
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '40px',
+                                                            padding: '0 10px',
+                                                            borderRadius: '0.5rem',
+                                                            border: '1px solid #ced4da',
+                                                            color: 'black'
+                                                        }}
                                                     />
                                                 </Box>
                                             </SimpleGrid>

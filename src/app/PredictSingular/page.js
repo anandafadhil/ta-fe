@@ -143,6 +143,7 @@ export default function PredictSingular() {
                                 w='80%'
                                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
                                 borderRadius='md'>
+                                    
                                 {/* Univ */}
                                 <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
                                     <Box p='1' ml='1'>

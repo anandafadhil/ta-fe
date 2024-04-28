@@ -1,75 +1,243 @@
-"use client";
-import Image from 'next/image';
-import * as React from 'react';
+"use client"
+
 import {
-  Box, Container, Flex, Spacer,
-  Input, Button
+  ChakraProvider, VStack, Container,
+  Flex, Spacer, Center, Square, Text,
+  Box, Grid, GridItem, Button, Input,
+  SimpleGrid, Select, InputSelect,
+  FormControl, Modal, ModalOverlay,
+  ModalContent, ModalCloseButton,
+  ModalFooter, ModalBody, ModalHeader,
+  useDisclosure, FormLabel, Textarea,
+  Divider
 } from "@chakra-ui/react";
-import Navbar from '@/src/component/navbar';
-import { Chart } from 'react-google-charts'; // Import Chart component
+import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
+import Navbar from '@/src/component/navbar';
+import React, { useEffect, useState } from "react";
+import { BarChart, Bar, XAxis, YAxis } from 'recharts';
+import dynamic from "next/dynamic";
+import BarChartExample2 from "../../component/BarChartExample2"
+import LineChartExample2 from "../../component/LineChartExample2"
+import GeoChartExample from "../../component/GeoChartExample"
+import PieChartExample from "../../component/PieChartExample"
 
-export default function StatisticPage() {
+
+import '../styles.css';
+
+export default function PredictForm() {
   const router = useRouter();
-
-  const handleSearch = () => {
-    router.push('/StatisticPage/University');
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const handleUploadClick = () => {
+    router.push('/PredictBulk');
   };
 
+  const handlePredictClick = () => {
+    router.push('/PredictSingular/Result');
+  };
+
+  const optionsUniversity = [
+    "Institut Teknologi Bandung",
+    "Universitas Gadjah Mada",
+    "Universitas Indonesia",
+  ];
+
+  const optionsProgram = [
+    "Ilmu Komputer",
+    "Kedokteran",
+    "Teknik Elektro",
+    "Teknik Mesin",
+    "Sastra",
+  ];
+
+  const [formData, setFormData] = useState({
+    sem1sksSemester: '',
+    sem1sksDPO: '',
+    sem1ipsKumulatif: '',
+    sem2sksSemester: '',
+    sem2sksDPO: '',
+    sem2ipsKumulatif: '',
+    sem3sksSemester: '',
+    sem3sksDPO: '',
+    sem3ipsKumulatif: '',
+    sem4sksSemester: '',
+    sem4sksDPO: '',
+    sem4ipsKumulatif: '',
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission here, for example:
+    console.log('Form submitted:', formData);
+    // Reset form data if needed
+    setFormData({
+      sem1sksSemester: '',
+      sem1sksDPO: '',
+      sem1ipsKumulatif: '',
+      sem2sksSemester: '',
+      sem2sksDPO: '',
+      sem2ipsKumulatif: '',
+      sem3sksSemester: '',
+      sem3sksDPO: '',
+      sem3ipsKumulatif: '',
+      sem4sksSemester: '',
+      sem4sksDPO: '',
+      sem4ipsKumulatif: '',
+    });
+    router.push('/PredictSingular/Result');
+
+  };
+
+  const handleChange = (e) => {
+    console.log(e);
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  // Lulus Text
+  const lulus = true;
+  const lulusHandler = () => {
+    if (lulus === true) {
+      return " Tepat Waktu";
+    } else {
+      return " Tidak Tepat Waktu";
+    }
+  }
+
   return (
-    <div>
-      <Navbar />
+    <ChakraProvider resetCSS={false}>
+      <div>
+        <Navbar />
+        <Container
+          margin={0}
+          maxWidth='100vw'
+          w='100%'
+          bg='#EBFFFB'
+          h='89vh'>
+          {/* Header */}
+          <Box p={4} bg='#EBFFFB'>
+            <Flex color='black' >
+              <Box
+                p='4'
+                width='300px'
+                height='50px'
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+              >
+                <Text fontSize='30px' color='black'>
+                  Result Predict
+                </Text>
+              </Box>
+            </Flex>
+          </Box>
 
-      <Container bg='purple'>
-        {/* Header */}
-        <Box bg='blue' p={4}>
-          <Flex color='black'>
-            <Box p='4' bg='red' width='200px' height='50px'>
-              Statistic
+          <Box w='100%'>
+            {/* IP Input */}
+            <Box p={4} color='white' height='500px' marginTop='20px' borderRadius='md'>
+              {/* Semester 1 */}
+              <GridItem
+                w='100%'
+                height='450px'
+                bg='#13ABC4'
+                borderRadius='md'
+                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                display="grid"
+                gridTemplateColumns="1fr 1fr 1fr" // Two columns
+              >
+                <GridItem
+                  w='90%'
+                  height='450px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px' // Add padding
+                >
+                  <BarChartExample2 />
+                </GridItem>
+                <GridItem
+                  w='90%'
+                  height='450px'
+                  justifySelf='center'
+                  alignSelf='center'
+                >
+                  <LineChartExample2 />
+                </GridItem>
+                <GridItem
+                  w='90%'
+                  height='450px'
+                  justifySelf='center'
+                  alignSelf='center'
+                >
+                  <PieChartExample />
+                </GridItem>
+              </GridItem>
+
             </Box>
-          </Flex>
-        </Box>
+            {/* Button */}
+            {/* <Box p={4} marginTop='20px'>
+                                <Center>
+                                    <Button
+                                        color='white'
+                                        bg='#13ABC4'
+                                        w='200px'
+                                        h='50px'
+                                        boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                                        onClick={handleSubmit}
+                                    >
+                                        Confirm
+                                    </Button>
+                                </Center>
+                            </Box> */}
+          </Box>
 
-        {/* Add Google GeoChart */}
-        <Chart
-          width={'600px'}
-          height={'300px'}
-          chartType="GeoChart"
-          data={[
-            ['Provinces', 'Popularity'],
-            ['ID-YO', 600],
-            ['ID-JK', 300],
-            ['West Sumatra', 400],
-            // Add more provinces here as needed
-          ]}
-          options={{
-            region: 'ID', // Asia,
-            resolution: "provinces",
-            colorAxis: { colors: ['#00853f', 'black', '#e31b23'] },
-            backgroundColor: '#81d4fa',
-            datalessRegionColor: '#f8bbd0',
-            defaultColor: '#f5f5f5',
-          }}
-          rootProps={{ 'data-testid': '1' }}
-        />
+          <Box position="relative" >
+            {/* Lulus Card */}
+            <Center>
+              <Box
 
-        {/* Univ Input */}
-        <Box bg='green' p={4} top={10} color='white' height='100px' alignItems='center'>
+                bg="#13ABC4"
+                w='100%'
+                borderRadius='md'
+                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+              >
+                <Box p="4" height="800px" alignItems="center" justifyContent="center" borderRadius='md'>
+                  <GridItem>
+                    <Center>
+                      <Text fontSize="30px" color="black" fontWeight="bold">
+                        Persentase Ketepatan Waktu Lulus per Provinsi
+                      </Text>
+                    </Center>
 
-          {/* Univ Name */}
-          <Flex bg='blue' marginTop='20px'>
-            <Box marginLeft='200px' p='4' bg='red' w='171px' >
-              Universitas
-            </Box>
-            <Button marginLeft='10px' onClick={handleSearch}> Cari </Button>
-          </Flex>
-          <Flex bg='yellow'>
-            <Box marginLeft='200px' p='4' bg='red'>
-              <Input placeholder='Universitas' size='xs' />
-            </Box>
-          </Flex>
-        </Box>
-      </Container>
-    </div>
+                  </GridItem>
+                  <GridItem
+                    w='100%'
+                    h='90%'
+                    justifySelf='center'
+                    alignSelf='center'
+                    padding='4px' // Add padding
+                    marginTop='30px'
+                  >
+                    <GeoChartExample />
+                  </GridItem>
+                </Box>
+              </Box>
+            </Center>
+
+
+
+
+          </Box>
+
+        </Container>
+
+
+
+        {/* <Container margin={0} bg='#3161A3' h='89vh' maxWidth='100vw' w='100%' display='flex' alignItems='center' justifyContent='center'>
+                    
+                </Container> */}
+
+      </div >
+    </ChakraProvider >
   );
+
+
 }
