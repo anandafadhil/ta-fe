@@ -50,7 +50,7 @@ export default function Navbar() {
                         </GridItem>
                         <GridItem w='100%' h='50px' >
                             <Flex align='center' justify='center' h='100%'>
-                                <Link href='/PredictSingular' color='#3161A3'>
+                                <Link href='/PredictBulk' color='#3161A3'>
                                     Grouped Predict
                                 </Link>
                             </Flex>
