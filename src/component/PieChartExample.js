@@ -77,7 +77,7 @@ export default class Example extends PureComponent {
                     <Box >
                         <Box>
                             <Center>
-                                <Text>
+                                <Text mt='4px' mb='6px' fontSize="20px" color="black" fontWeight="bold">
                                     Progresi Ketepatan Waktu Lulus Mahasiswa
                                 </Text>
                             </Center>
@@ -119,7 +119,7 @@ export default class Example extends PureComponent {
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>
-                    <Legend verticalAlign="bottom" height={60} />
+                    <Legend verticalAlign="bottom" height={75} />
 
                 </PieChart>
             </ResponsiveContainer>

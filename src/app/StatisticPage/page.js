@@ -4,7 +4,7 @@ import {
   ChakraProvider, VStack, Container,
   Flex, Spacer, Center, Square, Text,
   Box, Grid, GridItem, Button, Input,
-  SimpleGrid, Select, InputSelect,
+  SimpleGrid, InputSelect,
   FormControl, Modal, ModalOverlay,
   ModalContent, ModalCloseButton,
   ModalFooter, ModalBody, ModalHeader,
@@ -15,7 +15,7 @@ import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis } from 'recharts';
+import Select from "react-select";
 import dynamic from "next/dynamic";
 import BarChartExample2 from "../../component/BarChartExample2"
 import LineChartExample2 from "../../component/LineChartExample2"
@@ -32,76 +32,28 @@ export default function PredictForm() {
     router.push('/PredictBulk');
   };
 
-  const handlePredictClick = () => {
-    router.push('/PredictSingular/Result');
-  };
-
-  const optionsUniversity = [
-    "Institut Teknologi Bandung",
-    "Universitas Gadjah Mada",
-    "Universitas Indonesia",
-  ];
-
-  const optionsProgram = [
-    "Ilmu Komputer",
-    "Kedokteran",
-    "Teknik Elektro",
-    "Teknik Mesin",
-    "Sastra",
-  ];
-
   const [formData, setFormData] = useState({
-    sem1sksSemester: '',
-    sem1sksDPO: '',
-    sem1ipsKumulatif: '',
-    sem2sksSemester: '',
-    sem2sksDPO: '',
-    sem2ipsKumulatif: '',
-    sem3sksSemester: '',
-    sem3sksDPO: '',
-    sem3ipsKumulatif: '',
-    sem4sksSemester: '',
-    sem4sksDPO: '',
-    sem4ipsKumulatif: '',
-  });
+    univInput: '',
+});
+console.log(formData);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here, for example:
-    console.log('Form submitted:', formData);
-    // Reset form data if needed
-    setFormData({
-      sem1sksSemester: '',
-      sem1sksDPO: '',
-      sem1ipsKumulatif: '',
-      sem2sksSemester: '',
-      sem2sksDPO: '',
-      sem2ipsKumulatif: '',
-      sem3sksSemester: '',
-      sem3sksDPO: '',
-      sem3ipsKumulatif: '',
-      sem4sksSemester: '',
-      sem4sksDPO: '',
-      sem4ipsKumulatif: '',
-    });
-    router.push('/PredictSingular/Result');
-
-  };
-
-  const handleChange = (e) => {
-    console.log(e);
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-  // Lulus Text
-  const lulus = true;
-  const lulusHandler = () => {
-    if (lulus === true) {
-      return " Tepat Waktu";
+  const handleChange = (selectedOption, fieldName) => {
+    console.log(selectedOption);
+    console.log(fieldName);
+    if (selectedOption) {
+      const { label } = selectedOption;
+      setFormData({ ...formData, [fieldName.name]: label });
     } else {
-      return " Tidak Tepat Waktu";
+      setFormData({ ...formData, [fieldName.name]: '' });
     }
-  }
+  };
+
+  const optionsUni = [
+    { value: "S-BN", label: 'Bina Nusantara' },
+    { value: "N-ITB", label: 'Institut Teknologi Bandung' },
+    { value: "N-UGM", label: 'Universitas Gajah Mada' },
+    { value: "N-UI", label: 'Universitas Indonesia' }
+  ];
 
   return (
     <ChakraProvider resetCSS={false}>
@@ -113,28 +65,120 @@ export default function PredictForm() {
           w='100%'
           bg='#EBFFFB'
           h='89vh'>
+
           {/* Header */}
           <Box p={4} bg='#EBFFFB'>
             <Flex color='black' >
               <Box
                 p='4'
-                width='300px'
+                width='320px'
                 height='50px'
                 display='flex'
                 alignItems='center'
                 justifyContent='center'
               >
                 <Text fontSize='30px' color='black'>
-                  Result Predict
+                  Statistik Universitas
                 </Text>
               </Box>
             </Flex>
           </Box>
 
+          {/* University Search */}
+          <Box
+            mt='20px'
+            p={4}
+            color='white'
+            height='100px'
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+          >
+            <Flex
+              bg='#13ABC4'
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+              gap='10'
+              w='70%'
+              boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+              borderRadius='md'>
+
+              {/* Univ Input */}
+              <SimpleGrid  columns='1' marginTop='10px' marginBottom='10px' w='25%'>
+                <Box p='1' ml='1' color='black' fontWeight='bold'>
+                  Nama Universitas
+                </Box>
+                <Box p='2'>
+                  <Select
+                    className="w-full"
+                    name="univInput"
+                    value={formData.univInput}
+                    onChange={handleChange}
+                    options={optionsUni}
+                    placeholder={formData.univInput ? formData.univInput : 'Input Universitas Pilihan'}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        borderRadius: "0.5rem",
+                        paddingLeft: "0.2rem",
+                        height: "55px",
+                      }),
+                      indicatorSeparator: (base) => ({
+                        ...base,
+                        visibility: "hidden",
+                      }),
+                      dropdownIndicator: (base) => ({
+                        ...base,
+                        paddingRight: "0.5rem",
+                        svg: {
+                          height: 24,
+                          width: 24,
+                          fill: "black",
+                        },
+                      }),
+                      menu: (provided) => ({
+                        ...provided,
+                        maxHeight: "120px", // Adjust the max height as needed
+                        overflowY: "auto", // Add scrollbar if needed
+                      }),
+                      // New style to change label font color to black
+                      option: (provided) => ({
+                        ...provided,
+                        color: "black", // Change label font color to black
+                      }),
+                    }}
+                  />
+                </Box>
+              </SimpleGrid>
+
+              {/* Button */}
+              <SimpleGrid  columns='1' marginTop='10px' marginBottom='10px' w='25%'>
+                <Box p={4} marginTop='20px'>
+                  <Center>
+                    <Button
+                      color='white'
+                      bg='#13ABC4'
+                      w='200px'
+                      h='50px'
+                      boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                    // onClick={handleClick}
+                    >
+                      Confirm
+                    </Button>
+                  </Center>
+                </Box>
+              </SimpleGrid>
+
+            </Flex>
+          </Box>
+
+          {/* Divider */}
+          <Divider orientation="horizontal" my={8} borderWidth={2} borderColor="gray.400" />
+
+
           <Box w='100%'>
-            {/* IP Input */}
             <Box p={4} color='white' height='500px' marginTop='20px' borderRadius='md'>
-              {/* Semester 1 */}
               <GridItem
                 w='100%'
                 height='450px'
@@ -144,6 +188,7 @@ export default function PredictForm() {
                 display="grid"
                 gridTemplateColumns="1fr 1fr 1fr" // Two columns
               >
+                {/* Bar Chart */}
                 <GridItem
                   w='90%'
                   height='450px'
@@ -153,6 +198,8 @@ export default function PredictForm() {
                 >
                   <BarChartExample2 />
                 </GridItem>
+
+                {/* Line Chart */}
                 <GridItem
                   w='90%'
                   height='450px'
@@ -161,6 +208,8 @@ export default function PredictForm() {
                 >
                   <LineChartExample2 />
                 </GridItem>
+
+                {/* Pie Chart */}
                 <GridItem
                   w='90%'
                   height='450px'
@@ -172,49 +221,34 @@ export default function PredictForm() {
               </GridItem>
 
             </Box>
-            {/* Button */}
-            {/* <Box p={4} marginTop='20px'>
-                                <Center>
-                                    <Button
-                                        color='white'
-                                        bg='#13ABC4'
-                                        w='200px'
-                                        h='50px'
-                                        boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                                        onClick={handleSubmit}
-                                    >
-                                        Confirm
-                                    </Button>
-                                </Center>
-                            </Box> */}
           </Box>
 
+          {/* Geo Chart */}
           <Box position="relative" >
-            {/* Lulus Card */}
             <Center>
               <Box
-
+                mb='30px'
                 bg="#13ABC4"
                 w='100%'
                 borderRadius='md'
                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
               >
-                <Box p="4" height="800px" alignItems="center" justifyContent="center" borderRadius='md'>
-                  <GridItem>
+                <Box p="4" height="1000px" alignItems="center" justifyContent="center" borderRadius='md'>
+                  {/* <GridItem>
                     <Center>
                       <Text fontSize="30px" color="black" fontWeight="bold">
                         Persentase Ketepatan Waktu Lulus per Provinsi
                       </Text>
                     </Center>
 
-                  </GridItem>
+                  </GridItem> */}
                   <GridItem
                     w='100%'
                     h='90%'
                     justifySelf='center'
                     alignSelf='center'
                     padding='4px' // Add padding
-                    marginTop='30px'
+                    marginTop=''
                   >
                     <GeoChartExample />
                   </GridItem>
@@ -228,13 +262,6 @@ export default function PredictForm() {
           </Box>
 
         </Container>
-
-
-
-        {/* <Container margin={0} bg='#3161A3' h='89vh' maxWidth='100vw' w='100%' display='flex' alignItems='center' justifyContent='center'>
-                    
-                </Container> */}
-
       </div >
     </ChakraProvider >
   );

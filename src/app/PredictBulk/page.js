@@ -105,13 +105,13 @@ export default function PredictBulk() {
                     <Box w='100%'>
                         {/* IP Input */}
                         <form onSubmit={handleSubmit}>
-                            <Box bg='#EBFFFB' p={4} color='white' height='450px' marginTop='20px' borderRadius='md'>
+                            <Box bg='#EBFFFB' p={4} color='white' height='570px' marginTop='20px' borderRadius='md'>
                                 <Grid templateColumns='repeat(4, 1fr)' gap={6}>
 
                                     {/* Semester 1 */}
                                     <GridItem
                                         w='100%'
-                                        h='420px'
+                                        h='500px'
                                         bg='#13ABC4'
                                         borderRadius='md'
                                         boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow

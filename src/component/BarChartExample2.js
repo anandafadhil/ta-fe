@@ -63,44 +63,43 @@ export default class Example extends PureComponent {
   render() {
     return (
       <ResponsiveContainer width="100%" height="90%">
-                        <div>
-                    <Box alignItems='center' justifyContent='center'>
-                        <Box >
-                            <Center>
-                                <Text>
-                                    Progresi Ketepatan Waktu Lulus Mahasiswa
-                                </Text>
-                            </Center>
+        <div>
+          <Box alignItems='center' justifyContent='center'>
+            <Box >
+              <Center>
+                <Text mb='6px' fontSize="20px" color="black" fontWeight="bold">
+                  Progresi Ketepatan Waktu Lulus Mahasiswa
+                </Text>
+              </Center>
 
-                        </Box>
-                        <Box width='100%' justifyContent='center' alignItems='center' display='flex'>
-                            <Box width='100px'>
-                                <Center>
-                                    <Select
-                                        width='100%'
-                                        options={newOptions}
-                                        styles={{
-                                            option: (provided) => ({
-                                                ...provided,
-                                                color: 'black', // Set the font color to black
-                                            })
-                                        }}
-                                    />
-                                </Center>
-                            </Box>
-                        </Box>
-                    </Box>
-
-                </div>
+            </Box>
+            <Box width='100%' justifyContent='center' alignItems='center' display='flex'>
+              <Box width='100px'>
+                <Center>
+                  <Select
+                    width='100%'
+                    options={newOptions}
+                    styles={{
+                      option: (provided) => ({
+                        ...provided,
+                        color: 'black', // Set the font color to black
+                      })
+                    }}
+                  />
+                </Center>
+              </Box>
+            </Box>
+          </Box>
+        </div>
         <BarChart
           width={500}
           height={300}
           data={data}
           margin={{
             top: 20,
-            right: 20,
-            bottom: 20,
-            left: 20,
+            right: 25,
+            bottom: 35,
+            left: 10,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
