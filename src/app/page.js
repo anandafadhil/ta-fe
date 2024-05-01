@@ -9,6 +9,7 @@ import {
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import './styles.css';
+import Footer from "../component/footer";
 
 export default function Home() {
   const router = useRouter();
@@ -46,27 +47,8 @@ export default function Home() {
             </Text>
           </Box>
         </Center>
-        {/* <Box h='200px' marginTop='80px'>
-
-          <Box  h='100px'>
-            <Box h='100px'>
-              <Center>
-                <Button w='200px' h='50px' onClick={handlePredictClick}>Predict</Button>
-              </Center>
-            </Box>
-
-          </Box>
-          <Box h='100px'>
-            <Box  h='100px'>
-              <Center>
-                <Button w='200px' h='50px' onClick={handleStatClick}>Statistic</Button>
-              </Center>
-            </Box>
-
-          </Box>
-        </Box> */}
       </Container>
-
+      <Footer />
     </ChakraProvider>
   );
 }

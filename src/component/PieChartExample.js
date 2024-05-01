@@ -77,7 +77,7 @@ export default class Example extends PureComponent {
                     <Box >
                         <Box>
                             <Center>
-                                <Text mt='4px' mb='6px' fontSize="20px" color="black" fontWeight="bold">
+                                <Text mt='4px' mb='6px' fontSize="18px" color="black" fontWeight="bold">
                                     Progresi Ketepatan Waktu Lulus Mahasiswa
                                 </Text>
                             </Center>

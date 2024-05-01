@@ -16,56 +16,30 @@ const newOptions = [
 export default class GeoChartExample extends PureComponent {
   render() {
     return (
-      <ResponsiveContainer width="100%" height="100%">
-        <div>
-          <Box alignItems='center' justifyContent='center'>
-            <Box >
-              <Center>
-                <Text mb='6px' fontSize="30px" color="black" fontWeight="bold">
-                  Persentase Ketepatan Waktu Lulus per Provinsi
-                </Text>
-              </Center>
+        <ResponsiveContainer>
+          <Chart
+            chartType="GeoChart"
+            width={500}
+            height={300}
+            data={[
+              ['Provinces', 'Popularity'],
+              ['ID-YO', 700],
+              ['ID-JK', 300],
+              ['ID-LA', 400],
+              // Add more provinces here as needed
+            ]}
+            options={{
+              region: 'ID', // Asia,
+              resolution: "provinces",
+              colorAxis: { colors: ['#00853f', 'black', '#e31b23'] },
+              backgroundColor: '#81d4fa',
+              datalessRegionColor: '#f8bbd0',
+              defaultColor: '#f5f5f5',
+            }}
+            rootProps={{ 'data-testid': '1' }}
+          />
+        </ResponsiveContainer>
 
-            </Box>
-            <Box mb='20px' width='100%' justifyContent='center' alignItems='center' display='flex'>
-              <Box width='100px' >
-                <Center>
-                  <Select
-                    width='100%'
-                    options={newOptions}
-                    styles={{
-                      option: (provided) => ({
-                        ...provided,
-                        color: 'black', // Set the font color to black
-                      })
-                    }}
-                  />
-                </Center>
-              </Box>
-            </Box>
-          </Box>
-
-        </div>
-        <Chart
-          chartType="GeoChart"
-          data={[
-            ['Provinces', 'Popularity'],
-            ['ID-YO', 600],
-            ['ID-JK', 300],
-            ['West Sumatra', 400],
-            // Add more provinces here as needed
-          ]}
-          options={{
-            region: 'ID', // Asia,
-            resolution: "provinces",
-            colorAxis: { colors: ['#00853f', 'black', '#e31b23'] },
-            backgroundColor: '#81d4fa',
-            datalessRegionColor: '#f8bbd0',
-            defaultColor: '#f5f5f5',
-          }}
-          rootProps={{ 'data-testid': '1' }}
-        />
-      </ResponsiveContainer>
     );
   }
 }

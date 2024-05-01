@@ -67,7 +67,7 @@ export default class Example extends PureComponent {
           <Box alignItems='center' justifyContent='center'>
             <Box >
               <Center>
-                <Text mb='6px' fontSize="20px" color="black" fontWeight="bold">
+                <Text mb='6px' fontSize="18px" color="black" fontWeight="bold">
                   Progresi Ketepatan Waktu Lulus Mahasiswa
                 </Text>
               </Center>

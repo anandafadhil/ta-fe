@@ -21,6 +21,7 @@ import {
     AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
 import '../../styles.css';
+import Footer from "@/src/component/footer";
 
 export default function PredictForm() {
     const router = useRouter();
@@ -99,10 +100,9 @@ export default function PredictForm() {
                     margin={0}
                     maxWidth='100vw'
                     w='100%'
-                    bg='#EBFFFB'
                     h='89vh'>
                     {/* Header */}
-                    <Box p={4} bg='#EBFFFB'>
+                    <Box p={4}>
                         <Flex color='black' >
                             <Box p='4' width='300px' height='100px' display='flex' alignItems='center' justifyContent='center'>
                                 <Text fontSize='30px' color='black'>
@@ -115,7 +115,7 @@ export default function PredictForm() {
                     <Box w='100%'>
                         {/* IP Input */}
                         <form onSubmit={handleSubmit}>
-                            <Box bg='#EBFFFB' p={4} color='white' height='450px' marginTop='20px' borderRadius='md'>
+                            <Box p={4} color='white' height='450px' marginTop='20px' borderRadius='md'>
                                 <Grid templateColumns='repeat(4, 1fr)' gap={6}>
 
                                     {/* Semester 1 */}
@@ -473,7 +473,7 @@ export default function PredictForm() {
                             <Center>
                                 <Button
                                     color='white'
-                                    bg='#13ABC4'
+                                    bg='#3161A3'
                                     w='200px'
                                     h='50px'
                                     boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
@@ -486,12 +486,7 @@ export default function PredictForm() {
                     </Box>
 
                 </Container>
-
-
-
-                {/* <Container margin={0} bg='#3161A3' h='89vh' maxWidth='100vw' w='100%' display='flex' alignItems='center' justifyContent='center'>
-                    
-                </Container> */}
+                <Footer />
 
             </div >
         </ChakraProvider >

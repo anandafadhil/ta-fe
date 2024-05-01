@@ -22,6 +22,7 @@ import {
     AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
 import '../styles.css';
+import Footer from "@/src/component/footer";
 
 export default function PredictSingular() {
     const router = useRouter();
@@ -111,10 +112,9 @@ export default function PredictSingular() {
                     margin={0}
                     maxWidth='100vw'
                     w='100%'
-                    bg='#EBFFFB'
                     h='89vh'>
                     {/* Header */}
-                    <Box p={4} bg='#EBFFFB'>
+                    <Box p={4}>
                         <Flex >
                             <Box p='4' width='300px' height='100px' display='flex' alignItems='center' justifyContent='center'>
                                 <Text fontSize='30px' color='#3161A3'>
@@ -249,7 +249,7 @@ export default function PredictSingular() {
                             <Center>
                                 <Button
                                     color='white'
-                                    bg='#13ABC4'
+                                    bg='#3161A3'
                                     w='200px'
                                     h='50px'
                                     boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
@@ -262,7 +262,7 @@ export default function PredictSingular() {
                     
                     </Box>
                 </Container>
-
+                <Footer />
 
             </div>
         </ChakraProvider>
