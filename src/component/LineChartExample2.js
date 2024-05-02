@@ -3,8 +3,10 @@ import Select from "react-select";
 import { Text, Box, Center } from "@chakra-ui/react";
 import {
     ComposedChart,
+    BarChart,
     Line,
     Area,
+    Cell,
     Bar,
     XAxis,
     YAxis,
@@ -13,21 +15,29 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
-
 const data = [
     {
-        name: '2020',
-        uv: 590,
+        name: 'Page A',
+        uv: 4000,
+        pv: 2400,
+        amt: 2400,
     },
     {
-        name: '2021',
-        uv: 868,
-    },
-    {
-        name: '2022',
-        uv: 868,
+        name: 'Page B',
+        uv: 3000,
+        pv: 1398,
+        amt: 2210,
     },
 ];
+
+const normalizedData = data.map(item => {
+    const total = item.uv + item.pv;
+    return {
+        ...item,
+        uvPercent: (item.uv / total) * 100,
+        pvPercent: (item.pv / total) * 100
+    };
+});
 
 const newOptions = [
     { value: "2020", label: "2020" },
@@ -39,7 +49,7 @@ const newOptions = [
 ];
 
 export default class Example extends PureComponent {
-    static demoUrl = 'https://codesandbox.io/s/composed-chart-of-same-data-i67zd';
+    static demoUrl = 'https://codesandbox.io/s/stacked-bar-chart-s47i2';
 
     render() {
         return (
@@ -58,10 +68,10 @@ export default class Example extends PureComponent {
                     </Box>
 
                 </div>
-                <ComposedChart
+                <BarChart
                     width={500}
                     height={300}
-                    data={data}
+                    data={normalizedData}
                     margin={{
                         top: 20,
                         right: 25,
@@ -69,14 +79,14 @@ export default class Example extends PureComponent {
                         left: 10,
                     }}
                 >
-                    <CartesianGrid stroke="#f5f5f5" />
+                    <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
+                    <YAxis tickFormatter={(value) => `${value}%`} />
+                    <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
                     <Legend />
-                    <Bar dataKey="uv" barSize={20} fill="#413ea0" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" />
-                </ComposedChart>
+                    <Bar dataKey="pvPercent" stackId="a" fill="#8884d8" name="PV" />
+                    <Bar dataKey="uvPercent" stackId="a" fill="#82ca9d" name="UV" />
+                </BarChart>
             </ResponsiveContainer>
         );
     }

@@ -40,32 +40,32 @@ export default function PredictForm() {
     setIsUniv(univ_id);
     router.push(`/StatisticPage/University?univ_id=${univ_id}`);
   };
-  
+
   const [formData, setFormData] = useState({
     univInput: '',
     univInputLabel: ''
   });
   console.log(formData);
-  
+
   const handleChange = (selectedOption, fieldName) => {
     console.log(selectedOption.value);
     console.log(fieldName);
     if (selectedOption) {
       const { value, label } = selectedOption; // Destructure both value and label from selectedOption
-      setFormData({ 
-        ...formData, 
+      setFormData({
+        ...formData,
         [`${fieldName}Input`]: value, // Dynamically create key for value
         [`${fieldName}InputLabel`]: label // Dynamically create key for label
       });
     } else {
-      setFormData({ 
-        ...formData, 
-        [`${fieldName}Input`]: '', 
+      setFormData({
+        ...formData,
+        [`${fieldName}Input`]: '',
         [`${fieldName}InputLabel`]: ''
       });
     }
   };
-  
+
 
   const optionsUni = [
     { value: "S-BN", label: 'Bina Nusantara' },
@@ -260,6 +260,8 @@ export default function PredictForm() {
                 gridTemplateColumns="1fr" // Two columns
                 borderTopLeftRadius='md'
                 borderTopRightRadius='md'
+                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+
               >
                 <GridItem
                   height='90%'
@@ -304,6 +306,7 @@ export default function PredictForm() {
                 gridTemplateColumns="1fr"
                 borderBottomLeftRadius='md'
                 borderBottomRightRadius='md'
+                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
               >
                 {/* Bar Chart */}
                 <GridItem

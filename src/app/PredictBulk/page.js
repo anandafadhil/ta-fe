@@ -4,11 +4,7 @@ import {
     ChakraProvider, VStack, Container,
     Flex, Spacer, Center, Square, Text,
     Box, Grid, GridItem, Button, Input,
-    SimpleGrid, Select, InputSelect,
-    FormControl, Modal, ModalOverlay,
-    ModalContent, ModalCloseButton,
-    ModalFooter, ModalBody, ModalHeader,
-    useDisclosure, FormLabel, Textarea
+    SimpleGrid, useDisclosure
 } from "@chakra-ui/react";
 import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
@@ -64,7 +60,7 @@ export default function PredictBulk() {
             sem4sksDPO: '',
             sem4ipsKumulatif: '',
         });
-        router.push('/PredictSingular/Result');
+        router.push('/PredictBulk/Result');
 
     };
 
@@ -96,18 +92,18 @@ export default function PredictBulk() {
                         <Flex color='black' >
                             <Box p='4' width='300px' height='100px' display='flex' alignItems='center' justifyContent='center'>
                                 <Text fontSize='30px' color='black'>
-                                    Predict Bulk
+                                    Grouped Predict
                                 </Text>
                             </Box>
                         </Flex>
                     </Box>
 
                     <Box w='100%'>
-                        {/* IP Input */}
-                        <Box p={4} color='white' height='570px' marginTop='20px' borderRadius='md'>
+                        {/* Tutorial Card */}
+                        <Box p={4} color='white' height='550px' borderRadius='md'>
                             <Grid templateColumns='repeat(4, 1fr)' gap={6}>
 
-                                {/* Semester 1 */}
+                                {/* Step 1 */}
                                 <GridItem
                                     w='100%'
                                     h='500px'
@@ -187,7 +183,7 @@ export default function PredictBulk() {
                                 </GridItem>
 
 
-                                {/* Semester 2 */}
+                                {/* Step 2 */}
                                 <GridItem
                                     w='100%'
                                     h='100%'
@@ -256,7 +252,7 @@ export default function PredictBulk() {
                                     </Grid>
                                 </GridItem>
 
-                                {/* Semester 3 */}
+                                {/* Step 3 */}
                                 <GridItem
                                     w='100%'
                                     h='100%'
@@ -324,7 +320,7 @@ export default function PredictBulk() {
                                     </Grid>
                                 </GridItem>
 
-                                {/* Semester 4 */}
+                                {/* Step 4 */}
                                 <GridItem
                                     w='100%'
                                     h='100%'
@@ -395,6 +391,7 @@ export default function PredictBulk() {
                             </Grid>
                         </Box>
 
+                        {/* Upload File */}
                         <Center>
                             <Box
                                 p={4}
@@ -403,9 +400,10 @@ export default function PredictBulk() {
                                 borderRadius='md'
                                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
                             >
-                                <Box p="4" height="50px" display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
+                                <Box bg='green' p="4" height="50px" display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
                                     <label htmlFor="fileUpload">
                                         <input
+                                            bg='yellow'
                                             id="fileUpload"
                                             type="file"
                                             style={{ display: 'none' }}
@@ -416,10 +414,6 @@ export default function PredictBulk() {
                                             Choose File
                                         </Button>
                                     </label>
-                                    {/* <Text fontSize="30px" color="black">
-                                            Anda Diprediksi Untuk Lulus
-
-                                        </Text> */}
                                 </Box>
                             </Box>
                         </Center>
