@@ -4,8 +4,10 @@ import {
     ChakraProvider, VStack, Container,
     Flex, Spacer, Center, Square, Text,
     Box, Grid, GridItem, Button, Input,
-    SimpleGrid, useDisclosure
+    SimpleGrid, useDisclosure, List,
+    ListItem, ListIcon
 } from "@chakra-ui/react";
+import { MdCheckCircle } from 'react-icons/md';
 import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
@@ -41,6 +43,11 @@ export default function PredictBulk() {
         sem4ipsKumulatif: '',
     });
 
+    const [OrgData, setOrgData] = useState({
+        file: "",
+    }
+    );
+
     const handleSubmit = (e) => {
         e.preventDefault();
         // Handle form submission here, for example:
@@ -70,13 +77,46 @@ export default function PredictBulk() {
         setFormData({ ...formData, [name]: value });
     };
 
+    const [selectedFile, setSelectedFile] = useState(null);
     const handleFileChange = (e) => {
         const file = e.target.files[0]; // Get the first selected file
         if (file) {
-            // You can perform further processing here, such as reading the file contents or uploading it to a server
-            console.log("Selected file:", file);
+            console.log("Selected file:", file.name);
+            setSelectedFile(file.name);
+
+            // FileReader to read the file content
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const text = event.target.result;
+                const json = csvToJson(text); // Convert CSV text to JSON
+                console.log("CSV as JSON:", json);
+
+                setOrgData({
+                    ...OrgData,
+                    file: json,  // Storing the JSON instead of the file object
+                });
+            };
+            reader.readAsText(file); // Read the file as text
         }
     };
+
+    // Function to convert CSV text to JSON
+    const csvToJson = (csv) => {
+        const lines = csv.split('\n');
+        const result = [];
+        const headers = lines[0].split(',').map(header => header.trim()); // Trim headers to remove unexpected spaces
+
+        for (let i = 1; i < lines.length; i++) {
+            let obj = {};
+            const currentline = lines[i].trim().replace(/\r$/, '').split(','); // Trim each line and remove trailing carriage returns
+
+            for (let j = 0; j < headers.length; j++) {
+                obj[headers[j]] = currentline[j];
+            }
+            result.push(obj);
+        }
+        return result;
+    }
 
     return (
         <ChakraProvider resetCSS={false}>
@@ -86,7 +126,8 @@ export default function PredictBulk() {
                     margin={0}
                     maxWidth='100vw'
                     w='100%'
-                    h='100%'>
+                    h='90vh'>
+
                     {/* Header */}
                     <Box p={4}>
                         <Flex color='black' >
@@ -99,325 +140,303 @@ export default function PredictBulk() {
                     </Box>
 
                     <Box w='100%'>
-                        {/* Tutorial Card */}
-                        <Box p={4} color='white' height='550px' borderRadius='md'>
-                            <Grid templateColumns='repeat(4, 1fr)' gap={6}>
-
-                                {/* Step 1 */}
-                                <GridItem
-                                    w='100%'
-                                    h='500px'
-                                    bg='red'
-                                    borderRadius='md'
-                                    boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                                >
-                                    {/* <Grid
-                                        templateRows='repeat(4, 1fr)'
-                                        gap={4}
-                                        h='100%'
-                                        alignItems='center'
-                                    > */}
-                                    <GridItem row='1' justifySelf='center' alignSelf='center' >
-                                        Step 1
-                                    </GridItem>
-                                    <Box bg='yellow' height='300px'>
-
-                                    </Box>
-                                    {/* Adjusted SimpleGrid to have multiple columns */}
-                                    {/* <SimpleGrid row='2' w='100%' alignItems='center'>
-                                            <Box ml='2'>
-                                                SKS diambil
-                                            </Box>
-                                            <Box p='2'>
-                                                <input
-                                                    type="text"
-                                                    name="sem1sksSemester"
-                                                    value={formData.sem1sksSemester}
-                                                    onChange={handleChange}
-                                                    placeholder="Input SKS Semester 1"
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '40px',
-                                                        padding: '0 10px',
-                                                        borderRadius: '0.5rem',
-                                                        border: '1px solid #ced4da',
-                                                        color: 'black'
-                                                    }}
-                                                />
-
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='3' w='100%' rows={2} alignItems='center' >
-                                            <Box ml='2'>
-                                                SKS Lulus
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem1sksDPO"
-                                                    value={formData.sem1sksDPO}
-                                                    onChange={handleChange}
-                                                    placeholder="Total SKS Lulus di Semester 1"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='4' w='100%' rows={2} alignItems='center' >
-                                            <Box ml='2'>
-                                                IPK
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem1ipsKumulatif"
-                                                    value={formData.sem1ipsKumulatif}
-                                                    onChange={handleChange}
-                                                    placeholder="IPK pada Semester 1"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid> */}
-                                    {/* </Grid> */}
-                                </GridItem>
-
-
-                                {/* Step 2 */}
-                                <GridItem
-                                    w='100%'
-                                    h='100%'
-                                    bg='#13ABC4'
-                                    borderRadius='md'
-                                    boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                                >
-                                    <Grid
-                                        templateRows='repeat(4, 1fr)'
-                                        gap={4}
-                                        h='100%'
-                                        alignItems='center'
-                                    >
-                                        <GridItem row='1' justifySelf='center' alignSelf='center'>
-                                            Step 2
-                                        </GridItem>
-                                        {/* Adjusted SimpleGrid to have multiple columns */}
-                                        <SimpleGrid row='2' w='100%' alignItems='center'>
-                                            <Box ml='2'>
-                                                SKS diambil
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem2sksSemester"
-                                                    value={formData.sem2sksSemester}
-                                                    onChange={handleChange}
-                                                    placeholder="Input SKS Semester 2"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='3' w='100%' rows={2} alignItems='center'>
-                                            <Box ml='2'>
-                                                SKS Lulus
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem2sksDPO"
-                                                    value={formData.sem2sksDPO}
-                                                    onChange={handleChange}
-                                                    placeholder="Total SKS Lulus di Semester 2"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='4' w='100%' rows={2} alignItems='center'>
-                                            <Box ml='2'>
-                                                IPK
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem2ipsKumulatif"
-                                                    value={formData.sem2ipsKumulatif}
-                                                    onChange={handleChange}
-                                                    placeholder="IPK pada Semester 2"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                    </Grid>
-                                </GridItem>
-
-                                {/* Step 3 */}
-                                <GridItem
-                                    w='100%'
-                                    h='100%'
-                                    bg='#13ABC4'
-                                    borderRadius='md'
-                                    boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                                >
-                                    <Grid
-                                        templateRows='repeat(4, 1fr)' gap={4}
-                                        h='100%'
-                                        alignItems='center'
-                                    >
-                                        <GridItem row='1' justifySelf='center' alignSelf='center'>
-                                            Step 3
-                                        </GridItem>
-                                        {/* Adjusted SimpleGrid to have multiple columns */}
-                                        <SimpleGrid row='2' w='100%' alignItems='center'>
-                                            <Box ml='2'>
-                                                SKS diambil
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem3sksSemester"
-                                                    value={formData.sem3sksSemester}
-                                                    onChange={handleChange}
-                                                    placeholder="Input SKS Semester 3"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='3' w='100%' rows={2} alignItems='center'>
-                                            <Box ml='2'>
-                                                SKS Lulus
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem3sksDPO"
-                                                    value={formData.sem3sksDPO}
-                                                    onChange={handleChange}
-                                                    placeholder="Total SKS Lulus di Semester 3"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='4' w='100%' rows={2} alignItems='center'>
-                                            <Box ml='2'>
-                                                IPK
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem3ipsKumulatif"
-                                                    value={formData.sem3ipsKumulatif}
-                                                    onChange={handleChange}
-                                                    placeholder="IPK pada Semester 3"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                    </Grid>
-                                </GridItem>
-
-                                {/* Step 4 */}
-                                <GridItem
-                                    w='100%'
-                                    h='100%'
-                                    bg='#13ABC4'
-                                    borderRadius='md'
-                                    boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                                >
-                                    <Grid
-                                        templateRows='repeat(4, 1fr)' gap={4}
-                                        h='100%'
-                                        alignItems='center'
-                                    >
-                                        <GridItem row='1' justifySelf='center' alignSelf='center'>
-                                            Step 4
-                                        </GridItem>
-                                        {/* Adjusted SimpleGrid to have multiple columns */}
-                                        <SimpleGrid row='2' w='100%' alignItems='center'>
-                                            <Box ml='2'>
-                                                SKS diambil
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem4sksSemester"
-                                                    value={formData.sem4sksSemester}
-                                                    onChange={handleChange}
-                                                    placeholder="Input SKS Semester 4"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='3' w='100%' rows={2} alignItems='center'>
-                                            <Box ml='2'>
-                                                SKS Lulus
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem4sksDPO"
-                                                    value={formData.sem4sksDPO}
-                                                    onChange={handleChange}
-                                                    placeholder="Total SKS Lulus di Semester 4"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                        <SimpleGrid row='4' w='100%' rows={2} alignItems='center'>
-                                            <Box ml='2'>
-                                                IPK
-                                            </Box>
-                                            <Box p='2'>
-                                                <Input
-                                                    type="text"
-                                                    name="sem4ipsKumulatif"
-                                                    value={formData.sem4ipsKumulatif}
-                                                    onChange={handleChange}
-                                                    placeholder="IPK pada Semester 4"
-                                                    variant="filled"
-                                                    bg="#EBFFFB"
-
-                                                />
-                                            </Box>
-                                        </SimpleGrid>
-                                    </Grid>
-                                </GridItem>
-                            </Grid>
-                        </Box>
-
-                        {/* Upload File */}
                         <Center>
                             <Box
                                 p={4}
                                 bg="#13ABC4"
-                                width="60%"
+                                width="40%"
                                 borderRadius='md'
                                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                                color='white'
                             >
-                                <Box bg='green' p="4" height="50px" display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
+                                <GridItem
+                                    rowStart={1}
+                                    rowEnd={2}
+                                    bg='green.400'  // Using Chakra UI color scheme
+                                    borderRadius='md'
+                                    boxShadow='md'
+                                    height='50px'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    width='100%'
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexDirection="column"
+                                >
+                                    <Text fontSize="lg" fontWeight="bold">Step 1: Ketentuan File</Text>
+                                </GridItem>
+
+                                {/* Description GridItem */}
+                                <GridItem
+                                    rowStart={2}
+                                    rowEnd={5}
+                                    bg='purple.400'  // Using Chakra UI color scheme
+                                    borderRadius='md'
+                                    boxShadow='md'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    width='100%'
+                                    display="flex"
+                                    flexDirection="column"
+                                    p={4}
+                                    overflowY="auto"  // Allows scrolling inside the item if content is too long
+                                >
+                                    <List spacing={3} textAlign='left' color='white'>
+                                        <ListItem>
+                                            <ListIcon as={MdCheckCircle} color='green.500' />
+                                            Merupakan mahasiswa semester 4 atau lebih yang sudah memiliki IP dan IPK
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListIcon as={MdCheckCircle} color='green.500' />
+                                            Nilai IP dan IPK tiap semester tidak boleh kosong/null
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListIcon as={MdCheckCircle} color='green.500' />
+                                            Isi dari tabel berupa Nomor Induk Mahasiswa, IPK, SKS diperoleh, dan SKS total dari semester 1 hingga 4
+                                        </ListItem>
+                                    </List>
+                                </GridItem>
+                            </Box>
+                        </Center>
+                        {/* Step by Step */}
+                        <Center>
+                            <Box p={4} w='80%' color='white' height='100%' marginTop='20px' borderRadius='md' >
+                                <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+
+                                    {/* Step 2 */}
+                                    <GridItem
+                                        w='100%'
+                                        h='100%'
+                                        bg="#13ABC4"
+                                        borderRadius='md'
+                                        boxShadow='lg'
+                                        p={4}
+                                        color='white'
+                                        position="relative"
+                                    >
+
+                                        {/* Step 2 GridItem */}
+                                        <GridItem
+                                            rowStart={1}
+                                            rowEnd={2}
+                                            bg='green.400'  // Using Chakra UI color scheme
+                                            borderRadius='md'
+                                            boxShadow='md'
+                                            height='50px'
+                                            justifySelf='center'
+                                            alignSelf='center'
+                                            width='100%'
+                                            display="flex"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            flexDirection="column"
+                                        >
+                                            <Text fontSize="lg" fontWeight="bold">Step 2: Format File</Text>
+                                        </GridItem>
+
+                                        {/* Description GridItem */}
+                                        <GridItem
+                                            rowStart={2}
+                                            rowEnd={5}
+                                            bg='purple.400'  // Using Chakra UI color scheme
+                                            borderRadius='md'
+                                            boxShadow='md'
+                                            justifySelf='center'
+                                            alignSelf='center'
+                                            width='100%'
+                                            display="flex"
+                                            flexDirection="column"
+                                            p={4}
+                                            overflowY="auto"  // Allows scrolling inside the item if content is too long
+                                        >
+                                            <List>
+                                                <ListItem>
+                                                    <ListIcon as={MdCheckCircle} color='green.500' />
+                                                    Setelah tabel berhasil terisi simpan tabel tersebut dalam format .csv
+                                                </ListItem>
+                                            </List>
+                                        </GridItem>
+                                    </GridItem>
+
+                                    {/* Step 3 */}
+                                    <GridItem
+                                        w='100%'
+                                        h='100%'
+                                        bg="#13ABC4"
+                                        borderRadius='md'
+                                        boxShadow='lg'
+                                        p={4}
+                                        color='white'
+                                        position="relative"
+                                    >
+
+                                        {/* Step 3 GridItem */}
+                                        <GridItem
+                                            rowStart={1}
+                                            rowEnd={2}
+                                            bg='green.400'  // Using Chakra UI color scheme
+                                            borderRadius='md'
+                                            boxShadow='md'
+                                            height='50px'
+                                            justifySelf='center'
+                                            alignSelf='center'
+                                            width='100%'
+                                            display="flex"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            flexDirection="column"
+                                        >
+                                            <Text fontSize="lg" fontWeight="bold">Step 3: Input File</Text>
+                                        </GridItem>
+
+                                        {/* Description GridItem */}
+                                        <GridItem
+                                            rowStart={2}
+                                            rowEnd={5}
+                                            bg='purple.400'  // Using Chakra UI color scheme
+                                            borderRadius='md'
+                                            boxShadow='md'
+                                            justifySelf='center'
+                                            alignSelf='center'
+                                            width='100%'
+                                            display="flex"
+                                            flexDirection="column"
+                                            p={4}
+                                            overflowY="auto"  // Allows scrolling inside the item if content is too long
+                                        >
+                                            <List>
+                                                <ListItem>
+                                                    <ListIcon as={MdCheckCircle} color='green.500' />
+                                                    Pilih file, kemudian unggah pada tempat yang telah disediakan
+                                                </ListItem>
+                                            </List>
+                                        </GridItem>
+                                    </GridItem>
+
+                                    {/* Step 4 */}
+                                    <GridItem
+                                        w='100%'
+                                        h='100%'
+                                        bg="#13ABC4"
+                                        borderRadius='md'
+                                        boxShadow='lg'
+                                        p={4}
+                                        color='white'
+                                        position="relative"
+                                    >
+
+                                        {/* Step 4 GridItem */}
+                                        <GridItem
+                                            rowStart={1}
+                                            rowEnd={2}
+                                            bg='green.400'  // Using Chakra UI color scheme
+                                            borderRadius='md'
+                                            boxShadow='md'
+                                            height='50px'
+                                            justifySelf='center'
+                                            alignSelf='center'
+                                            width='100%'
+                                            display="flex"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            flexDirection="column"
+                                        >
+                                            <Text fontSize="lg" fontWeight="bold">Step 4: Predict</Text>
+                                        </GridItem>
+
+                                        {/* Description GridItem */}
+                                        <GridItem
+                                            rowStart={2}
+                                            rowEnd={5}
+                                            bg='purple.400'  // Using Chakra UI color scheme
+                                            borderRadius='md'
+                                            boxShadow='md'
+                                            justifySelf='center'
+                                            alignSelf='center'
+                                            width='100%'
+                                            display="flex"
+                                            flexDirection="column"
+                                            p={4}
+                                            overflowY="auto"  // Allows scrolling inside the item if content is too long
+                                        >
+                                            <List>
+                                                <ListItem>
+                                                    <ListIcon as={MdCheckCircle} color='green.500' />
+                                                    Setelah file berhasil terunggah seluruhnya, tekan tombol "Prediksi" untuk memulai prediksi
+                                                </ListItem>
+                                            </List>
+                                        </GridItem>
+                                    </GridItem>
+
+                                </Grid>
+                            </Box>
+                        </Center>
+
+
+                        {/* File Input */}
+                        <Center>
+                            <Box
+                                p={4}
+                                width={['100%', '50%', '30%']} // Responsive width
+                                borderRadius='md'
+                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                                display='flex'
+                                flexDirection={['column', 'row']}
+                                alignItems="center"
+                                justifyContent="center"
+                                mt='40px'
+                            >
+
+                                {/* Button and hidden input box */}
+                                <Box height="50px" width={['100%', 'auto']} display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
                                     <label htmlFor="fileUpload">
+
+                                        {/* Hidden input box */}
                                         <input
                                             bg='yellow'
                                             id="fileUpload"
                                             type="file"
+                                            accept=".csv"
                                             style={{ display: 'none' }}
-                                            className="w-full p-2 border rounded-lg"
-                                            onChange={handleFileChange} // Add your file change handler function here
+                                            onChange={handleFileChange}
                                         />
-                                        <Button colorScheme="teal" variant="outline" as="span">
+
+                                        {/* Button */}
+                                        <Button
+                                            color='white'
+                                            bg='#3161A3'
+                                            variant="outline"
+                                            as="span"
+                                            width={['100%', 'auto']} // Full width on smaller screens
+                                        >
                                             Choose File
                                         </Button>
+                                    </label>
+                                </Box>
+
+                                {/* New input Box */}
+                                <Box height="50px" width={['100%', '200px']} display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
+                                    <label htmlFor="fileUpload" style={{ width: '100%' }}>
+                                        <p
+                                            className="w-full p-2 border rounded-lg cursor-pointer"
+                                            style={{
+                                                minHeight: '40px',
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                                textOverflow: 'ellipsis'
+                                            }}
+                                        >
+                                            <a className="text-gray-500">
+                                                {selectedFile || 'Select a file'}
+                                            </a>
+                                        </p>
                                     </label>
                                 </Box>
                             </Box>
                         </Center>
 
+                        {/* Button */}
                         <Box p={4} marginTop='20px'>
                             <Center>
                                 <Button
@@ -428,7 +447,7 @@ export default function PredictBulk() {
                                     boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
                                     onClick={handleSubmit}
                                 >
-                                    Confirm
+                                    Predict
                                 </Button>
                             </Center>
                         </Box>
