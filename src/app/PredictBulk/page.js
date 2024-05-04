@@ -126,7 +126,7 @@ export default function PredictBulk() {
                     margin={0}
                     maxWidth='100vw'
                     w='100%'
-                    h='90vh'>
+                    h='100%'>
 
                     {/* Header */}
                     <Box p={4}>
