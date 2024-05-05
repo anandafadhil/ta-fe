@@ -21,6 +21,7 @@ import LineChartExample from "../../../component/LineChartExample"
 
 
 import '../../styles.css';
+import Footer from "@/src/component/footer";
 
 export default function PredictForm() {
     const router = useRouter();
@@ -108,10 +109,9 @@ export default function PredictForm() {
                     margin={0}
                     maxWidth='100vw'
                     w='100%'
-                    bg='#EBFFFB'
                     h='89vh'>
                     {/* Header */}
-                    <Box p={4} bg='#EBFFFB'>
+                    <Box p={4} >
                         <Flex color='black' >
                             <Box
                                 p='4'
@@ -153,7 +153,7 @@ export default function PredictForm() {
                         <Box w='100%'>
                             {/* IP Input */}
                             <form onSubmit={handleSubmit}>
-                                <Box bg='#EBFFFB' p={4} color='white' height='450px' marginTop='20px' borderRadius='md'>
+                                <Box p={4} color='white' height='450px' marginTop='20px' borderRadius='md'>
                                     {/* Semester 1 */}
                                     <GridItem
                                         w='100%'
@@ -171,7 +171,7 @@ export default function PredictForm() {
                                             alignSelf='center'
                                             padding='4px' // Add padding
                                         >
-                                            <BarChartExample/>
+                                            <BarChartExample />
                                         </GridItem>
                                         <GridItem
                                             w='90%'
@@ -179,40 +179,18 @@ export default function PredictForm() {
                                             justifySelf='center'
                                             alignSelf='center'
                                         >
-                                            <LineChartExample/>
+                                            <LineChartExample />
                                         </GridItem>
                                     </GridItem>
 
                                 </Box>
 
                             </form>
-
-                            {/* Button */}
-                            {/* <Box p={4} marginTop='20px'>
-                                <Center>
-                                    <Button
-                                        color='white'
-                                        bg='#13ABC4'
-                                        w='200px'
-                                        h='50px'
-                                        boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                                        onClick={handleSubmit}
-                                    >
-                                        Confirm
-                                    </Button>
-                                </Center>
-                            </Box> */}
                         </Box>
 
                     </Box>
-
                 </Container>
-
-
-
-                {/* <Container margin={0} bg='#3161A3' h='89vh' maxWidth='100vw' w='100%' display='flex' alignItems='center' justifyContent='center'>
-                    
-                </Container> */}
+                <Footer />
 
             </div >
         </ChakraProvider >
