@@ -111,7 +111,7 @@ export default function PredictForm() {
             </Flex>
           </Box>
 
-          {/* University Search */}
+          {/* Univ Search's Box */}
           <Box
             mt='20px'
             p={4}
@@ -130,7 +130,7 @@ export default function PredictForm() {
               borderWidth='3px'
               borderRadius='md'>
 
-              {/* Univ Input */}
+              {/* Univ Search */}
               <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
                 <Box p='1' ml='1' color='black' fontWeight='bold'>
                   Nama Universitas
@@ -178,7 +178,7 @@ export default function PredictForm() {
                 </Box>
               </SimpleGrid>
 
-              {/* Button */}
+              {/* Univ Search's Button */}
               <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
                 <Box p={4} marginTop='20px'>
                   <Center>
@@ -202,7 +202,7 @@ export default function PredictForm() {
           {/* Divider */}
           {/* <Divider orientation="horizontal" my={8} borderWidth={2} borderColor="gray.400" /> */}
 
-
+          {/* 3 Statistics' Box */}
           <Box w='100%'>
             <Box p={4} color='white' height='500px' marginTop='30px' borderRadius='md'>
               <GridItem
@@ -249,6 +249,7 @@ export default function PredictForm() {
             </Box>
           </Box>
 
+          {/* Geo Chart's Box */}
           <Box w='100%'>
             <Box p={4} color='white' height='1080px' marginTop='20px' borderRadius='md'>
               {/* Upper Box */}
@@ -270,6 +271,7 @@ export default function PredictForm() {
                   alignSelf='center'
                   padding='4px' // Add padding
                 >
+                  {/* Geo Chart's Title */}
                   <Box alignItems='center' justifyContent='center'>
                     <Box >
                       <Center>
@@ -278,6 +280,7 @@ export default function PredictForm() {
                         </Text>
                       </Center>
 
+                      {/* Geo Chart's Year */}
                     </Box>
                     <Box justifyContent='center' alignItems='center' display='flex'>
                       <Box  >
@@ -298,6 +301,7 @@ export default function PredictForm() {
                 </GridItem>
               </GridItem>
 
+              {/* Geo Chart */}
               <GridItem
                 w='100%'
                 height='920px'
@@ -308,7 +312,6 @@ export default function PredictForm() {
                 borderBottomRightRadius='md'
                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
               >
-                {/* Bar Chart */}
                 <GridItem
                   height='95%'
                   width='95%'

@@ -14,41 +14,16 @@ import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
-import {
-    AutoComplete,
-    AutoCompleteInput,
-    AutoCompleteItem,
-    AutoCompleteList,
-} from "@choc-ui/chakra-autocomplete";
+
 import '../../styles.css';
 import Footer from "@/src/component/footer";
+import { fetchData, postData } from "@/src/api/fetch";
 
 export default function PredictForm() {
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const handleUploadClick = () => {
-        router.push('/PredictBulk');
-    };
 
-    const handlePredictClick = () => {
-        router.push('/PredictSingular/Result');
-    };
-
-    const optionsUniversity = [
-        "Institut Teknologi Bandung",
-        "Universitas Gadjah Mada",
-        "Universitas Indonesia",
-    ];
-
-    const optionsProgram = [
-        "Ilmu Komputer",
-        "Kedokteran",
-        "Teknik Elektro",
-        "Teknik Mesin",
-        "Sastra",
-    ];
-
-    const [formData, setFormData] = useState({
+    const [formDataSKS, setFormDataSKS] = useState({
         sem1sksSemester: '',
         sem1sksDPO: '',
         sem1ipsKumulatif: '',
@@ -63,33 +38,28 @@ export default function PredictForm() {
         sem4ipsKumulatif: '',
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission here, for example:
-        console.log('Form submitted:', formData);
-        // Reset form data if needed
-        setFormData({
-            sem1sksSemester: '',
-            sem1sksDPO: '',
-            sem1ipsKumulatif: '',
-            sem2sksSemester: '',
-            sem2sksDPO: '',
-            sem2ipsKumulatif: '',
-            sem3sksSemester: '',
-            sem3sksDPO: '',
-            sem3ipsKumulatif: '',
-            sem4sksSemester: '',
-            sem4sksDPO: '',
-            sem4ipsKumulatif: '',
+    const handleSubmit = async () => {
+        // e.preventDefault();
+        console.log('Form submitted:', formDataSKS);
+        console.log(localStorage.getItem('formData'))
+        const univOld = JSON.parse(localStorage.getItem('formData')).prodiInputID;
+        console.log(univOld)
+
+        // const predict = await fetchData(`/statistik-prodi/${univOld}`);
+        // localStorage.setItem('formDataSKS', JSON.stringify(formDataSKS));
+        const sks = await postData({
+            endpoint: `/sks-handle`,
+            data: formDataSKS,
+            id: univOld,
         });
+
         router.push('/PredictSingular/Result');
 
     };
 
     const handleChange = (e) => {
-        // console.log(e);
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormDataSKS({ ...formDataSKS, [name]: value });
     };
 
     return (
@@ -144,7 +114,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem1sksSemester"
-                                                        value={formData.sem1sksSemester}
+                                                        value={formDataSKS.sem1sksSemester}
                                                         onChange={handleChange}
                                                         placeholder="Input SKS Semester 1"
                                                         style={{
@@ -167,7 +137,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem1sksDPO"
-                                                        value={formData.sem1sksDPO}
+                                                        value={formDataSKS.sem1sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 1"
                                                         style={{
@@ -189,7 +159,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem1ipsKumulatif"
-                                                        value={formData.sem1ipsKumulatif}
+                                                        value={formDataSKS.sem1ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 1"
                                                         style={{
@@ -229,11 +199,11 @@ export default function PredictForm() {
                                                 <Box ml='2'>
                                                     SKS diambil
                                                 </Box>
-                                                <Box p='2'>
+                                                <Box p='2' textColor={'black'}>
                                                     <input
                                                         type="text"
                                                         name="sem2sksSemester"
-                                                        value={formData.sem2sksSemester}
+                                                        value={formDataSKS.sem2sksSemester}
                                                         onChange={handleChange}
                                                         placeholder="Input SKS Semester 2"
                                                         style={{
@@ -255,7 +225,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem2sksDPO"
-                                                        value={formData.sem2sksDPO}
+                                                        value={formDataSKS.sem2sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 2"
                                                         style={{
@@ -277,7 +247,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem2ipsKumulatif"
-                                                        value={formData.sem2ipsKumulatif}
+                                                        value={formDataSKS.sem2ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 2"
                                                         style={{
@@ -319,7 +289,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem3sksSemester"
-                                                        value={formData.sem3sksSemester}
+                                                        value={formDataSKS.sem3sksSemester}
                                                         onChange={handleChange}
                                                         placeholder="Input SKS Semester 3"
                                                         style={{
@@ -341,7 +311,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem3sksDPO"
-                                                        value={formData.sem3sksDPO}
+                                                        value={formDataSKS.sem3sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 3"
                                                         style={{
@@ -363,7 +333,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem3ipsKumulatif"
-                                                        value={formData.sem3ipsKumulatif}
+                                                        value={formDataSKS.sem3ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 3"
                                                         style={{
@@ -405,7 +375,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem4sksSemester"
-                                                        value={formData.sem4sksSemester}
+                                                        value={formDataSKS.sem4sksSemester}
                                                         onChange={handleChange}
                                                         placeholder="Input SKS Semester 4"
                                                         style={{
@@ -427,7 +397,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem4sksDPO"
-                                                        value={formData.sem4sksDPO}
+                                                        value={formDataSKS.sem4sksDPO}
                                                         onChange={handleChange}
                                                         placeholder="Total SKS Lulus di Semester 4"
                                                         style={{
@@ -449,7 +419,7 @@ export default function PredictForm() {
                                                     <input
                                                         type="text"
                                                         name="sem4ipsKumulatif"
-                                                        value={formData.sem4ipsKumulatif}
+                                                        value={formDataSKS.sem4ipsKumulatif}
                                                         onChange={handleChange}
                                                         placeholder="IPK pada Semester 4"
                                                         style={{
