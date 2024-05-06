@@ -14,7 +14,7 @@ import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
 import '../styles.css';
 import Footer from "@/src/component/footer";
-import { postData, postNoIDData } from "@/src/api/fetch";
+import { fetchData, postData, postNoIDData } from "@/src/api/fetch";
 
 export default function PredictBulk(props) {
     const { data } = props;
@@ -30,18 +30,10 @@ export default function PredictBulk(props) {
     }));
 
     const [formData, setFormData] = useState({
-        sem1sksSemester: '',
-        sem1sksDPO: '',
-        sem1ipsKumulatif: '',
-        sem2sksSemester: '',
-        sem2sksDPO: '',
-        sem2ipsKumulatif: '',
-        sem3sksSemester: '',
-        sem3sksDPO: '',
-        sem3ipsKumulatif: '',
-        sem4sksSemester: '',
-        sem4sksDPO: '',
-        sem4ipsKumulatif: '',
+        univInput: '',
+        univInputID: '',
+        prodiInput: '',
+        prodiInputID: '',
     });
 
     const [OrgData, setOrgData] = useState({
@@ -51,10 +43,9 @@ export default function PredictBulk(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
-        const retreiveBulk = await postData({
-            endpoint: `/bulk-handle`,
+        const retreiveBulk = await postNoIDData({
+            endpoint: `/bulk-handle/${formData.prodiInputID}`,
             data: OrgData.file,
-            id: selectedID,
         });
         localStorage.setItem('PROCESSDATA', JSON.stringify(retreiveBulk));
         console.log("PROCESS", retreiveBulk)
@@ -62,12 +53,19 @@ export default function PredictBulk(props) {
         router.push('/PredictBulk/Result');
 
     };
-    const [selectedID, setSelectedID]=useState();
-    const handleChange = (selectedOption, fieldName) => {
+
+    const [optionsProdi, setOptionsProdi] = useState([])
+
+    const handleChangeUniv = async (selectedOption, fieldName) => {
         const selected_id_univ = selectedOption.value;
-        console.log(fieldName);
-        setSelectedID(selected_id_univ);
-        // const { name, value } = e.target;
+        const dataProdi = await fetchData(`/prodi/${selected_id_univ}`);
+
+        const optionsProdi = dataProdi.prodi.map(([id, name]) => ({
+            value: id,
+            label: name
+        }));
+        setOptionsProdi(optionsProdi);
+
         if (selectedOption) {
             const { label, value } = selectedOption;
             setFormData({
@@ -83,6 +81,46 @@ export default function PredictBulk(props) {
             });
         }
     };
+
+    const handleChangeProdi = async (selectedOption, fieldName) => {
+        const selected_id_univ = selectedOption.value;
+        if (selectedOption) {
+            const { label, value } = selectedOption;
+            setFormData({
+                ...formData,
+                [`${fieldName.name}`]: label,
+                [`${fieldName.name}ID`]: value
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [`${fieldName.name}`]: '',
+                [`${fieldName.name}ID`]: ''
+            });
+        }
+
+    };
+
+    // const handleChange = (selectedOption, fieldName) => {
+    //     const selected_id_univ = selectedOption.value;
+    //     console.log(fieldName);
+    //     setSelectedID(selected_id_univ);
+    //     // const { name, value } = e.target;
+    //     if (selectedOption) {
+    //         const { label, value } = selectedOption;
+    //         setFormData({
+    //             ...formData,
+    //             [`${fieldName.name}`]: label,
+    //             [`${fieldName.name}ID`]: value
+    //         });
+    //     } else {
+    //         setFormData({
+    //             ...formData,
+    //             [`${fieldName.name}`]: '',
+    //             [`${fieldName.name}ID`]: ''
+    //         });
+    //     }
+    // };
 
     const [selectedFile, setSelectedFile] = useState(null);
     const handleFileChange = (e) => {
@@ -247,80 +285,113 @@ export default function PredictBulk(props) {
                             ))}
                         </Grid>
                     </Box>
-                    <Center>
-
-                        {/* Univ Search */}
-                        <SimpleGrid
-                            bg='red'
-                            columns='1'
-                            marginTop='10px'
-                            marginBottom='10px'
-                            w='25%'
+                    <Box>
+                        <Center>
+                            <Box    
+                            p={4}
+                            width={['100%', '70%']} // Responsive width
+                            borderRadius='md'
                             boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                            display='flex'
+                            flexDirection={['column', 'row']}
+                            alignItems="center"
+                            justifyContent="center"
+                            mt='20px'>
+                                {/* Univ Search */}
+                                {/* Univ */}
+                                <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
+                                    <Box p='1' ml='1'>
+                                        Nama Universitas
+                                    </Box>
+                                    <Box p='2'>
+                                        <Select
+                                            className="w-full"
+                                            name="univInput"
+                                            value={formData.univInput}
+                                            onChange={handleChangeUniv}
+                                            options={optionsUni}
+                                            placeholder={formData.univInput ? formData.univInput : 'Input Universitas Pilihan'}
+                                            styles={{
+                                                control: (base) => ({
+                                                    ...base,
+                                                    borderRadius: "0.5rem",
+                                                    paddingLeft: "0.2rem",
+                                                    height: "55px",
+                                                }),
+                                                indicatorSeparator: (base) => ({
+                                                    ...base,
+                                                    visibility: "hidden",
+                                                }),
+                                                dropdownIndicator: (base) => ({
+                                                    ...base,
+                                                    paddingRight: "0.5rem",
+                                                    svg: {
+                                                        height: 24,
+                                                        width: 24,
+                                                        fill: "black",
+                                                    },
+                                                }),
+                                                option: (provided) => ({
+                                                    ...provided,
+                                                    color: "black", // Change label font color to black
+                                                }),
+                                            }}
+                                        />
+                                    </Box>
+                                </SimpleGrid>
 
-                        >
-                            <Box p='1' ml='1' color='black' fontWeight='bold'>
-                                Nama Universitas
+                                {/* Prodi */}
+                                <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
+                                    <Box p='1' ml='1'>
+                                        Nama Prodi/Jurusan
+                                    </Box>
+                                    <Box p='2'>
+                                        <Select
+                                            className="w-full"
+                                            name="prodiInput"
+                                            value={formData.prodiInput}
+                                            onChange={handleChangeProdi}
+                                            options={optionsProdi}
+                                            isDisabled={!formData.univInput ? true : false}
+                                            placeholder={!formData.univInput ? '' : (formData.prodiInput ? formData.prodiInput : 'Input Jurusan Pilihan')}
+                                            styles={{
+                                                control: (base, state) => ({
+                                                    ...base,
+                                                    borderRadius: "0.5rem",
+                                                    paddingLeft: "0.2rem",
+                                                    height: "55px",
+                                                    backgroundColor: state.isDisabled ? 'lightgray' : 'white'
+                                                }),
+                                                indicatorSeparator: (base) => ({
+                                                    ...base,
+                                                    visibility: "hidden",
+                                                }),
+                                                dropdownIndicator: (base) => ({
+                                                    ...base,
+                                                    paddingRight: "0.5rem",
+                                                    svg: {
+                                                        height: 24,
+                                                        width: 24,
+                                                        fill: "black",
+                                                    },
+                                                }),
+                                                // New style to change label font color to black
+                                                option: (provided) => ({
+                                                    ...provided,
+                                                    color: "black", // Change label font color to black
+                                                }),
+                                            }}
+                                        />
+                                    </Box>
+                                </SimpleGrid>
                             </Box>
-                            <Box p='2'>
-                                <Select
-                                    className="w-full"
-                                    name="univInput"
-                                    value={formData.univInput}
-                                    onChange={(option) => handleChange(option, 'univ')}
-                                    options={optionsUni}
-                                    placeholder={formData.univInput ? formData.univInput : 'Input Universitas Pilihan'}
-                                    styles={{
-                                        control: (base) => ({
-                                            ...base,
-                                            borderRadius: "0.5rem",
-                                            paddingLeft: "0.2rem",
-                                            height: "55px",
-                                        }),
-                                        indicatorSeparator: (base) => ({
-                                            ...base,
-                                            visibility: "hidden",
-                                        }),
-                                        dropdownIndicator: (base) => ({
-                                            ...base,
-                                            paddingRight: "0.5rem",
-                                            svg: {
-                                                height: 24,
-                                                width: 24,
-                                                fill: "black",
-                                            },
-                                        }),
 
-                                        // New style to change label font color to black
-                                        option: (provided) => ({
-                                            ...provided,
-                                            color: "black", // Change label font color to black
-                                        }),
-                                    }}
-                                />
-                            </Box>
-                        </SimpleGrid>
 
-                        {/* Univ Search's Button */}
-                        {/* <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                        <Box p={4} marginTop='20px'>
-                            <Center>
-                                <Button
-                                    color='white'
-                                    bg='#3161A3'
-                                    w='200px'
-                                    h='50px'
-                                    boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                                    onClick={handleSearchClick}
-                                >
-                                    Confirm
-                                </Button>
-                            </Center>
-                        </Box>
-                    </SimpleGrid> */}
-                        {/* File Input */}
-                    </Center>
+                        </Center>
+                    </Box>
 
+
+                    {/* File Input */}
                     <Center>
                         <Box
                             p={4}
