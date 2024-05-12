@@ -47,6 +47,7 @@ export default function PredictBulk(props) {
             endpoint: `/bulk-handle/${formData.prodiInputID}`,
             data: OrgData.file,
         });
+        localStorage.setItem('PROCESSDATAID', JSON.stringify(formData))
         localStorage.setItem('PROCESSDATA', JSON.stringify(retreiveBulk));
         console.log("PROCESS", retreiveBulk)
 
@@ -221,7 +222,7 @@ export default function PredictBulk(props) {
                             templateRows='repeat(2, 1fr)'
                             templateColumns={['1fr', 'repeat(2, 1fr)']} // Responsive columns
                             gap={4}
-                            height={['auto', '500px']}  // Allow the grid to expand in height on smaller screens
+                            height={['auto', '550px']}  // Allow the grid to expand in height on smaller screens
                         >
                             {stepsData.map((step, index) => (
                                 <GridItem
@@ -266,7 +267,6 @@ export default function PredictBulk(props) {
                                         display="flex"
                                         flexDirection="column"
                                         p={4}
-                                        overflowY="auto"  // Allows scrolling inside the item if content is too long
                                     >
 
                                         <List spacing={[2, 3]} textAlign='left'>
@@ -287,16 +287,19 @@ export default function PredictBulk(props) {
                     </Box>
                     <Box>
                         <Center>
-                            <Box    
-                            p={4}
-                            width={['100%', '70%']} // Responsive width
-                            borderRadius='md'
-                            boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                            display='flex'
-                            flexDirection={['column', 'row']}
-                            alignItems="center"
-                            justifyContent="center"
-                            mt='20px'>
+                            <Box
+                                p={4}
+                                width={['100%', '70%']} // Responsive width
+                                borderRadius='md'
+                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                                display='flex'
+                                flexDirection={['column', 'row']}
+                                alignItems="center"
+                                justifyContent="center"
+                                mt='20px'
+                                bg='#13ABC4'
+                                >
+                                    
                                 {/* Univ Search */}
                                 {/* Univ */}
                                 <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
@@ -314,6 +317,10 @@ export default function PredictBulk(props) {
                                             styles={{
                                                 control: (base) => ({
                                                     ...base,
+                                                    minHeight: '40px',
+                                                    overflow: 'hidden',
+                                                    whiteSpace: 'nowrap',
+                                                    textOverflow: 'ellipsis',
                                                     borderRadius: "0.5rem",
                                                     paddingLeft: "0.2rem",
                                                     height: "55px",
@@ -357,6 +364,10 @@ export default function PredictBulk(props) {
                                             styles={{
                                                 control: (base, state) => ({
                                                     ...base,
+                                                    minHeight: '40px',
+                                                    overflow: 'hidden',
+                                                    whiteSpace: 'nowrap',
+                                                    textOverflow: 'ellipsis',
                                                     borderRadius: "0.5rem",
                                                     paddingLeft: "0.2rem",
                                                     height: "55px",

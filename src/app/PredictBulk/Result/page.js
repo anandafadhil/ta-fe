@@ -24,15 +24,15 @@ export default function PageComponent() {
 
     // Lulus Text
     const lulus = true;
-    // const univName = "Universitas Indonesia";
-    // const univName = "Universitas Terbuka";
-    const univName = "Institut Teknologi Bandung";
+    // const prodiName = localStorage.getItem('PROCESSDATAID').prodiInput;
+    // const univName = localStorage.getItem('PROCESSDATAID').univInput;
+    const univName = JSON.parse(localStorage.getItem('PROCESSDATAID')).univInput;
+    const prodiName = JSON.parse(localStorage.getItem('PROCESSDATAID')).prodiInput;
+    // console.log(univOld)
+    // console.log(univName)
+    // const univName = "Institut Teknologi Bandung - Teknik Elektro Teknik";
     const univNameHandler = () => {
-        if (lulus === true) {
-            return univName;
-        } else {
-            return " Tidak Tepat Waktu";
-        }
+        "hello"
     }
     const [TableData, setTableData] = useState([]);
 
@@ -110,13 +110,13 @@ export default function PageComponent() {
                             <Box>
                                 <Center>
                                     <Text fontSize="30px" color="black">
-                                        Hasil Prediksi File Mahasiswa
+                                        Hasil Prediksi Mahasiswa
                                     </Text>
                                 </Center>
 
                                 <Center>
-                                    <Text fontSize="30px" color="black">
-                                        {univNameHandler()}
+                                    <Text fontSize="26px" color="black">
+                                        {univName} - {prodiName}
                                     </Text>
                                 </Center>
 
