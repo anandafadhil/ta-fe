@@ -24,16 +24,9 @@ export default function PageComponent() {
 
     // Lulus Text
     const lulus = true;
-    // const prodiName = localStorage.getItem('PROCESSDATAID').prodiInput;
-    // const univName = localStorage.getItem('PROCESSDATAID').univInput;
     const univName = JSON.parse(localStorage.getItem('PROCESSDATAID')).univInput;
     const prodiName = JSON.parse(localStorage.getItem('PROCESSDATAID')).prodiInput;
-    // console.log(univOld)
-    // console.log(univName)
-    // const univName = "Institut Teknologi Bandung - Teknik Elektro Teknik";
-    const univNameHandler = () => {
-        "hello"
-    }
+
     const [TableData, setTableData] = useState([]);
 
     useEffect(() => {
@@ -65,8 +58,8 @@ export default function PageComponent() {
     }, [TableData]);
     // console.log("b", processData)
     // useEffect(() => {
-    const title = ['No', 'NPM', 'IPK Sem 1', 'IPK sem 2', 'IPK sem 3', 'IPK sem 4'];
-    const param = ['NPM', 'IPK_sem_1', 'IPK_sem_2', 'IPK_sem_3', 'IPK_sem_4'];
+    const title = ['No', 'NPM', 'Result'];
+    const param = ['NPM', 'RES'];
 
     // })
     return (

@@ -52,6 +52,7 @@ export default function PredictForm() {
             data: formDataSKS,
             id: univOld,
         });
+        localStorage.setItem('PREDICTRES', JSON.stringify(sks));
 
         router.push('/PredictSingular/Result');
 
