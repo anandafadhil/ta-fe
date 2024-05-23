@@ -80,10 +80,6 @@ export default function PageComponent(props) {
 
     const handleSubmit = async () => {
         console.log('Form submitted:', formData);
-        // const dataForm = await postData({
-        //     endpoint: "/uni-prodi",
-        //     data: formData,
-        // });
         localStorage.setItem('formData', JSON.stringify(formData));
 
 
@@ -97,6 +93,7 @@ export default function PageComponent(props) {
             <div>
                 <Navbar />
                 <Container
+                    // bg='red'
                     margin={0}
                     maxWidth='100vw'
                     w='100%'
@@ -105,7 +102,7 @@ export default function PageComponent(props) {
                     <Box p={4}>
                         <Flex >
                             <Box p='4' width='300px' height='100px' display='flex' alignItems='center' justifyContent='center'>
-                                <Text fontSize='30px' color='#3161A3'>
+                                <Text fontSize='30px' color='black'>
                                     Predict Singular
                                 </Text>
                             </Box>
@@ -115,15 +112,16 @@ export default function PageComponent(props) {
                     <Box w='100%'>
                         {/* Univ Input */}
                         <Box
+                            marginTop="100px"
                             p={4}
                             color='white'
-                            height='100px'
+                            height='200px'
                             display='flex'
                             alignItems='center'
                             justifyContent='center'
                         >
                             <Flex
-                                bg='#13ABC4'
+                                bg='#3161A3'
                                 display='flex'
                                 alignItems='center'
                                 justifyContent='center'
@@ -165,15 +163,9 @@ export default function PageComponent(props) {
                                                         fill: "black",
                                                     },
                                                 }),
-                                                // menu: (provided) => ({
-                                                //     ...provided,
-                                                //     maxHeight: "120px", // Adjust the max height as needed
-                                                //     overflowY: "auto", // Add scrollbar if needed
-                                                // }),
-                                                // New style to change label font color to black
                                                 option: (provided) => ({
                                                     ...provided,
-                                                    color: "black", // Change label font color to black
+                                                    color: "black",
                                                 }),
                                             }}
                                         />
@@ -215,10 +207,9 @@ export default function PageComponent(props) {
                                                         fill: "black",
                                                     },
                                                 }),
-                                                // New style to change label font color to black
                                                 option: (provided) => ({
                                                     ...provided,
-                                                    color: "black", // Change label font color to black
+                                                    color: "black",
                                                 }),
                                             }}
                                         />
@@ -228,11 +219,11 @@ export default function PageComponent(props) {
                         </Box>
 
                         {/* Submit Button */}
-                        <Box p={4} marginTop='20px'>
+                        <Box p={4} >
                             <Center>
                                 <Button
                                     color='white'
-                                    bg='#3161A3'
+                                    bg='#13ABC4'
                                     w='200px'
                                     h='50px'
                                     boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'

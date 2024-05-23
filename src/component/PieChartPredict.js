@@ -33,18 +33,19 @@ const renderCustomizedLabelFull = ({
     );
 };
 
-export default class PieChartExample extends PureComponent {
+export default class PieChartPredict extends PureComponent {
     static demoUrl = 'https://codesandbox.io/s/pie-chart-with-customized-label-dlhhj';
 
     render() {
         const { dataPie } = this.props;
+        console.log("pie", dataPie)
         const data = [
-            { name: 'Tepat Waktu', value: dataPie[0]?.tepat_grad },
-            { name: 'Tidak Tepat Waktu', value: dataPie[0]?.tidak_tepat_grad },
+            { name: 'Tepat Waktu', value: dataPie[0]?.avg_persentase_lulus_tepat_waktu },
+            { name: 'Tidak Tepat Waktu', value: (1 - dataPie[0]?.avg_persentase_lulus_tepat_waktu) },
         ];
 
         return (
-            <ResponsiveContainer width="100%" height="95%">
+            <ResponsiveContainer width="100%" height="95%" >
                 <div>
                     <Box >
                         <Box>
@@ -58,7 +59,7 @@ export default class PieChartExample extends PureComponent {
 
                 </div>
 
-                <PieChart width={400} height={400}>
+                <PieChart width={400} height={400} >
                     <Pie
                         data={data}
                         cx="50%"

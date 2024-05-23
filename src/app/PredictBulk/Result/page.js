@@ -4,20 +4,18 @@ import {
     ChakraProvider, VStack, Container,
     Flex, Spacer, Center, Square, Text,
     Box, Grid, GridItem, Button, Input,
-    SimpleGrid, Select, InputSelect,
-    FormControl, Modal, ModalOverlay,
-    ModalContent, ModalCloseButton,
-    ModalFooter, ModalBody, ModalHeader,
-    useDisclosure, FormLabel, Textarea,
 
 } from "@chakra-ui/react";
 import Navbar from '@/src/component/navbar';
 import { useRouter } from 'next/navigation'
-import TableComponent from "../../../component/table"
+import 'bootstrap/dist/css/bootstrap.min.css';
+import generateExcel from '../../../component/GenerateExcel';
 import Footer from '@/src/component/footer';
 import '../../styles.css';
 import ReactPaginate from 'react-paginate';
 import React, { useEffect, useState } from "react";
+import { fetchTable } from '@/src/api/fetch';
+
 
 export default function PageComponent() {
     const router = useRouter();
@@ -27,39 +25,113 @@ export default function PageComponent() {
     const univName = JSON.parse(localStorage.getItem('PROCESSDATAID')).univInput;
     const prodiName = JSON.parse(localStorage.getItem('PROCESSDATAID')).prodiInput;
 
+    const length = localStorage.getItem('PROCESSDATA');
+    const processedLength = JSON.parse(length);
+    const [totalData, setTotalData] = useState(processedLength?.data?.length || 0)
     const [TableData, setTableData] = useState([]);
+    const [perPage, setPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(Math.ceil(totalData / perPage));
+    const title = ['No', 'NPM', 'Result'];
+    const param = ['number', 'NPM', 'RES'];
+    const newParam = ['NPM', 'RES'];
+    console.log("total data", totalData);
+    console.log("total page", totalPage);
 
-    useEffect(() => {
+    const handleSubmit = async () => {
+        try {
+            const storedData = localStorage.getItem('PROCESSDATA');
+            const processData = JSON.parse(storedData);
+            const data = await fetchTable({
+                endpoint: '/handle-table-bulk',
+                data: processData,
+                pageSize: 0,
+                pageNumber: currentPage,
+            });
+            console.log("download", data)
+            const tableTitle = "Result Predict Bulk"
+            const fileName = "predict_bulk.xlsx"
+            generateExcel(
+                data,
+                title,
+                newParam,
+                tableTitle,
+                fileName
+            );
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const handleTable = async () => {
         const storedData = localStorage.getItem('PROCESSDATA');
         const processData = JSON.parse(storedData);
-        if (Array.isArray(processData.data)) {
-            setTableData(processData.data);
-        } else {
-            console.error('Data retrieved from local storage is not an array:', processData.data);
-            // Handle this case as needed, such as setting a default value for TableData
-        }
-    }, []);
+        const data = await fetchTable({
+            endpoint: '/handle-table-bulk',
+            data: processData,
+            pageSize: perPage,
+            pageNumber: currentPage,
+        });
+        setTableData(data)
+        console.log("newQuery", data)
+    }
 
-    // Now you can safely use TableData.map without encountering the TypeError
-    if (TableData.length > 0) {
-        console.log("next", TableData);
-    } else {
-        console.log("TableData is empty or not an array", TableData);
+    const renewData = async () => {
+        console.log("b");
+        const storedData = localStorage.getItem('PROCESSDATA');
+        const processData = JSON.parse(storedData);
+        const data = await fetchTable({
+            endpoint: '/handle-table-bulk',
+            data: processData,
+            pageSize: perPage,
+            pageNumber: currentPage,
+            // data: processData,
+            // pageSize: 5,
+            // pageNumber: 2,
+        });
+        console.log("renew", data)
+        setTableData(data)
     }
 
     useEffect(() => {
-        // This useEffect will run when `TableData` changes and is not null
+        renewData();
+    }, [perPage, currentPage]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await handleTable();
+
+        }
+        // if (Array.isArray(processData.data)) {
+        //     setTableData(processData.data);
+        // } else {
+        //     console.error('Data retrieved from local storage is not an array:', processData.data);
+        // }
+        fetchData();
+
+    }, []);
+
+    // if (TableData.length > 0) {
+    //     console.log("next", TableData);
+    // } else {
+    //     console.log("TableData is empty or not an array", TableData);
+    // }
+    const handlePerPageChange = (e) => {
+        setPerPage(e.target.value);
+    };
+
+    const handlePageClick = async (e) => {
+        const newPage = e.selected + 1;
+        setCurrentPage(newPage);
+    };
+
+    useEffect(() => {
         if (TableData) {
             console.log("next", TableData);
-            // Add your processing logic here
         } else {
             console.log("TableData is not yet set or is empty");
         }
     }, [TableData]);
-    // console.log("b", processData)
-    // useEffect(() => {
-    const title = ['No', 'NPM', 'Result'];
-    const param = ['NPM', 'RES'];
 
     // })
     return (
@@ -69,7 +141,7 @@ export default function PageComponent() {
                 margin={0}
                 maxWidth='100vw'
                 w='100%'
-                h='89vh'>
+                h={`${perPage === 5 ? '100vh' : '100%'}`}>
 
                 {/* Header */}
                 <Box p={4}>
@@ -95,52 +167,34 @@ export default function PageComponent() {
                         <Box
                             p={4}
                             mb='10px'
-                            bg="#13ABC4"
+                            bg='#3161A3'
                             width="60%"
                             borderRadius='md'
                             boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
                         >
                             <Box>
                                 <Center>
-                                    <Text fontSize="30px" color="black">
+                                    <Text fontSize="30px" color="white" fontWeight="bold">
                                         Hasil Prediksi Mahasiswa
                                     </Text>
                                 </Center>
 
                                 <Center>
-                                    <Text fontSize="26px" color="black">
+                                    <Text fontSize="26px" color="white">
                                         {univName} - {prodiName}
                                     </Text>
                                 </Center>
-
-
                             </Box>
                         </Box>
                     </Center>
                 </Box>
 
                 {/* Table */}
-                <hr className='border w-full -translate-y-[2px] mt-7 z-0 relative' />
-                <div className='content w-4/5 flex flex-col mt-2 mx-auto'>
+                <div className='content w-3/5 flex flex-col mt-2 mx-auto'>
                     <div className='relative overflow-x-auto'>
-                        <table className='w-full text-sm text-left my-4 rounded-lg overflow-hidden shadow-lg'>
-                            <thead className='bg-[#13ABC4] rounded-tl-lg rounded-tr-lg'>
-                                <tr className='first:rounded-tl-lg last:rounded-tr-lg border-2'>
-                                    {/* <th
-                                        scope='col'
-                                        className='px-6 py-3'
-                                        style={{
-                                            width: "5px",
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        <div className='flex items-center gap-2'>
-                                            <p>No</p>
-                                        </div>
-                                    </th>
-                                    <th scope='col' className='px-6 py-3 text-center'>
-                                        HA
-                                    </th> */}
+                        <table className='border-2 w-full text-sm text-left my-4 rounded-lg overflow-hidden shadow-md'>
+                            <thead className='bg-[#3161A3] text-white rounded-tl-lg rounded-tr-lg '>
+                                <tr className='first:rounded-tl-lg last:rounded-tr-lg border-2 '>
                                     {title.map((item, index) => (
                                         <th
                                             scope="col"
@@ -164,9 +218,7 @@ export default function PageComponent() {
                                 {TableData !== null ? (
                                     TableData?.map((dataTable, index) => (
                                         <tr className="" key={index}>
-                                            <td className="px-6 py-4 text-center">
-                                                {1 + index}
-                                            </td>
+
                                             {param.map((item, index) => (
                                                 <td className="px-6 py-4" key={index}>
                                                     {item === "path_file" ? (
@@ -191,60 +243,15 @@ export default function PageComponent() {
                                         <td colSpan={param.length + 2}>not found</td>
                                     </tr>
                                 )}
-                                {/* {TableData !== null ? (
-                                    TableData.map((dataTable, index) => (
-                                        <tr className='border-2'>
-                                            <td className='px-6 py-4 text-center'>
-                                                1
-                                            </td>
-                                            {param.map((item, index) => (
-                                                <td className='px-6 py-4 text-center'>
-                                                    {dataTable[item]}
-                                                </td>
-                                            )}
-                                    ))}
-                                                                            </tr>
-
-                                            <tr className='border-2'>
-                                                <td className='px-6 py-4 text-center'>
-                                                    1
-                                                </td>
-                                                <td className='px-6 py-4 text-center'>
-                                                    ini halo
-                                                </td>
-                                                <td className='px-6 py-4 text-center'>
-                                                    ini halo
-                                                </td>
-                                                <td className='px-6 py-4 text-center'>
-                                                    ini halo
-                                                </td>
-                                            </tr>
-                                            <tr className='border-2'>
-                                                <td className='px-6 py-4 text-center'>
-                                                    2
-                                                </td>
-                                                <td className='px-6 py-4 text-center'>
-                                                    ini halo
-                                                </td>
-                                                <td className='px-6 py-4 text-center'>
-                                                    ini halo
-                                                </td>
-                                                <td className='px-6 py-4 text-center'>
-                                                    ini halo
-                                                </td>
-                                            </tr> */}
                             </tbody>
                         </table>
 
-                        {/* <span>
-                            abcd
-                        </span> */}
                         <div className="pagination flex justify-between gap-2 mt-4">
                             <div className="perpage flex items-center gap-2 text-xs">
                                 <span> Baris untuk ditampilkan</span>
                                 <select
-                                    className="select select-bordered select-xs w-full max-w-[80px]"
-                                // onChange={handlePerPageChange}
+                                    className="select select-bordered border-2 select-xs w-full max-w-[80px]"
+                                    onChange={handlePerPageChange}
                                 >
                                     <option value="5">5</option>
                                     <option value="10">10</option>
@@ -254,15 +261,17 @@ export default function PageComponent() {
                             <div className="pagination">
                                 <ReactPaginate
                                     breakLabel={"..."}
-                                    previousLabel={"prev"}
-                                    nextLabel={"next"}
-                                    pageCount={2}
-                                    // onPageChange={handlePageClick}
-                                    pageClassName={"join-item btn btn-sm"}
-                                    pageLinkClassName={""}
-                                    activeClassName={"active-pagination"}
-                                    className={"flex gap-1 items-center"}
-                                    disabledClassName={"disabled"}
+                                    previousLabel={"«"}
+                                    nextLabel={"»"}
+                                    pageCount={totalPage}
+                                    onPageChange={handlePageClick}
+                                    containerClassName={"flex gap-1 items-center"}
+                                    pageClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
+                                    activeClassName={"bg-gray-300"}
+                                    previousClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
+                                    nextClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
+                                    breakClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
+                                    disabledClassName={"text-gray-400"}
                                 />
                             </div>
                         </div>
@@ -275,11 +284,11 @@ export default function PageComponent() {
                     <Center>
                         <Button
                             color='white'
-                            bg='#3161A3'
+                            bg="#13ABC4"
                             w='200px'
                             h='50px'
                             boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                        // onClick={handleSubmit}
+                            onClick={handleSubmit}
                         >
                             Unduh
                         </Button>

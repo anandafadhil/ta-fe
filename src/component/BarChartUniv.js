@@ -4,20 +4,22 @@ import React, { PureComponent, useEffect, useState } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Text, Box, Center } from "@chakra-ui/react";
 import Select from "react-select";
-import { fetchDatawithYear } from '../api/fetch';
+import { fetchDatawithIDYear, fetchDatawithYear } from '../api/fetch';
 
-function BarChartExample2({ defaultBar }) {
+function BarChartUniv({ defaultBar }) {
   const [formData, setFormData] = useState({});
   const [optionsProdi, setOptionsProdi] = useState([]);
   const [chartData, setChartData] = useState([
-    { name: '3.5', jumlahMahasiswa: defaultBar[0]?.jml_mhs_lulus35 },
-    { name: '4.0', jumlahMahasiswa: defaultBar[0]?.jml_mhs_lulus40 },
-    { name: '4.5', jumlahMahasiswa: defaultBar[0]?.jml_mhs_lulus45 },
-    { name: '5.0', jumlahMahasiswa: defaultBar[0]?.jml_mhs_lulus50 },
-    { name: '5.5', jumlahMahasiswa: defaultBar[0]?.jml_mhs_lulus55 },
-    { name: '6.0', jumlahMahasiswa: defaultBar[0]?.jml_mhs_lulus60 },
+    { name: '3.5', uv: defaultBar[0].jml_mhs_lulus_35 },
+    { name: '4.0', uv: defaultBar[0].jml_mhs_lulus_40 },
+    { name: '4.5', uv: defaultBar[0].jml_mhs_lulus_45 },
+    { name: '5.0', uv: defaultBar[0].jml_mhs_lulus_50 },
+    { name: '5.5', uv: defaultBar[0].jml_mhs_lulus_55 },
+    { name: '6.0', uv: defaultBar[0].jml_mhs_lulus_60 },
   ]);
 
+  const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
+  const parsId = JSON.parse(idUnivStat)
   useEffect(() => {
     const selectYear = [
       { value: "2011", label: "2011" },
@@ -31,21 +33,28 @@ function BarChartExample2({ defaultBar }) {
     setOptionsProdi(selectYear);
   }, []);
   const handleChangeYear = async (selectedOption, fieldName) => {
-    const newData = await fetchDatawithYear({
-      endpoint: `/get-dist-grad-univ-all`,
+    const newData = await fetchDatawithIDYear({
+      endpoint: `/get-dist-grad-univ-filter`,
+      selectedIDUniv : parsId,
       selectedYear: selectedOption.value,
     })
+    // if (newData && newData.data) {
+    //   setChartData(newData.data.map(item => ({
+    //     name: item.name,
+    //     uv: item.value,
+    //   })));
+    // }
 
     if (newData) {
       const formattedData = [
-        { name: '3.5', jumlahMahasiswa: newData[0]?.jml_mhs_lulus35 },
-        { name: '4.0', jumlahMahasiswa: newData[0]?.jml_mhs_lulus40 },
-        { name: '4.5', jumlahMahasiswa: newData[0]?.jml_mhs_lulus45 },
-        { name: '5.0', jumlahMahasiswa: newData[0]?.jml_mhs_lulus50 },
-        { name: '5.5', jumlahMahasiswa: newData[0]?.jml_mhs_lulus55 },
-        { name: '6.0', jumlahMahasiswa: newData[0]?.jml_mhs_lulus60 },
+        { name: '3.5', uv: newData[0].jml_mhs_lulus_35 },
+        { name: '4.0', uv: newData[0].jml_mhs_lulus_40 },
+        { name: '4.5', uv: newData[0].jml_mhs_lulus_45 },
+        { name: '5.0', uv: newData[0].jml_mhs_lulus_50 },
+        { name: '5.5', uv: newData[0].jml_mhs_lulus_55 },
+        { name: '6.0', uv: newData[0].jml_mhs_lulus_60 },
       ];
-
+      console.log('format', formattedData)
       setChartData(formattedData);
     }
 
@@ -101,21 +110,21 @@ function BarChartExample2({ defaultBar }) {
         height={300}
         data={chartData}
         margin={{
-          top: 10,
+          top: 20,
           right: 25,
-          bottom: 45,
+          bottom: 35,
           left: 10,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" tick={{ fill: 'white' }}/>
-        <YAxis tick={{ fill: 'white' }} />
+        <XAxis dataKey="name" />
+        <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="jumlahMahasiswa" fill="#82ca9d" name="Jumlah Mahasiswa"/>
+        <Bar dataKey="uv" fill="#7ABD7E" />
       </BarChart>
     </ResponsiveContainer>
   );
 }
 
-export default BarChartExample2;
+export default BarChartUniv;

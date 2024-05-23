@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 
 import '../../styles.css';
 import Footer from "@/src/component/footer";
-import { fetchData, postData } from "@/src/api/fetch";
+import { fetchDatawithIDUniv, postData } from "@/src/api/fetch";
 
 export default function PredictForm() {
     const router = useRouter();
@@ -38,21 +38,38 @@ export default function PredictForm() {
         sem4ipsKumulatif: '',
     });
 
-    const handleSubmit = async () => {
-        // e.preventDefault();
-        console.log('Form submitted:', formDataSKS);
-        console.log(localStorage.getItem('formData'))
-        const univOld = JSON.parse(localStorage.getItem('formData')).prodiInputID;
-        console.log(univOld)
 
-        // const predict = await fetchData(`/statistik-prodi/${univOld}`);
-        // localStorage.setItem('formDataSKS', JSON.stringify(formDataSKS));
+    const handleSubmit = async () => {
+        const univOld = JSON.parse(localStorage.getItem('formData')).prodiInputID;
         const sks = await postData({
             endpoint: `/sks-handle`,
             data: formDataSKS,
             id: univOld,
         });
+        const skst = await postData({
+            endpoint: `/get-sks-total`,
+            data: formDataSKS,
+            id: univOld,
+        });
+        const ipk = await postData({
+            endpoint: `/get-ipk-total`,
+            data: formDataSKS,
+            id: univOld,
+        });
+        const sksNeeded = await postData({
+            endpoint: `/get-sks-needed`,
+            data: formDataSKS,
+            id: univOld,
+        });
+        const ketepatanGradTime = await fetchDatawithIDUniv({
+            endpoint: `/get-ketepatan-grad-time`,
+            selectedIDUniv: univOld,
+        });
         localStorage.setItem('PREDICTRES', JSON.stringify(sks));
+        localStorage.setItem('SKST', JSON.stringify(skst));
+        localStorage.setItem('IPKT', JSON.stringify(ipk));
+        localStorage.setItem('SKSNEEDED', JSON.stringify(sksNeeded));
+        localStorage.setItem('GRADTIME', JSON.stringify(ketepatanGradTime));
 
         router.push('/PredictSingular/Result');
 
@@ -86,14 +103,14 @@ export default function PredictForm() {
                     <Box w='100%'>
                         {/* IP Input */}
                         <form onSubmit={handleSubmit}>
-                            <Box p={4} color='white' height='450px' marginTop='20px' borderRadius='md'>
+                            <Box p={4} color='white' height='450px' marginTop='50px' borderRadius='md'>
                                 <Grid templateColumns='repeat(4, 1fr)' gap={6}>
 
                                     {/* Semester 1 */}
                                     <GridItem
                                         w='100%'
                                         h='420px'
-                                        bg='#13ABC4'
+                                        bg='#3161A3'
                                         borderRadius='md'
                                         boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
                                     >
@@ -182,7 +199,7 @@ export default function PredictForm() {
                                     <GridItem
                                         w='100%'
                                         h='100%'
-                                        bg='#13ABC4'
+                                        bg='#3161A3'
                                         borderRadius='md'
                                         boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
                                     >
@@ -269,7 +286,7 @@ export default function PredictForm() {
                                     <GridItem
                                         w='100%'
                                         h='100%'
-                                        bg='#13ABC4'
+                                        bg='#3161A3'
                                         borderRadius='md'
                                         boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
                                     >
@@ -355,7 +372,7 @@ export default function PredictForm() {
                                     <GridItem
                                         w='100%'
                                         h='100%'
-                                        bg='#13ABC4'
+                                        bg='#3161A3'
                                         borderRadius='md'
                                         boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
                                     >
@@ -444,7 +461,7 @@ export default function PredictForm() {
                             <Center>
                                 <Button
                                     color='white'
-                                    bg='#3161A3'
+                                    bg='#13ABC4'
                                     w='200px'
                                     h='50px'
                                     boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'

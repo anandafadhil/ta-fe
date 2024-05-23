@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import dynamic from "next/dynamic";
 import BarChartExample2 from "../../component/BarChartExample2"
-import LineChartExample2 from "../../component/LineChartExample2"
+import StackedBarChart from "../../component/StackedBarChart"
 import GeoChartExample from "../../component/GeoChartExample"
 import PieChartExample from "../../component/PieChartExample"
 import Footer from "../../component/footer"
@@ -27,29 +27,25 @@ import Footer from "../../component/footer"
 
 import '../styles.css';
 import UniversityStatistic from "./University/page";
+import { fetchDatawithYear } from "@/src/api/fetch";
 
-export default function PredictForm() {
+export default function PageComponent(props) {
   const router = useRouter();
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const [isUniv, setIsUniv] = useState({});
+  const { data, avgYearAllUniv, dataPie, dataStacked, defaultBar, defaultGeo } = props;
 
   const handleSearchClick = () => {
-    const univ_id = formData.univInput; // Ensure you're using the updated form data state
-    console.log(univ_id);
-    setIsUniv(univ_id);
-    router.push(`/StatisticPage/University?univ_id=${univ_id}`);
+    const univID = formData.univInput; // Ensure you're using the updated form data state
+    // setIsUniv(univ_id);
+    localStorage.setItem('IDUNIVSTAT', JSON.stringify(univID));
+    router.push(`/StatisticPage/University`);
   };
 
   const [formData, setFormData] = useState({
     univInput: '',
     univInputLabel: ''
   });
-  console.log(formData);
 
-  const handleChange = (selectedOption, fieldName) => {
-    console.log(selectedOption.value);
-    console.log(fieldName);
+  const handleChange = async (selectedOption, fieldName) => {
     if (selectedOption) {
       const { value, label } = selectedOption; // Destructure both value and label from selectedOption
       setFormData({
@@ -67,22 +63,51 @@ export default function PredictForm() {
   };
 
 
-  const optionsUni = [
-    { value: "S-BN", label: 'Bina Nusantara' },
-    { value: "N-ITB", label: 'Institut Teknologi Bandung' },
-    { value: "N-UGM", label: 'Universitas Gajah Mada' },
-    { value: "N-UI", label: 'Universitas Indonesia' }
-  ];
+  const optionsUni = data.distinct_universities.map(([id, name]) => ({
+    value: id,
+    label: name
+  }));
 
-  const newOptions = [
-    { value: "2020", label: "2020" },
-    { value: "2021", label: "2021" },
-    { value: "2022", label: "2022" },
-    { value: "2023", label: "2023" },
-    { value: "2024", label: "2024" },
-    { value: "2025", label: "2025" }
-  ];
+  const [optionsProdi, setOptionsProdi] = useState([]);
+  useEffect(() => {
+    const selectYear = [
+      { value: "2011", label: "2011" },
+      { value: "2012", label: "2012" },
+      { value: "2013", label: "2013" },
+      { value: "2014", label: "2014" },
+      { value: "2015", label: "2015" },
+      { value: "2016", label: "2016" },
+      { value: "All", label: "All Time" }
+    ];
+    setOptionsProdi(selectYear);
+  }, []);
 
+
+  const [chartData, setChartData] = useState("" || defaultGeo)
+  const handleChangeYear = async (selectedOption, fieldName) => {
+    const newData = await fetchDatawithYear({
+      endpoint: `/get-geochart`,
+      selectedYear: selectedOption.value,
+    })
+
+
+    if (newData) {
+      // const convertedData = newData.map(item => [item.provinsi, item.persentase]);
+      setChartData(newData);
+    }
+    if (selectedOption) {
+      const { value } = selectedOption;
+      setFormData({
+        ...formData,
+        [`${fieldName.name}Value`]: value
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [`${fieldName.name}Value`]: ''
+      });
+    }
+  };
   return (
     <ChakraProvider resetCSS={false}>
       <div>
@@ -163,15 +188,9 @@ export default function PredictForm() {
                           fill: "black",
                         },
                       }),
-                      menu: (provided) => ({
-                        ...provided,
-                        maxHeight: "120px", // Adjust the max height as needed
-                        overflowY: "auto", // Add scrollbar if needed
-                      }),
-                      // New style to change label font color to black
                       option: (provided) => ({
                         ...provided,
-                        color: "black", // Change label font color to black
+                        color: "black", 
                       }),
                     }}
                   />
@@ -184,7 +203,7 @@ export default function PredictForm() {
                   <Center>
                     <Button
                       color='white'
-                      bg='#3161A3'
+                      bg='#13ABC4'
                       w='200px'
                       h='50px'
                       boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
@@ -199,8 +218,33 @@ export default function PredictForm() {
             </Flex>
           </Box>
 
-          {/* Divider */}
-          {/* <Divider orientation="horizontal" my={8} borderWidth={2} borderColor="gray.400" /> */}
+          {/* Average Grad Time in Text */}
+          <Box w='100%'>
+            <Box p={4} color='white' height='200px' marginTop='30px' borderRadius='md'>
+              <GridItem
+                w='100%'
+                height='150px'
+                bg='#3161A3'
+                borderRadius='md'
+                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                display="grid"
+                gridTemplateColumns="1fr" // Two columns
+              >
+                <Center>
+                  <Text fontSize='30px' fontWeight='bold' color='white'>
+                    Rata-Rata Tahun Lulus Seluruh Mahasiswa Indonesia
+                  </Text>
+                </Center>
+                <Center >
+                  <Text fontSize='18px' color='white'>
+                    {avgYearAllUniv[0]?.avg_grad} Tahun
+                  </Text>
+                </Center>
+
+              </GridItem>
+
+            </Box>
+          </Box>
 
           {/* 3 Statistics' Box */}
           <Box w='100%'>
@@ -208,7 +252,7 @@ export default function PredictForm() {
               <GridItem
                 w='100%'
                 height='450px'
-                bg='#13ABC4'
+                bg='#3161A3'
                 borderRadius='md'
                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
                 display="grid"
@@ -222,17 +266,17 @@ export default function PredictForm() {
                   alignSelf='center'
                   padding='4px' // Add padding
                 >
-                  <BarChartExample2 />
+                  <BarChartExample2 defaultBar={defaultBar} />
                 </GridItem>
 
-                {/* Line Chart */}
+                {/* Stacked Bar Chart */}
                 <GridItem
                   w='90%'
                   height='450px'
                   justifySelf='center'
                   alignSelf='center'
                 >
-                  <LineChartExample2 />
+                  <StackedBarChart dataStacked={dataStacked} />
                 </GridItem>
 
                 {/* Pie Chart */}
@@ -242,7 +286,7 @@ export default function PredictForm() {
                   justifySelf='center'
                   alignSelf='center'
                 >
-                  <PieChartExample />
+                  <PieChartExample dataPie={dataPie} />
                 </GridItem>
               </GridItem>
 
@@ -256,7 +300,7 @@ export default function PredictForm() {
               <GridItem
                 w='100%'
                 height='125px'
-                bg='#13ABC4'
+                bg='#3161A3'
                 display="grid"
                 gridTemplateColumns="1fr" // Two columns
                 borderTopLeftRadius='md'
@@ -275,10 +319,11 @@ export default function PredictForm() {
                   <Box alignItems='center' justifyContent='center'>
                     <Box >
                       <Center>
-                        <Text mb='6px' fontSize="30px" color="black" fontWeight="bold">
+                        <Text mb='6px' fontSize="30px" color="white" fontWeight="bold">
                           Persentase Ketepatan Waktu Lulus per Provinsi
                         </Text>
                       </Center>
+
 
                       {/* Geo Chart's Year */}
                     </Box>
@@ -286,7 +331,12 @@ export default function PredictForm() {
                       <Box  >
                         <Center>
                           <Select
-                            options={newOptions}
+                            width='100%'
+                            name="yearSelected"
+                            value={formData.yearSelected}
+                            onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
+                            options={optionsProdi}
+                            placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
                             styles={{
                               option: (provided) => ({
                                 ...provided,
@@ -305,7 +355,7 @@ export default function PredictForm() {
               <GridItem
                 w='100%'
                 height='920px'
-                bg='#13ABC4'
+                bg='#3161A3'
                 display="grid"
                 gridTemplateColumns="1fr"
                 borderBottomLeftRadius='md'
@@ -319,7 +369,7 @@ export default function PredictForm() {
                   alignSelf='center'
                   padding='4px' // Add padding
                 >
-                  <GeoChartExample />
+                  <GeoChartExample defaultGeo={chartData} />
                 </GridItem>
               </GridItem>
             </Box>

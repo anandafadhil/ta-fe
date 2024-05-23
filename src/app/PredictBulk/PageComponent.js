@@ -49,18 +49,13 @@ export default function PredictBulk(props) {
         });
         localStorage.setItem('PROCESSDATAID', JSON.stringify(formData))
         localStorage.setItem('PROCESSDATA', JSON.stringify(retreiveBulk));
-        console.log("PROCESS", retreiveBulk)
-
         router.push('/PredictBulk/Result');
-
     };
 
     const [optionsProdi, setOptionsProdi] = useState([])
-
     const handleChangeUniv = async (selectedOption, fieldName) => {
         const selected_id_univ = selectedOption.value;
         const dataProdi = await fetchData(`/prodi/${selected_id_univ}`);
-
         const optionsProdi = dataProdi.prodi.map(([id, name]) => ({
             value: id,
             label: name
@@ -84,7 +79,6 @@ export default function PredictBulk(props) {
     };
 
     const handleChangeProdi = async (selectedOption, fieldName) => {
-        const selected_id_univ = selectedOption.value;
         if (selectedOption) {
             const { label, value } = selectedOption;
             setFormData({
@@ -102,47 +96,25 @@ export default function PredictBulk(props) {
 
     };
 
-    // const handleChange = (selectedOption, fieldName) => {
-    //     const selected_id_univ = selectedOption.value;
-    //     console.log(fieldName);
-    //     setSelectedID(selected_id_univ);
-    //     // const { name, value } = e.target;
-    //     if (selectedOption) {
-    //         const { label, value } = selectedOption;
-    //         setFormData({
-    //             ...formData,
-    //             [`${fieldName.name}`]: label,
-    //             [`${fieldName.name}ID`]: value
-    //         });
-    //     } else {
-    //         setFormData({
-    //             ...formData,
-    //             [`${fieldName.name}`]: '',
-    //             [`${fieldName.name}ID`]: ''
-    //         });
-    //     }
-    // };
-
     const [selectedFile, setSelectedFile] = useState(null);
     const handleFileChange = (e) => {
-        const file = e.target.files[0]; // Get the first selected file
+        const file = e.target.files[0];
         if (file) {
             console.log("Selected file:", file.name);
             setSelectedFile(file.name);
 
-            // FileReader to read the file content
             const reader = new FileReader();
             reader.onload = (event) => {
                 const text = event.target.result;
-                const json = csvToJson(text); // Convert CSV text to JSON
+                const json = csvToJson(text);
                 console.log("CSV as JSON:", json);
 
                 setOrgData({
                     ...OrgData,
-                    file: json,  // Storing the JSON instead of the file object
+                    file: json,
                 });
             };
-            reader.readAsText(file); // Read the file as text
+            reader.readAsText(file);
         }
     };
 
@@ -204,8 +176,6 @@ export default function PredictBulk(props) {
                     w='100%'
                     h='100%'
                 >
-
-
                     {/* Header */}
                     <Box p={4}>
                         <Flex color='black' >
@@ -217,19 +187,20 @@ export default function PredictBulk(props) {
                         </Flex>
                     </Box>
 
+                    {/* Step by Step */}
                     <Box w='100%' p={4}>
                         <Grid
                             templateRows='repeat(2, 1fr)'
-                            templateColumns={['1fr', 'repeat(2, 1fr)']} // Responsive columns
+                            templateColumns={['1fr', 'repeat(2, 1fr)']}
                             gap={4}
-                            height={['auto', '550px']}  // Allow the grid to expand in height on smaller screens
+                            height={['auto', '550px']}
                         >
                             {stepsData.map((step, index) => (
                                 <GridItem
                                     colStart={[1, (index % 2) + 1]}
                                     rowStart={[index + 1, Math.floor(index / 2) + 1]}
                                     p={4}
-                                    bg="#13ABC4"
+                                    bg='#3161A3'
                                     borderRadius="md"
                                     boxShadow="lg"
                                     color="white"
@@ -241,7 +212,7 @@ export default function PredictBulk(props) {
                                     <GridItem
                                         rowStart={1}
                                         rowEnd={2}
-                                        bg='#3161A3'  // Using Chakra UI color scheme
+                                        bg='#13ABC4'
                                         borderRadius='md'
                                         boxShadow='md'
                                         height='50px'
@@ -285,11 +256,13 @@ export default function PredictBulk(props) {
                             ))}
                         </Grid>
                     </Box>
+
+                    {/* Univ Search */}
                     <Box>
                         <Center>
                             <Box
                                 p={4}
-                                width={['100%', '70%']} // Responsive width
+                                width={['100%', '70%']}
                                 borderRadius='md'
                                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
                                 display='flex'
@@ -297,13 +270,11 @@ export default function PredictBulk(props) {
                                 alignItems="center"
                                 justifyContent="center"
                                 mt='20px'
-                                bg='#13ABC4'
-                                >
-                                    
-                                {/* Univ Search */}
+                                bg='#3161A3'
+                            >
                                 {/* Univ */}
                                 <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                                    <Box p='1' ml='1'>
+                                    <Box p='1' ml='1' color='white'>
                                         Nama Universitas
                                     </Box>
                                     <Box p='2'>
@@ -349,7 +320,7 @@ export default function PredictBulk(props) {
 
                                 {/* Prodi */}
                                 <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                                    <Box p='1' ml='1'>
+                                    <Box p='1' ml='1' color='white'>
                                         Nama Prodi/Jurusan
                                     </Box>
                                     <Box p='2'>
@@ -396,8 +367,6 @@ export default function PredictBulk(props) {
                                     </Box>
                                 </SimpleGrid>
                             </Box>
-
-
                         </Center>
                     </Box>
 
@@ -406,7 +375,7 @@ export default function PredictBulk(props) {
                     <Center>
                         <Box
                             p={4}
-                            width={['100%', '50%', '30%']} // Responsive width
+                            width={['100%', '50%', '30%']}
                             borderRadius='md'
                             boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
                             display='flex'
@@ -422,7 +391,6 @@ export default function PredictBulk(props) {
 
                                     {/* Hidden input box */}
                                     <input
-                                        bg='yellow'
                                         id="fileUpload"
                                         type="file"
                                         accept=".csv"
@@ -433,7 +401,7 @@ export default function PredictBulk(props) {
                                     {/* Button */}
                                     <Button
                                         color='white'
-                                        bg='#3161A3'
+                                        bg='#13ABC4'
                                         variant="outline"
                                         as="span"
                                         width={['100%', 'auto']} // Full width on smaller screens
@@ -465,11 +433,11 @@ export default function PredictBulk(props) {
                     </Center>
 
                     {/* Button */}
-                    <Box p={4} marginTop='20px'>
+                    <Box p={4} marginTop='20px' marginBottom='20px'>
                         <Center>
                             <Button
                                 color='white'
-                                bg='#3161A3'
+                                bg='#13ABC4'
                                 w='200px'
                                 h='50px'
                                 boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'

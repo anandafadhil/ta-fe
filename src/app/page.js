@@ -14,16 +14,12 @@ import Footer from "../component/footer";
 export default function Home() {
   const router = useRouter();
 
-  const handleStatClick = () => {
-    router.push('/StatisticPage');
-  };
-
-  const handlePredictClick = () => {
-    router.push('/PredictSingular');
-  };
   return (
     <ChakraProvider resetCSS={false}>
+      {/* Navbar */}
       <Navbar />
+
+      {/* Main Container */}
       <Container
         margin={0}
         maxWidth='100vw'
@@ -32,14 +28,9 @@ export default function Home() {
         bgImage="/assets/worldmap-bg.png"
         bgSize="cover"
         bgPosition="center"
-        h='89vh' display='flex' justifyContent='center' alignItems='center'>        {/* <Center>
-          <Box bg='#3161A3' w='70%' h='200px' marginTop='40px'>
-            <Text>
-              
-            </Text>
-          </Box>
-        </Center> */}
+        h='89vh' display='flex' justifyContent='center' alignItems='center'>
 
+        {/* Body */}
         <Center>
           <Box w='100%' h='100%' display='flex' justifyContent='center' alignItems='center'>
             <Text fontSize='100px' color='white'>
@@ -47,6 +38,7 @@ export default function Home() {
             </Text>
           </Box>
         </Center>
+
       </Container>
       <Footer />
     </ChakraProvider>

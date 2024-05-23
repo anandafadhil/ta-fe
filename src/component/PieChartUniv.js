@@ -33,14 +33,14 @@ const renderCustomizedLabelFull = ({
     );
 };
 
-export default class PieChartExample extends PureComponent {
+export default class PieChartUniv extends PureComponent {
     static demoUrl = 'https://codesandbox.io/s/pie-chart-with-customized-label-dlhhj';
 
     render() {
         const { dataPie } = this.props;
         const data = [
-            { name: 'Tepat Waktu', value: dataPie[0]?.tepat_grad },
-            { name: 'Tidak Tepat Waktu', value: dataPie[0]?.tidak_tepat_grad },
+            { name: 'Tepat Waktu', value: dataPie?.tepat_grad },
+            { name: 'Tidak Tepat Waktu', value: dataPie?.tidak_tepat_grad },
         ];
 
         return (
