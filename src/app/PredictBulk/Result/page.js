@@ -32,11 +32,9 @@ export default function PageComponent() {
     const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(Math.ceil(totalData / perPage));
-    const title = ['No', 'NPM', 'Result'];
+    const title = ['Nomor', 'Identifier Mahasiswa', 'Hasil Prediksi'];
     const param = ['number', 'NPM', 'RES'];
     const newParam = ['NPM', 'RES'];
-    console.log("total data", totalData);
-    console.log("total page", totalPage);
 
     const handleSubmit = async () => {
         try {
@@ -48,7 +46,6 @@ export default function PageComponent() {
                 pageSize: 0,
                 pageNumber: currentPage,
             });
-            console.log("download", data)
             const tableTitle = "Result Predict Bulk"
             const fileName = "predict_bulk.xlsx"
             generateExcel(
@@ -73,11 +70,9 @@ export default function PageComponent() {
             pageNumber: currentPage,
         });
         setTableData(data)
-        console.log("newQuery", data)
     }
 
     const renewData = async () => {
-        console.log("b");
         const storedData = localStorage.getItem('PROCESSDATA');
         const processData = JSON.parse(storedData);
         const data = await fetchTable({
@@ -85,12 +80,9 @@ export default function PageComponent() {
             data: processData,
             pageSize: perPage,
             pageNumber: currentPage,
-            // data: processData,
-            // pageSize: 5,
-            // pageNumber: 2,
         });
-        console.log("renew", data)
         setTableData(data)
+        setTotalPage(Math.ceil(totalData / perPage))
     }
 
     useEffect(() => {
@@ -102,20 +94,10 @@ export default function PageComponent() {
             await handleTable();
 
         }
-        // if (Array.isArray(processData.data)) {
-        //     setTableData(processData.data);
-        // } else {
-        //     console.error('Data retrieved from local storage is not an array:', processData.data);
-        // }
         fetchData();
 
     }, []);
 
-    // if (TableData.length > 0) {
-    //     console.log("next", TableData);
-    // } else {
-    //     console.log("TableData is empty or not an array", TableData);
-    // }
     const handlePerPageChange = (e) => {
         setPerPage(e.target.value);
     };
@@ -132,56 +114,43 @@ export default function PageComponent() {
             console.log("TableData is not yet set or is empty");
         }
     }, [TableData]);
-
-    // })
+    // console.log(TableData)
     return (
         <ChakraProvider resetCSS={false}>
             <Navbar />
             <Container
                 margin={0}
+                bg='#EFF0F1'
                 maxWidth='100vw'
                 w='100%'
                 h={`${perPage === 5 ? '100vh' : '100%'}`}>
 
-                {/* Header */}
-                <Box p={4}>
-                    <Flex color='black' >
+                <Box p={4} position='relative'>
+                    <Center>
                         <Box
                             p='4'
-                            width='300px'
-                            height='100px'
+                            mt='30px'
+                            width='800px'
+                            height='250px'
                             display='flex'
                             alignItems='center'
                             justifyContent='center'
                         >
-                            <Text fontSize='30px' color='black'>
-                                Result Predict
-                            </Text>
-                        </Box>
-                    </Flex>
-                </Box>
-
-                {/* Univ Name Card */}
-                <Box position="relative" >
-                    <Center>
-                        <Box
-                            p={4}
-                            mb='10px'
-                            bg='#3161A3'
-                            width="60%"
-                            borderRadius='md'
-                            boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                        >
                             <Box>
                                 <Center>
-                                    <Text fontSize="30px" color="white" fontWeight="bold">
-                                        Hasil Prediksi Mahasiswa
+                                    <Text lineHeight='20px' fontSize="30px" color="black" fontStyle='italic'>
+                                        Bulk Prediction
                                     </Text>
                                 </Center>
 
                                 <Center>
-                                    <Text fontSize="26px" color="white">
-                                        {univName} - {prodiName}
+                                    <Text fontSize="68px" color="black" fontWeight="bold">
+                                        Hasil Prediksi
+                                    </Text>
+                                </Center>
+                                <Center>
+                                    <Text lineHeight='10px' fontSize="26px" color="black">
+                                        {prodiName} | {univName}
                                     </Text>
                                 </Center>
                             </Box>
@@ -190,12 +159,12 @@ export default function PageComponent() {
                 </Box>
 
                 {/* Table */}
-                <div className='content w-3/5 flex flex-col mt-2 mx-auto'>
+                <div className='content w-2/5 rounded-2xl overflow-hidden flex flex-col mx-auto'>
                     <div className='relative overflow-x-auto'>
-                        <table className='border-2 w-full text-sm text-left my-4 rounded-lg overflow-hidden shadow-md'>
-                            <thead className='bg-[#3161A3] text-white rounded-tl-lg rounded-tr-lg '>
-                                <tr className='first:rounded-tl-lg last:rounded-tr-lg border-2 '>
-                                    {title.map((item, index) => (
+                        <table className='bg-white border-2 w-full text-sm text-left my-4 rounded-2xl overflow-hidden shadow-md'>
+                            <thead className='text-black font-bold text-[26px] px-6 py-3 text-center'>
+                                <tr className='border-2 '>
+                                    {/* {title.map((item, index) => (
                                         <th
                                             scope="col"
                                             className="px-6 py-3"
@@ -211,31 +180,44 @@ export default function PageComponent() {
                                                 </div>
                                             </div>
                                         </th>
-                                    ))}
+                                    ))} */}
+                                    <td scope="col" className="px-6 py-3 text-center">Nomor</td>
+                                    <td scope="col" className="px-6 py-3 text-left">Identifier Mahasiswa</td>
+                                    <td scope="col" className="px-6 py-3 text-left">Hasil Prediksi</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 {TableData !== null ? (
                                     TableData?.map((dataTable, index) => (
-                                        <tr className="" key={index}>
-
-                                            {param.map((item, index) => (
+                                        <tr className="text-[20px]" key={index}>
+                                            {/* {param.map((item, index) => (
                                                 <td className="px-6 py-4" key={index}>
-                                                    {item === "path_file" ? (
-                                                        <a
-                                                            target="_blank"
-                                                            className="cursor-pointer hover:text-blue-500 hover:underline"
-                                                            href={`${process.env.NEXT_PUBLIC_BASEURL_IMG}${dataTable?.path_file}`}
-                                                        >
-                                                            {dataTable?.path_file}
-                                                        </a>
+                                                    {item === "RES" ? (
+
+                                                        dataTable[item] === "Tepat Waktu" ? (
+                                                            <p className="font-bold text-green-500">
+                                                                {dataTable[item]}
+                                                            </p>
+                                                        ) : (
+                                                            <p className="font-bold text-red-500">
+                                                                {dataTable[item]}
+                                                            </p>
+                                                        )
+
+
                                                     ) : item === "created_date" || item === "expired_date" ? (
                                                         formatDate(dataTable?.[item])
                                                     ) : (
                                                         dataTable[item]
                                                     )}
                                                 </td>
-                                            ))}
+                                                
+                                            ))} */}
+                                            <td className="px-6 py-4 text-center">{dataTable.number}</td>
+                                            <td className="px-6 py-4 text-left">{dataTable.NPM}</td>
+                                            <td className={`px-6 py-4 text-left font-bold ${dataTable.RES === "Tepat Waktu" ? 'text-green-400' : 'text-red-400'}`}>
+                                                {dataTable.RES}
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
@@ -245,12 +227,11 @@ export default function PageComponent() {
                                 )}
                             </tbody>
                         </table>
-
                         <div className="pagination flex justify-between gap-2 mt-4">
-                            <div className="perpage flex items-center gap-2 text-xs">
+                            <div className="perpage h-full flex items-center gap-2 text-s">
                                 <span> Baris untuk ditampilkan</span>
                                 <select
-                                    className="select select-bordered border-2 select-xs w-full max-w-[80px]"
+                                    className="select select-bordered h-[20px]border-2 select-xs w-full max-w-[80px]"
                                     onChange={handlePerPageChange}
                                 >
                                     <option value="5">5</option>
@@ -266,11 +247,11 @@ export default function PageComponent() {
                                     pageCount={totalPage}
                                     onPageChange={handlePageClick}
                                     containerClassName={"flex gap-1 items-center"}
-                                    pageClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
+                                    pageClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-s"}
                                     activeClassName={"bg-gray-300"}
-                                    previousClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
-                                    nextClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
-                                    breakClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-xs"}
+                                    previousClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-s"}
+                                    nextClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-s"}
+                                    breakClassName={"inline-block px-2 py-1 text-black-600 border border-gray-300 text-s"}
                                     disabledClassName={"text-gray-400"}
                                 />
                             </div>
@@ -284,7 +265,7 @@ export default function PageComponent() {
                     <Center>
                         <Button
                             color='white'
-                            bg="#13ABC4"
+                            bg="#004AAD"
                             w='200px'
                             h='50px'
                             boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'

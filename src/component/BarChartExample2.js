@@ -5,8 +5,9 @@ import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 import { Text, Box, Center } from "@chakra-ui/react";
 import Select from "react-select";
 import { fetchDatawithYear } from '../api/fetch';
+import '../app/styles.css';
 
-function BarChartExample2({ defaultBar }) {
+function BarChartExample2({ defaultBar, selectYear }) {
   const [formData, setFormData] = useState({});
   const [optionsProdi, setOptionsProdi] = useState([]);
   const [chartData, setChartData] = useState([
@@ -19,16 +20,11 @@ function BarChartExample2({ defaultBar }) {
   ]);
 
   useEffect(() => {
-    const selectYear = [
-      { value: "2011", label: "2011" },
-      { value: "2012", label: "2012" },
-      { value: "2013", label: "2013" },
-      { value: "2014", label: "2014" },
-      { value: "2015", label: "2015" },
-      { value: "2016", label: "2016" },
-      { value: "All", label: "All Time" }
-    ];
-    setOptionsProdi(selectYear);
+    const newYear = selectYear.map(item => ({
+      value: item.value_tahun,
+      label: item.tahun_angkatan
+    }));
+    setOptionsProdi(newYear);
   }, []);
   const handleChangeYear = async (selectedOption, fieldName) => {
     const newData = await fetchDatawithYear({
@@ -66,18 +62,20 @@ function BarChartExample2({ defaultBar }) {
   return (
     <ResponsiveContainer width="100%" height="90%">
       <div>
-        <Box alignItems='center' justifyContent='center'>
-          <Box>
-            <Center>
-              <Text mb='6px' fontSize="18px" color="white" fontWeight="bold">
-                Distribusi Waktu Kelulusan
-              </Text>
-            </Center>
+        <Box  alignItems='center' justifyContent='center' display='flex'>
+          {/* Text */}
+          <Box width='70%' alignItems='center' justifyContent='center' display='flex'>
+            <Text fontSize="22px" color="#545454" fontWeight="bold">
+              Distribusi Waktu Kelulusan
+            </Text>
           </Box>
-          <Box width='100%' justifyContent='center' alignItems='center' display='flex'>
-            <Box width='100px'>
+
+          {/* Select */}
+          <Box width='30%' justifyContent='center' alignItems='center' display='flex'>
+            <Box width='150px'>
               <Center>
                 <Select
+                  color='black'
                   width='100%'
                   name="yearSelected"
                   value={formData.yearSelected}
@@ -87,7 +85,11 @@ function BarChartExample2({ defaultBar }) {
                   styles={{
                     option: (provided) => ({
                       ...provided,
-                      color: 'black', // Set the font color to black
+                      color: 'black',
+                    }),
+                    placeholder: (provided) => ({
+                      ...provided,
+                      color: 'black',
                     })
                   }}
                 />
@@ -95,24 +97,28 @@ function BarChartExample2({ defaultBar }) {
             </Box>
           </Box>
         </Box>
+
+        {/* Divider */}
+        <Box mt="3" mb="4" height="4px" width="100%" bg="#EFF0F1"></Box>
       </div>
+
+      {/* Chart */}
       <BarChart
         width={500}
         height={300}
         data={chartData}
         margin={{
-          top: 10,
-          right: 25,
-          bottom: 45,
-          left: 10,
+          top: 20,
+          right: 30,
+          bottom: 40,
+          left: 20,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" tick={{ fill: 'white' }}/>
-        <YAxis tick={{ fill: 'white' }} />
+        <XAxis dataKey="name" tick={{ fill: 'black' }} />
+        <YAxis tick={{ fill: 'black' }} />
         <Tooltip />
-        <Legend />
-        <Bar dataKey="jumlahMahasiswa" fill="#82ca9d" name="Jumlah Mahasiswa"/>
+        <Bar dataKey="jumlahMahasiswa" fill="#7ABD7E" name="Jumlah Mahasiswa" />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -46,26 +46,30 @@ export default class PieChartUniv extends PureComponent {
         return (
             <ResponsiveContainer width="100%" height="95%">
                 <div>
+                    {/* Text */}
                     <Box >
                         <Box>
                             <Center>
-                                <Text mt='4px' mb='6px' fontSize="18px" color="white" fontWeight="bold">
+                                <Text mt='4px' mb='6px' fontSize="22px" color="#545454" fontWeight="bold">
                                     Persentase Ketepatan Waktu Lulus Mahasiswa
                                 </Text>
                             </Center>
                         </Box>
                     </Box>
+                    
+                    {/* Divider */}
+                    <Box mt="1" mb="4" height="4px" width="100%" bg="#EFF0F1"></Box>
 
                 </div>
 
-                <PieChart width={400} height={400}>
+                <PieChart width={500} height={500}>
                     <Pie
                         data={data}
                         cx="50%"
-                        cy="50%"
+                        cy="40%"
                         labelLine={false}
                         label={renderCustomizedLabelFull}
-                        outerRadius={80}
+                        outerRadius={150}
                         fill="#8884d8"
                         dataKey="value"
                     >
@@ -73,8 +77,6 @@ export default class PieChartUniv extends PureComponent {
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>
-                    <Legend verticalAlign="bottom" height={75} />
-
                 </PieChart>
             </ResponsiveContainer>
         );

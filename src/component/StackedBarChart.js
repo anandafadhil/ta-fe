@@ -2,28 +2,14 @@ import React, { PureComponent } from 'react';
 import Select from "react-select";
 import { Text, Box, Center } from "@chakra-ui/react";
 import {
-    ComposedChart,
     BarChart,
-    Line,
-    Area,
-    Cell,
     Bar,
     XAxis,
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     ResponsiveContainer,
 } from 'recharts';
-
-const newOptions = [
-    { value: "2020", label: "2020" },
-    { value: "2021", label: "2021" },
-    { value: "2022", label: "2022" },
-    { value: "2023", label: "2023" },
-    { value: "2024", label: "2024" },
-    { value: "2025", label: "2025" }
-];
 
 export default class StackedBarChart extends PureComponent {
     static demoUrl = 'https://codesandbox.io/s/stacked-bar-chart-s47i2';
@@ -46,17 +32,20 @@ export default class StackedBarChart extends PureComponent {
         return (
             <ResponsiveContainer width="100%" height="90%">
                 <div>
-                    <Box mb='40px' alignItems='center' justifyContent='center'>
+                    {/* Text */}
+                    <Box alignItems='center' justifyContent='center'>
                         <Box>
                             <Center>
-                                <Text mt='4px' mb='6px' fontSize="18px" color="white" fontWeight="bold">
-                                    Progresi Ketepatan Waktu Lulus Mahasiswa
+                                <Text mt="1" fontSize="22px" color="#545454" fontWeight="bold">
+                                    Progresi Ketepatan Waktu Lulus
                                 </Text>
                             </Center>
                         </Box>
-
-
                     </Box>
+
+                    {/* Divider */}
+                    <Box mt="3" mb="4" height="4px" width="100%" bg="#EFF0F1"></Box>
+
 
                 </div>
                 <BarChart
@@ -65,20 +54,19 @@ export default class StackedBarChart extends PureComponent {
                     data={normalizedData}
                     margin={{
                         top: 20,
-                        right: 25,
-                        bottom: 35,
+                        right: 30,
+                        bottom: 40,
                         left: 10,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" tick={{ fill: 'white' }}/>
-                    <YAxis tickFormatter={(value) => `${value}%`} tick={{ fill: 'white' }} />
+                    <XAxis dataKey="name" tick={{ fill: 'black' }} />
+                    <YAxis tickFormatter={(value) => `${value}%`} tick={{ fill: 'black' }} />
                     <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
-                    <Legend wrapperStyle={{ color: 'white' }} />
                     <Bar dataKey="tepatWaktu" stackId="a" fill="#7ABD7E" name="Tepat Waktu" />
                     <Bar dataKey="tidakTepatWaktu" stackId="a" fill="#FF6961" name="Tidak Tepat Waktu" />
                 </BarChart>
             </ResponsiveContainer>
-        );  
+        );
     }
 }

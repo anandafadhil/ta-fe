@@ -5,16 +5,16 @@ import {
 
 export default function Navbar() {
     return (
-        <Box w='100%' h='100px' bg='#EBFFFB' boxShadow='0px 4px 8px rgba(0, 0, 0, 0.5)'>
+        <Box w='100%' h='100px' boxShadow='0px 4px 10px rgba(0, 0, 0, 0.2)'>
             <Flex h='100%' align='center' justify='start'>
 
                 {/* Logo Section */}
-                <Box p='2'>
+                <Box p='2' ml={4}>
                     <a href='/'>
                         <Image
                             src='/assets/logopddikti-1.png'
                             alt='Logo PDDikti'
-                            htmlWidth='200px' // Adjust the size as needed
+                            htmlWidth='150px'
                         />
                     </a>
                 </Box>
@@ -24,28 +24,18 @@ export default function Navbar() {
 
                 {/* Links Section */}
                 <Flex align='center' justify='center'>
-                    <Link href='/StatisticPage' px='2' color='#3161A3'>
+                    <Link href='/StatisticPage' fontSize='20px' px='2' fontWeight='bold' color='black'>
                         Statistik
                     </Link>
-                    <Divider orientation='vertical' borderWidth='1px' borderColor='#3161A3' height='30px' mx='2' />
-                    <Link href='/PredictSingular' px='2' color='#3161A3'>
-                        Single Predict
-                    </Link>
-                    <Divider orientation='vertical' borderWidth='1px' borderColor='#3161A3' height='30px' mx='2' />
-                    <Link href='/PredictBulk' px='2' color='#3161A3'>
-                        Grouped Predict
+                    <Divider orientation='vertical' borderWidth='1px' borderColor='black' height='30px' mx='2' />
+                    <Link href='/PredictSingular' fontSize='20px' px='2' fontWeight='bold' color='black'>
+                        Prediksi Ketepatan Waktu Lulus
                     </Link>
                 </Flex>
 
                 {/* Spacer */}
-                <Box flex='1' />
+                <Box flex='1.25' />
 
-                {/* About Section */}
-                <Flex align='center' justify='center' pr='2%'>
-                    <Button colorScheme='blue' variant='outline'>
-                        About
-                    </Button>
-                </Flex>
 
             </Flex>
         </Box>

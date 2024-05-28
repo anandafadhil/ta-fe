@@ -1,15 +1,11 @@
 "use client"
 
 import {
-  ChakraProvider, VStack, Container,
-  Flex, Spacer, Center, Square, Text,
+  ChakraProvider, Container,
+  Flex, Center, Text,
   Box, Grid, GridItem, Button, Input,
-  SimpleGrid, InputSelect,
-  FormControl, Modal, ModalOverlay,
-  ModalContent, ModalCloseButton,
-  ModalFooter, ModalBody, ModalHeader,
-  useDisclosure, FormLabel, Textarea,
-  Divider
+  SimpleGrid,
+
 } from "@chakra-ui/react";
 import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
@@ -26,16 +22,14 @@ import Footer from "../../component/footer"
 
 
 import '../styles.css';
-import UniversityStatistic from "./University/page";
 import { fetchDatawithYear } from "@/src/api/fetch";
 
 export default function PageComponent(props) {
   const router = useRouter();
-  const { data, avgYearAllUniv, dataPie, dataStacked, defaultBar, defaultGeo } = props;
+  const { data, selectYear, totalProdi, totalUniv, avgYearAllUniv, dataPie, dataStacked, defaultBar, defaultGeo } = props;
 
   const handleSearchClick = () => {
-    const univID = formData.univInput; // Ensure you're using the updated form data state
-    // setIsUniv(univ_id);
+    const univID = formData.univInput;
     localStorage.setItem('IDUNIVSTAT', JSON.stringify(univID));
     router.push(`/StatisticPage/University`);
   };
@@ -45,13 +39,14 @@ export default function PageComponent(props) {
     univInputLabel: ''
   });
 
+
   const handleChange = async (selectedOption, fieldName) => {
     if (selectedOption) {
-      const { value, label } = selectedOption; // Destructure both value and label from selectedOption
+      const { value, label } = selectedOption;
       setFormData({
         ...formData,
-        [`${fieldName}Input`]: value, // Dynamically create key for value
-        [`${fieldName}InputLabel`]: label // Dynamically create key for label
+        [`${fieldName}Input`]: value,
+        [`${fieldName}InputLabel`]: label
       });
     } else {
       setFormData({
@@ -70,16 +65,11 @@ export default function PageComponent(props) {
 
   const [optionsProdi, setOptionsProdi] = useState([]);
   useEffect(() => {
-    const selectYear = [
-      { value: "2011", label: "2011" },
-      { value: "2012", label: "2012" },
-      { value: "2013", label: "2013" },
-      { value: "2014", label: "2014" },
-      { value: "2015", label: "2015" },
-      { value: "2016", label: "2016" },
-      { value: "All", label: "All Time" }
-    ];
-    setOptionsProdi(selectYear);
+    const newYear = selectYear.map(item => ({
+      value: item.value_tahun,
+      label: item.tahun_angkatan
+    }));
+    setOptionsProdi(newYear);
   }, []);
 
 
@@ -92,7 +82,6 @@ export default function PageComponent(props) {
 
 
     if (newData) {
-      // const convertedData = newData.map(item => [item.provinsi, item.persentase]);
       setChartData(newData);
     }
     if (selectedOption) {
@@ -114,32 +103,66 @@ export default function PageComponent(props) {
         <Navbar />
         <Container
           margin={0}
+          p={0}
           maxWidth='100vw'
+          bg='#EFF0F1'
           w='100%'
           h='100%'>
 
           {/* Header */}
-          <Box p={4}>
-            <Flex color='black' >
+          <Box p={4} position='relative'>
+            <Center>
               <Box
+                mt='40px'
                 p='4'
-                width='320px'
-                height='50px'
+                width='800px'
+                height='200px'
                 display='flex'
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize='30px' color='black'>
-                  Statistik Universitas
-                </Text>
+
+                <Box>
+                  <Center>
+                    <Text lineHeight='30px' fontSize="64px" color="black" fontWeight="bold">
+                      Statistik Pendidikan
+                    </Text>
+                  </Center>
+
+                  <Center>
+                    <Text fontSize="64px" color="black" fontWeight="bold">
+                      Tinggi Indonesia
+                    </Text>
+                  </Center>
+                </Box>
               </Box>
-            </Flex>
+            </Center>
+          </Box>
+
+          <Box p={0} position='relative'>
+            <Center>
+              <Box
+                p='2'
+                width='800px'
+                height='auto'
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+              >
+                <Box>
+                  <Center>
+                    <Text fontSize="24px" color="black" fontWeight="bold">
+                      Statistik Universitas
+                    </Text>
+                  </Center>
+                </Box>
+              </Box>
+            </Center>
           </Box>
 
           {/* Univ Search's Box */}
           <Box
-            mt='20px'
-            p={4}
+            p={2}
             color='white'
             height='100px'
             display='flex'
@@ -150,16 +173,15 @@ export default function PageComponent(props) {
               display='flex'
               alignItems='center'
               justifyContent='center'
-              gap='10'
-              w='70%'
+              gap='0'
+              w='30%'
               borderWidth='3px'
-              borderRadius='md'>
+              borderRadius='2xl'
+              borderColor='#7B7B7B'
+            >
 
               {/* Univ Search */}
-              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                <Box p='1' ml='1' color='black' fontWeight='bold'>
-                  Nama Universitas
-                </Box>
+              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='65%'>
                 <Box p='2'>
                   <Select
                     className="w-full"
@@ -167,7 +189,7 @@ export default function PageComponent(props) {
                     value={formData.univInputLabel}
                     onChange={(option) => handleChange(option, 'univ')}
                     options={optionsUni}
-                    placeholder={formData.univInputLabel ? formData.univInputLabel : 'Input Universitas Pilihan'}
+                    placeholder={formData.univInputLabel ? formData.univInputLabel : 'Input Nama Universitas'}
                     styles={{
                       control: (base) => ({
                         ...base,
@@ -190,7 +212,7 @@ export default function PageComponent(props) {
                       }),
                       option: (provided) => ({
                         ...provided,
-                        color: "black", 
+                        color: "black",
                       }),
                     }}
                   />
@@ -198,18 +220,19 @@ export default function PageComponent(props) {
               </SimpleGrid>
 
               {/* Univ Search's Button */}
-              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                <Box p={4} marginTop='20px'>
+              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='30%'>
+                <Box p={2}>
                   <Center>
                     <Button
                       color='white'
-                      bg='#13ABC4'
+                      bg='#004AAD'
                       w='200px'
                       h='50px'
-                      boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                      borderRadius="lg"
+                      boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
                       onClick={handleSearchClick}
                     >
-                      Confirm
+                      Lihat
                     </Button>
                   </Center>
                 </Box>
@@ -218,76 +241,205 @@ export default function PageComponent(props) {
             </Flex>
           </Box>
 
-          {/* Average Grad Time in Text */}
+          {/* Inforation in Text */}
           <Box w='100%'>
-            <Box p={4} color='white' height='200px' marginTop='30px' borderRadius='md'>
+            <Box
+              p={4}
+              ml='20px'
+              color='white'
+              height='200px'
+              marginTop='50px'
+              borderRadius='2xl'
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+            >
+              {/* Jumlah Institusi */}
               <GridItem
-                w='100%'
+                w='20%'
                 height='150px'
-                bg='#3161A3'
-                borderRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                display="grid"
-                gridTemplateColumns="1fr" // Two columns
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)' display="grid"
+                gridTemplateColumns="1fr"
               >
                 <Center>
-                  <Text fontSize='30px' fontWeight='bold' color='white'>
-                    Rata-Rata Tahun Lulus Seluruh Mahasiswa Indonesia
+                  <Text fontSize='20px' color='white'>
+                    Jumlah Institusi
                   </Text>
                 </Center>
                 <Center >
-                  <Text fontSize='18px' color='white'>
+                  <Text fontSize='46px' fontWeight='bold' color='white'>
+                    {totalUniv.toLocaleString()}
+                  </Text>
+                </Center>
+
+              </GridItem>
+
+              {/* Jumlah Prodi */}
+              <GridItem
+                ml='20px'
+                w='20%'
+                height='150px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+              >
+                <Center>
+                  <Text fontSize='20px' color='white'>
+                    Jumlah Prodi
+                  </Text>
+                </Center>
+                <Center >
+                  <Text fontSize='46px' fontWeight='bold' color='white'>
+                    {totalProdi.toLocaleString()}
+                  </Text>
+                </Center>
+
+              </GridItem>
+
+              {/* Rata-rata waktu kelulusan */}
+              <GridItem
+                ml='20px'
+                w='20%'
+                height='150px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <Center>
+                  <Text fontSize="20px" color="white">
+                    Rata-rata waktu kelulusan
+                  </Text>
+                </Center>
+                <Center>
+                  <Text fontSize="46px" fontWeight="bold" color="white">
                     {avgYearAllUniv[0]?.avg_grad} Tahun
                   </Text>
                 </Center>
+              </GridItem>
+
+              {/* Persentase Kelulusan */}
+              <GridItem
+                ml='20px'
+                w='20%'
+                height='150px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <Box>
+                  <Center>
+                    <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                      Persentase Mahasiswa
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text fontSize="20px" color="white">
+                      Lulus Tepat Waktu
+                    </Text>
+                  </Center>
+                </Box>
+
+                <Center>
+                  <Text mb='10px' fontSize="46px" fontWeight="bold" color="white">
+                    {dataPie[0]?.tepat_grad}%
+                  </Text>
+                </Center>
+
+
 
               </GridItem>
 
             </Box>
           </Box>
 
-          {/* 3 Statistics' Box */}
-          <Box w='100%'>
-            <Box p={4} color='white' height='500px' marginTop='30px' borderRadius='md'>
+          {/* 3 Chart */}
+          <Box w='100%' p={0}>
+            <Box
+              color='white'
+              height='500px'
+              marginTop='30px'
+              borderRadius='md'
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+            >
+              {/* Bar Chart */}
               <GridItem
+                ml='30px'
+                paddingTop={2}
+                w='100%'
+                bg='white'
+                height='450px'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.2)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <GridItem
+                  w='100%'
+                  height='450px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px'
+                >
+                  <BarChartExample2 defaultBar={defaultBar} selectYear={selectYear} />
+                </GridItem>
+              </GridItem>
+
+              {/* Stacked Bar */}
+              <GridItem
+                paddingTop={2}
+                mr='30px'
+                ml='30px'
                 w='100%'
                 height='450px'
-                bg='#3161A3'
-                borderRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                bg='white'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
                 display="grid"
-                gridTemplateColumns="1fr 1fr 1fr" // Two columns
+                gridTemplateColumns="1fr"
               >
-                {/* Bar Chart */}
                 <GridItem
-                  w='90%'
+                  w='100%'
                   height='450px'
                   justifySelf='center'
                   alignSelf='center'
-                  padding='4px' // Add padding
-                >
-                  <BarChartExample2 defaultBar={defaultBar} />
-                </GridItem>
-
-                {/* Stacked Bar Chart */}
-                <GridItem
-                  w='90%'
-                  height='450px'
-                  justifySelf='center'
-                  alignSelf='center'
+                  padding='4px'
                 >
                   <StackedBarChart dataStacked={dataStacked} />
                 </GridItem>
 
-                {/* Pie Chart */}
+              </GridItem>
+
+              {/* Pie Chart */}
+              <GridItem
+                mr='30px'
+                paddingTop={2}
+                w='100%'
+                height='450px'
+                bg='white'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
                 <GridItem
-                  w='90%'
+                  w='100%'
                   height='450px'
                   justifySelf='center'
                   alignSelf='center'
+                  padding='4px'
                 >
                   <PieChartExample dataPie={dataPie} />
                 </GridItem>
+
               </GridItem>
 
             </Box>
@@ -295,81 +447,64 @@ export default function PageComponent(props) {
 
           {/* Geo Chart's Box */}
           <Box w='100%'>
-            <Box p={4} color='white' height='1080px' marginTop='20px' borderRadius='md'>
-              {/* Upper Box */}
-              <GridItem
-                w='100%'
-                height='125px'
-                bg='#3161A3'
-                display="grid"
-                gridTemplateColumns="1fr" // Two columns
-                borderTopLeftRadius='md'
-                borderTopRightRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-
-              >
-                <GridItem
-                  height='90%'
-                  width='95%'
-                  justifySelf='center'
-                  alignSelf='center'
-                  padding='4px' // Add padding
-                >
-                  {/* Geo Chart's Title */}
-                  <Box alignItems='center' justifyContent='center'>
-                    <Box >
-                      <Center>
-                        <Text mb='6px' fontSize="30px" color="white" fontWeight="bold">
-                          Persentase Ketepatan Waktu Lulus per Provinsi
-                        </Text>
-                      </Center>
-
-
-                      {/* Geo Chart's Year */}
-                    </Box>
-                    <Box justifyContent='center' alignItems='center' display='flex'>
-                      <Box  >
-                        <Center>
-                          <Select
-                            width='100%'
-                            name="yearSelected"
-                            value={formData.yearSelected}
-                            onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
-                            options={optionsProdi}
-                            placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
-                            styles={{
-                              option: (provided) => ({
-                                ...provided,
-                                color: 'black', // Set the font color to black
-                              })
-                            }}
-                          />
-                        </Center>
-                      </Box>
-                    </Box>
-                  </Box>
-                </GridItem>
-              </GridItem>
-
+            <Box ml='30px' mr='30px' color='white' height='1120px' borderRadius='md'>
               {/* Geo Chart */}
               <GridItem
+                p={4}
                 w='100%'
-                height='920px'
-                bg='#3161A3'
-                display="grid"
-                gridTemplateColumns="1fr"
-                borderBottomLeftRadius='md'
-                borderBottomRightRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                height='1000px'
+                bg='white'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
               >
                 <GridItem
-                  height='95%'
-                  width='95%'
+                  height='900px'
+                  width='100%'
                   justifySelf='center'
                   alignSelf='center'
                   padding='4px' // Add padding
                 >
-                  <GeoChartExample defaultGeo={chartData} />
+                  <div>
+                    <Box alignItems='center' justifyContent='center' display='flex'>
+                      {/* Text */}
+                      <Box width='90%'>
+                        <Text mb='6px' fontSize="22px" color="#545454" fontWeight="bold">
+                          Persentase Ketepatan Waktu Lulus Per Provinsi
+                        </Text>
+                      </Box>
+
+                      {/* Select */}
+                      <Box width='10%' justifyContent='center' alignItems='center' display='flex'>
+                        <Box width='150px'>
+                          <Center>
+                            <Select
+                              color='black'
+                              width='100%'
+                              name="yearSelected"
+                              value={formData.yearSelected}
+                              onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
+                              options={optionsProdi}
+                              placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
+                              styles={{
+                                option: (provided) => ({
+                                  ...provided,
+                                  color: 'black',
+                                }),
+                                placeholder: (provided) => ({
+                                  ...provided,
+                                  color: 'black',
+                                })
+                              }}
+                            />
+                          </Center>
+                        </Box>
+                      </Box>
+                    </Box>
+
+                    {/* Divider */}
+                    <Box mt="2" mb="4" height="4px" width="100%" bg="#EFF0F1"></Box>
+                  </div>
+                  <GeoChartExample defaultGeo={chartData} selectYear={selectYear} />
                 </GridItem>
               </GridItem>
             </Box>

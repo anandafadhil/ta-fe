@@ -26,19 +26,24 @@ export default function UniversityStatistic() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [optionsProdi, setOptionsProdi] = useState([]);
+  const [newYear, setNewYear] = useState([]);
   const [dataUnivInfo, setUnivInfo] = useState([]);
   const [dataAvgGrad, setAvgGrad] = useState([]);
   const [newDataBar, setDataBar] = useState([]);
   const [newDataStacked, setDataStack] = useState([]);
   const [newDataPie, setDataPie] = useState([]);
-
+  console.log("new", newYear)
   const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
   const parsId = JSON.parse(idUnivStat)
 
+  const handleGetYear = async () => {
+    const selectYear = await fetchData('/select-year');
+    setNewYear(selectYear);
+  }
   const handleGetInfo = async () => {
     const selected_id_univ = parsId
     const univInfo = await fetchData(`/get-univ-info/${selected_id_univ}`)
-    setUnivInfo(univInfo)
+    setUnivInfo(univInfo[0])
   }
 
   const handleGetAvgGrad = async () => {
@@ -126,9 +131,6 @@ export default function UniversityStatistic() {
     setTableData(dataRank);
   }
 
-  const splitIndex = Math.ceil(TableData.length / 2);
-  const leftData = TableData.slice(0, splitIndex);
-  const rightData = TableData.slice(splitIndex);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,6 +143,7 @@ export default function UniversityStatistic() {
           Swal.showLoading();
         }
       });
+      await handleGetYear();
       await handleGetAvgGrad();
       await handleGetInfo();
       await handleProdi();
@@ -168,32 +171,71 @@ export default function UniversityStatistic() {
         <Navbar />
         <Container
           margin={0}
+          p={0}
+          bg='#EFF0F1'
           maxWidth='100vw'
           w='100%'
           h='100%'>
 
           {/* Header */}
-          <Box p={4}>
-            <Flex color='black' >
+          <Box p={4} position='relative'>
+            <Center>
               <Box
+                mt='40px'
                 p='4'
-                width='600px'
-                height='50px'
+                width='100%'
+                height='250px'
                 display='flex'
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize='30px' color='black'>
-                  Statistik {dataUnivInfo.nm_univ}
-                </Text>
+
+                <Box>
+                  <Center>
+                    <Text lineHeight='20px' fontSize="30px" color="black" >
+                      Statistik Satuan Pendidikan
+                    </Text>
+                  </Center>
+
+                  <Center>
+                    <Text fontSize="80px" color="black" fontWeight="bold">
+                      {dataUnivInfo.nm_univ}
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text lineHeight='10px' fontSize="26px" color="black" fontWeight="bold">
+                      {dataUnivInfo.provinsi_label} | Tahun berdiri {dataUnivInfo.thn}
+                    </Text>
+                  </Center>
+                </Box>
               </Box>
-            </Flex>
+            </Center>
+          </Box>
+
+          <Box p={0} position='relative'>
+            <Center>
+              <Box
+                p='2'
+                width='800px'
+                height='auto'
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+              >
+                <Box>
+                  <Center>
+                    <Text fontSize="24px" color="black" fontWeight="bold">
+                      Statistik Prodi
+                    </Text>
+                  </Center>
+                </Box>
+              </Box>
+            </Center>
           </Box>
 
           {/* Prodi Search's Box */}
           <Box
-            mt='20px'
-            p={4}
+            p={2}
             color='white'
             height='100px'
             display='flex'
@@ -204,16 +246,14 @@ export default function UniversityStatistic() {
               display='flex'
               alignItems='center'
               justifyContent='center'
-              gap='10'
-              w='70%'
+              gap='0'
+              w='30%'
               borderWidth='3px'
-              borderRadius='md'>
+              borderRadius='2xl'
+              borderColor='#7B7B7B'>
 
               {/* Prodi Search */}
-              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                <Box p='1' ml='1' color='black' fontWeight='bold'>
-                  Nama Program Studi
-                </Box>
+              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='65%'>
                 <Box p='2'>
                   <Select
                     className="w-full"
@@ -221,7 +261,7 @@ export default function UniversityStatistic() {
                     value={formData.prodiInputLabel}
                     onChange={(option) => handleChangeProdi(option, 'prodi')}
                     options={optionsProdi}
-                    placeholder={formData.prodiInputLabel ? formData.prodiInputLabel : 'Input Prodi Pilihan'}
+                    placeholder={formData.prodiInputLabel ? formData.prodiInputLabel : 'Input Nama Prodi'}
                     styles={{
                       control: (base) => ({
                         ...base,
@@ -252,18 +292,19 @@ export default function UniversityStatistic() {
               </SimpleGrid>
 
               {/* Button */}
-              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                <Box p={4} marginTop='20px'>
+              <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='30%'>
+                <Box p={2}>
                   <Center>
                     <Button
                       color='white'
-                      bg='#13ABC4'
+                      bg='#004AAD'
                       w='200px'
                       h='50px'
-                      boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                      borderRadius="lg"
+                      boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
                       onClick={handleSearchClick}
                     >
-                      Confirm
+                      Lihat
                     </Button>
                   </Center>
                 </Box>
@@ -272,203 +313,224 @@ export default function UniversityStatistic() {
             </Flex>
           </Box>
 
-          {/* Info Univ */}
-          <Box p={4} color='white' height='200px' marginTop='30px' borderRadius='md'>
-            <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+          {/* Inforation in Text */}
+          <Box w='100%'>
+            <Box
+              p={4}
+              ml='20px'
+              color='white'
+              height='200px'
+              marginTop='50px'
+              borderRadius='2xl'
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+            >
 
               {/* Peringkat Ketepatan */}
               <GridItem
-                w='100%'
-                h='170px'
-                bg='#3161A3'
-                borderRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-              >
-                <Grid
-                  templateRows='repeat(2, 1fr)'
-                  gap={4}
-                  h='100%'
-                  alignItems='center'
-                >
-                  <GridItem row='1' fontSize='18px' fontWeight='bold' justifySelf='center' alignSelf='center'>
-                    Peringkat ketepatan waktu lulus
-                  </GridItem>
-                  <SimpleGrid row='2' w='100%' alignItems='center' >
-                    <Box ml='2' justifySelf='center' alignSelf='center' >
-                      {dataUnivInfo.rank_univ}
-                    </Box>
-                    {/* <Box p='2'>
-                    </Box> */}
-                  </SimpleGrid>
-
-                </Grid>
-              </GridItem>
-
-
-              {/* Tahun Berdiri */}
-              <GridItem
-                w='100%'
-                h='170px'
-                bg='#3161A3'
-                borderRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-              >
-                <Grid
-                  templateRows='repeat(2, 1fr)'
-                  gap={4}
-                  h='100%'
-                  alignItems='center'
-                >
-                  <GridItem row='1' justifySelf='center' alignSelf='center'>
-                    Tahun berdiri
-                  </GridItem>
-                  <SimpleGrid row='2' w='100%' alignItems='center'>
-                    <Box ml='2' justifySelf='center' alignSelf='center' >
-                      {dataUnivInfo.tahun_berdiri_univ}
-                    </Box>
-                    {/* <Box p='2' textColor={'black'}>
-
-                    </Box> */}
-                  </SimpleGrid>
-
-                </Grid>
-              </GridItem>
-
-              {/* Avg Time to Grad */}
-              <GridItem
-                w='100%'
-                h='170px'
-                bg='#3161A3'
-                borderRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-              >
-                <Grid
-                  templateRows='repeat(2, 1fr)' gap={4}
-                  h='100%'
-                  alignItems='center'
-                >
-                  <GridItem row='1' justifySelf='center' alignSelf='center'>
-                    Average Time to Graduate
-                  </GridItem>
-                  {/* Adjusted SimpleGrid to have multiple columns */}
-                  <SimpleGrid row='2' w='100%' alignItems='center'>
-                    <Box ml='2' justifySelf='center' alignSelf='center' >
-                      {dataAvgGrad[0]?.persentase.toFixed(1)} Tahun
-                    </Box>
-                    {/* <Box p='2'>
-
-                    </Box> */}
-                  </SimpleGrid>
-
-                </Grid>
-              </GridItem>
-
-            </Grid>
-          </Box>
-
-
-          {/* Chart Card */}
-          <Box w='100%'>
-            <Box p={4} color='white' height='500px' marginTop='30px' borderRadius='md'>
-              <GridItem
-                w='100%'
-                height='450px'
-                bg='#3161A3'
-                borderRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                w='20%'
+                height='150px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
                 display="grid"
-                gridTemplateColumns="1fr 1fr 1fr" // Two columns
+                gridTemplateColumns="1fr"
               >
-                {/* Bar Chart */}
-                <GridItem
-                  w='90%'
-                  height='450px'
-                  justifySelf='center'
-                  alignSelf='center'
-                  padding='4px' // Add padding
-                >
-                  <BarChartUniv defaultBar={newDataBar} />
-                </GridItem>
+                <Box>
+                  <Center>
+                    <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                      Peringkat Ketepatan
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text fontSize='20px' color='white'>
+                      Lulus di Indonesia
+                    </Text>
+                  </Center>
+                </Box>
+                <Center >
+                  <Text fontSize='46px' fontWeight='bold' color='white'>
+                    Ke-{dataUnivInfo.rank_univ.toLocaleString()}
+                  </Text>
+                </Center>
 
-                {/* Stacked Bar Chart */}
-                <GridItem
-                  w='90%'
-                  height='450px'
-                  justifySelf='center'
-                  alignSelf='center'
-                >
-                  <StackedBarChart dataStacked={newDataStacked} />
-                </GridItem>
+              </GridItem>
 
-                {/* Pie Chart */}
-                <GridItem
-                  w='90%'
-                  height='450px'
-                  justifySelf='center'
-                  alignSelf='center'
-                >
-                  <PieChartUniv dataPie={newDataPie} />
-                </GridItem>
+              {/* Rata-rata waktu kelulusan */}
+              <GridItem
+                ml='20px'
+                w='20%'
+                height='150px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+              >
+                <Center>
+                  <Text fontSize="20px" color="white">
+                    Rata-rata waktu kelulusan
+                  </Text>
+                </Center>
+                <Center>
+                  <Text fontSize="46px" fontWeight="bold" color="white">
+                    {dataAvgGrad[0]?.persentase.toFixed(1)} Tahun
+                  </Text>
+                </Center>
+              </GridItem>
+
+              {/* Persentase Kelulusan */}
+              <GridItem
+                ml='20px'
+                w='20%'
+                height='150px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <Box>
+                  <Center>
+                    <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                      Persentase Mahasiswa
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text fontSize="20px" color="white">
+                      Lulus Tepat Waktu
+                    </Text>
+                  </Center>
+                </Box>
+
+                <Center>
+                  <Text fontSize="46px" fontWeight="bold" color="white">
+                    {(newDataPie?.tepat_grad * 100).toFixed(0)}%
+                  </Text>
+                </Center>
+
+
+
               </GridItem>
 
             </Box>
           </Box>
 
+          {/* 3 Chart */}
+          <Box w='100%' p={0}>
+            <Box
+              color='white'
+              height='500px'
+              marginTop='30px'
+              borderRadius='md'
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+            >
+              {/* Bar Chart */}
+              <GridItem
+                ml='30px'
+                paddingTop={2}
+                w='100%'
+                bg='white'
+                height='450px'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <GridItem
+                  w='100%'
+                  height='450px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px'
+                >
+                  <BarChartUniv defaultBar={newDataBar} selectYear={newYear} />
+                </GridItem>
+              </GridItem>
+
+              {/* Stacked Bar */}
+              <GridItem
+                paddingTop={2}
+                mr='30px'
+                ml='30px'
+                w='100%'
+                height='450px'
+                bg='white'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <GridItem
+                  w='100%'
+                  height='450px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px'
+                >
+                  <StackedBarChart dataStacked={newDataStacked} />
+                </GridItem>
+
+              </GridItem>
+
+              {/* Pie Chart */}
+              <GridItem
+                mr='30px'
+                paddingTop={2}
+                w='100%'
+                height='450px'
+                bg='white'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <GridItem
+                  w='100%'
+                  height='450px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px'
+                >
+                  <PieChartUniv  dataPie={newDataPie} />
+                </GridItem>
+
+              </GridItem>
+
+            </Box>
+          </Box>
+
+
           {/* Ranking Prodi */}
           <Box w='60%%'>
-            <Box p={4} color='white' marginTop='30px' borderRadius='md'>
+            <Box  p={4} color='white' marginTop='30px' borderRadius='md'>
               <GridItem
                 w='80%%'
-                bg='#3161A3'
-                borderRadius='md'
-                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                display="grid"
-                gridTemplateColumns="1fr" // Two columns
               >
-                <Box bg='#3161A3' w='100%'>
-                  <Center>
-
-                    <Text fontSize='30px' fontWeight='bold' color='white'>
-                      Ranking Ketepatan Waktu Lulus Seluruh Mahasiswa Indonesia
-                    </Text>
-                  </Center>
-
-                </Box>
 
                 {/* Table */}
                 <Center>
-                  <table className="w-3/5 text-sm text-left my-4 rounded-lg overflow-hidden shadow-lg">
-                    <thead className="bg-[#13ABC4] rounded-tl-lg rounded-tr-lg">
-                      <tr className="first:rounded-tl-lg last:rounded-tr-lg border-2">
-                        <th scope="col" className="px-6 py-3 text-center">Peringkat</th>
-                        <th scope="col" className="px-6 py-3 text-center">Prodi</th>
-                        <th scope="col" className="px-6 py-3 text-center">Persentase Tepat Waktu</th>
-                        <th scope="col" className="px-6 py-3 text-center"></th> {/* Divider Column */}
-                        <th scope="col" className="px-6 py-3 text-center">Peringkat</th>
-                        <th scope="col" className="px-6 py-3 text-center">Prodi</th>
-                        <th scope="col" className="px-6 py-3 text-center">Persentase Tepat Waktu</th>
+                  <table className="w-3/5 text-sm text-left rounded-2xl overflow-hidden shadow-lg mb-[100px]">
+                    <thead className="bg-white h-[60px]">
+                      <tr className="text-[#545454]">
+                        <th scope="col" className="px-6 py-3 text-center text-[26px]" colSpan="3">
+                          Peringkat Ketepatan Waktu Lulus Prodi
+                        </th>
                       </tr>
                     </thead>
-                    <tbody className='bg-white text-black'>
-                      {leftData.map((dataTable, index) => (
-                        <tr key={index}>
+                    <tbody className="bg-white text-black text-[20px]">
+                      <tr className='bg-white text-black border-[#EFF0F1] font-bold border-t-2 border-b-2 h-[60px]'>
+                        <td scope="col" className="px-6 py-3 text-center">Peringkat</td>
+                        <td scope="col" className="px-6 py-3 text-left">Nama Prodi</td>
+                        <td scope="col" className="px-6 py-3 text-left">Persentase</td>
+                      </tr>
+                      {TableData.map((dataTable, index) => (
+                        <tr key={index} className='mb-2  pb-[60px]'>
                           <td className="px-6 py-4 text-center">{dataTable.position}</td>
-                          <td className="px-6 py-4 text-center">{dataTable.nm_prodi}</td>
-                          <td className="px-6 py-4 text-center">{(dataTable.persentase * 100).toFixed(2)}%</td>
-                          <td className="border-r border-gray-400"></td> {/* Divider Cell */}
-                          {rightData[index] ? (
-                            <>
-                              <td className="px-6 py-4 text-center">{rightData[index].position}</td>
-                              <td className="px-6 py-4 text-center">{rightData[index].nm_prodi}</td>
-                              <td className="px-6 py-4 text-center">{(rightData[index].persentase * 100).toFixed(2)}%</td>
-                            </>
-                          ) : (
-                            <>
-                              <td className="px-6 py-4 text-center"></td>
-                              <td className="px-6 py-4 text-center"></td>
-                              <td className="px-6 py-4 text-center"></td>
-                            </>
-                          )}
+                          <td className="px-6 py-4 text-left">{dataTable.nm_prodi}</td>
+                          <td className="px-6 py-4 text-left">{(dataTable.persentase * 100).toFixed(1)}%</td>
                         </tr>
                       ))}
                     </tbody>

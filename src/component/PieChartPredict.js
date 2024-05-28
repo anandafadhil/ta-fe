@@ -50,12 +50,13 @@ export default class PieChartPredict extends PureComponent {
                     <Box >
                         <Box>
                             <Center>
-                                <Text mt='4px' mb='6px' fontSize="18px" color="white" fontWeight="bold">
-                                    Persentase Ketepatan Waktu Lulus Mahasiswa
-                                </Text>
+                                <Text mt='4px' mb='6px' fontSize="18px" color="#545454" fontWeight="bold">
+                                    Persentase Ketepatan Waktu Lulus Prodi                               </Text>
                             </Center>
                         </Box>
                     </Box>
+                    {/* Divider */}
+                    <Box mt="6" mb="4" height="4px" width="100%" bg="#EFF0F1"></Box>
 
                 </div>
 
@@ -63,10 +64,10 @@ export default class PieChartPredict extends PureComponent {
                     <Pie
                         data={data}
                         cx="50%"
-                        cy="50%"
+                        cy="40%"
                         labelLine={false}
                         label={renderCustomizedLabelFull}
-                        outerRadius={80}
+                        outerRadius={150}
                         fill="#8884d8"
                         dataKey="value"
                     >
@@ -74,7 +75,6 @@ export default class PieChartPredict extends PureComponent {
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>
-                    <Legend verticalAlign="bottom" height={75} />
 
                 </PieChart>
             </ResponsiveContainer>

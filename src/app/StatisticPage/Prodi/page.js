@@ -28,6 +28,7 @@ export default function UniversityStatistic() {
     const [isLoading, setIsLoading] = useState(true);
     const [optionsProdi, setOptionsProdi] = useState([]);
     const [dataProdiInfo, setProdiInfo] = useState([]);
+    const [newYear, setNewYear] = useState([]);
     const [dataAvgGrad, setAvgGrad] = useState([]);
     const [dataAvgIPK, setAvgIPK] = useState([]);
     const [newDataBar, setDataBar] = useState([]);
@@ -37,6 +38,11 @@ export default function UniversityStatistic() {
 
     const idProdiStat = typeof window !== 'undefined' ? localStorage.getItem("IDPRODISTAT") : undefined;
     const parsId = JSON.parse(idProdiStat)
+
+    const handleGetYear = async () => {
+        const selectYear = await fetchData('/select-year');
+        setNewYear(selectYear);
+    }
 
     const handleGetInfo = async () => {
         const selected_id_prodi = parsId
@@ -116,6 +122,7 @@ export default function UniversityStatistic() {
                     Swal.showLoading();
                 }
             });
+            await handleGetYear();
             await handleGetInfo();
             await handleGetAvgGrad();
             await handleGetAvgIPK();
@@ -143,220 +150,386 @@ export default function UniversityStatistic() {
                 <Navbar />
                 <Container
                     margin={0}
+                    bg='#EFF0F1'
                     maxWidth='100vw'
                     w='100%'
                     h='100%'>
 
                     {/* Header */}
-                    <Box p={4}>
-                        <Flex color='black' >
+                    <Box p={4} position='relative'>
+                        <Center>
                             <Box
+                                mt='40px'
                                 p='4'
-                                width='600px'
-                                height='50px'
+                                width='100%'
+                                height='250px'
                                 display='flex'
                                 alignItems='center'
                                 justifyContent='center'
                             >
-                                <Text fontSize='30px' color='black'>
-                                    Statistik {dataProdiInfo.nm_prodi}
-                                </Text>
+
+                                <Box>
+                                    <Center>
+                                        <Text lineHeight='20px' fontSize="30px" color="black" >
+                                            Statistik Prodi
+                                        </Text>
+                                    </Center>
+
+                                    <Center>
+                                        <Text fontSize="80px" color="black" fontWeight="bold">
+                                            {dataProdiInfo.nm_prodi}
+                                        </Text>
+                                    </Center>
+                                    <Center>
+                                        <Text lineHeight='10px' fontSize="26px" color="black" fontWeight="bold">
+                                            <Text as="span" textDecoration="underline">
+                                                {dataProdiInfo.nm_univ}
+                                            </Text>{" "} | Tahun Berdiri {dataProdiInfo.tahun_berdiri_prodi}
+                                        </Text>
+                                    </Center>
+                                </Box>
                             </Box>
-                        </Flex>
+                        </Center>
                     </Box>
 
-                    {/* Info Univ */}
-                    <Box p={4} color='white' height='200px' marginTop='30px' borderRadius='md'>
-                        <Grid templateColumns='repeat(4, 1fr)' gap={6}>
+                    {/* Inforation in Text */}
+                    <Box w='100%'>
+                        <Box
+                            p={4}
+                            color='white'
+                            height='200px'
+                            marginTop='20px'
+                            borderRadius='2xl'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                        >
 
                             {/* Peringkat Ketepatan */}
                             <GridItem
-                                w='100%'
-                                h='170px'
-                                bg='#3161A3'
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                            >
-                                <Grid
-                                    templateRows='repeat(2, 1fr)'
-                                    gap={4}
-                                    h='100%'
-                                    alignItems='center'
-                                >
-                                    <GridItem row='1' fontSize='18px' fontWeight='bold' justifySelf='center' alignSelf='center'>
-                                        Peringkat ketepatan waktu lulus
-                                    </GridItem>
-                                    <SimpleGrid row='2' w='100%' alignItems='center' >
-                                        <Box ml='2' justifySelf='center' alignSelf='center' >
-                                            {dataProdiInfo.rank_prodi}
-                                        </Box>
-
-                                    </SimpleGrid>
-
-                                </Grid>
-                            </GridItem>
-
-                            {/* Tahun Berdiri */}
-                            <GridItem
-                                w='100%'
-                                h='170px'
-                                bg='#3161A3'
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                            >
-                                <Grid
-                                    templateRows='repeat(2, 1fr)'
-                                    gap={4}
-                                    h='100%'
-                                    alignItems='center'
-                                >
-                                    <GridItem row='1' fontSize='18px' fontWeight='bold' justifySelf='center' alignSelf='center'>
-                                        Tahun berdiri
-                                    </GridItem>
-                                    <SimpleGrid row='2' w='100%' alignItems='center'>
-                                        <Box ml='2' justifySelf='center' alignSelf='center' >
-                                            {dataProdiInfo.tahun_berdiri_prodi}
-                                        </Box>
-
-                                    </SimpleGrid>
-
-                                </Grid>
-                            </GridItem>
-
-                            {/* Avg Time to Grad */}
-                            <GridItem
-                                w='100%'
-                                h='170px'
-                                bg='#3161A3'
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                            >
-                                <Grid
-                                    templateRows='repeat(2, 1fr)' gap={4}
-                                    h='100%'
-                                    alignItems='center'
-                                >
-                                    <GridItem row='1' fontSize='18px' fontWeight='bold' justifySelf='center' alignSelf='center'>
-                                        Average Time to Graduate
-                                    </GridItem>
-                                    {/* Adjusted SimpleGrid to have multiple columns */}
-                                    <SimpleGrid row='2' w='100%' alignItems='center'>
-                                        <Box ml='2' justifySelf='center' alignSelf='center' >
-                                            {dataAvgGrad.avg_grad_time.toFixed(2)} Tahun
-                                        </Box>
-                                    </SimpleGrid>
-
-                                </Grid>
-                            </GridItem>
-
-                            {/* Avg Time to Grad */}
-                            <GridItem
-                                w='100%'
-                                h='170px'
-                                bg='#3161A3'
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                            >
-                                <Grid
-                                    templateRows='repeat(2, 1fr)' gap={4}
-                                    h='100%'
-                                    alignItems='center'
-                                >
-                                    <GridItem row='1' fontSize='18px' fontWeight='bold' justifySelf='center' alignSelf='center'>
-                                        Average Indeks Prestasi Kumulatif
-                                    </GridItem>
-                                    {/* Adjusted SimpleGrid to have multiple columns */}
-                                    <SimpleGrid row='2' w='100%' alignItems='center' >
-                                        <Box ml='2' justifySelf='center' alignSelf='center' >
-                                            IPK Overall : {dataAvgIPK[6]?.avg_ipk_overall.toFixed(2)}
-                                        </Box>
-                                        <Box ml='2' justifySelf='center' alignSelf='center' >
-                                            IPK Tepat Waktu : {dataAvgIPK[6]?.avg_ipk_tepat_waktu.toFixed(2)}
-                                        </Box>
-                                        <Box ml='2' justifySelf='center' alignSelf='center' >
-                                            IPK Tidak Tepat Waktu : {dataAvgIPK[6]?.avg_ipk_telat.toFixed(2)}
-                                        </Box>
-                                    </SimpleGrid>
-
-                                </Grid>
-                            </GridItem>
-
-                        </Grid>
-                    </Box>
-
-                    {/* Chart Card 1 */}
-                    <Box w='100%'>
-                        <Box p={4} color='white' height='500px' marginTop='30px' borderRadius='md'>
-                            <GridItem
-                                w='100%'
-                                height='450px'
-                                bg='#3161A3'
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                                w='20%'
+                                height='150px'
+                                bg='#004AAD'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
                                 display="grid"
-                                gridTemplateColumns="1fr 1fr" // Two columns
+                                gridTemplateColumns="1fr"
                             >
-                                {/* Bar Chart */}
-                                <GridItem
-                                    w='90%'
-                                    height='450px'
-                                    justifySelf='center'
-                                    alignSelf='center'
-                                    padding='4px' // Add padding
-                                >
-                                    <BarChartExample2 defaultBar={newDataBar} />
-                                </GridItem>
+                                <Box>
+                                    <Center>
+                                        <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                                            Peringkat Ketepatan
+                                        </Text>
+                                    </Center>
+                                    <Center>
+                                        <Text fontSize='20px' color='white'>
+                                            Lulus di Indonesia
+                                        </Text>
+                                    </Center>
+                                </Box>
+                                <Center >
+                                    <Text fontSize='46px' fontWeight='bold' color='white'>
+                                        Ke-{dataProdiInfo.rank_prodi}
+                                    </Text>
+                                </Center>
 
-                                {/* Stacked Bar Chart */}
-                                <GridItem
-                                    w='90%'
-                                    height='450px'
-                                    justifySelf='center'
-                                    alignSelf='center'
-                                >
-                                    <BarChartSKS sksBar={newDataSKS} />
-                                </GridItem>
+                            </GridItem>
+
+                            {/* Rata-rata waktu kelulusan */}
+                            <GridItem
+                                ml='20px'
+                                w='20%'
+                                height='150px'
+                                bg='#004AAD'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                                display="grid"
+                            >
+                                <Center>
+                                    <Text fontSize="20px" color="white">
+                                        Rata-rata waktu kelulusan
+                                    </Text>
+                                </Center>
+                                <Center>
+                                    <Text fontSize="46px" fontWeight="bold" color="white">
+                                        {dataAvgGrad.avg_grad_time.toFixed(1)} Tahun
+                                    </Text>
+                                </Center>
+                            </GridItem>
+
+                            {/* Persentase Kelulusan */}
+                            <GridItem
+                                ml='20px'
+                                w='20%'
+                                height='150px'
+                                bg='#004AAD'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                            >
+                                <Box>
+                                    <Center>
+                                        <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                                            Persentase Mahasiswa
+                                        </Text>
+                                    </Center>
+                                    <Center>
+                                        <Text fontSize="20px" color="white">
+                                            Lulus Tepat Waktu
+                                        </Text>
+                                    </Center>
+                                </Box>
+                                <Center>
+                                    <Text fontSize="46px" fontWeight="bold" color="white">
+                                        {(newDataPie?.tepat_grad * 100).toFixed(0)}%
+                                    </Text>
+                                </Center>
+
+
+
                             </GridItem>
 
                         </Box>
                     </Box>
 
-                    {/* Chart Card 2 */}
-                    <Box w='100%'>
-                        <Box p={4} color='white' height='500px' marginTop='30px' borderRadius='md'>
+                    {/* First Card Chart */}
+                    <Box w='100%' p={0}>
+                        <Box
+                            p={4}
+                            color='white'
+                            height='500px'
+                            marginTop='50px'
+                            borderRadius='md'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                        >
+                            {/* Bar Chart */}
                             <GridItem
+                                ml='30px'
+                                paddingTop={2}
                                 w='100%'
+                                bg='white'
                                 height='450px'
-                                bg='#3161A3'
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
                                 display="grid"
-                                gridTemplateColumns="1fr 1fr" // Two columns
+                                gridTemplateColumns="1fr"
                             >
-
-                                {/* Stacked Bar Chart */}
                                 <GridItem
-                                    w='90%'
+                                    w='100%'
                                     height='450px'
                                     justifySelf='center'
                                     alignSelf='center'
+                                    padding='4px'
+                                >
+                                    <BarChartExample2 defaultBar={newDataBar} selectYear={newYear} />
+                                </GridItem>
+                            </GridItem>
+
+                            {/* Stacked Bar */}
+                            <GridItem
+                                paddingTop={2}
+                                mr='30px'
+                                ml='30px'
+                                w='100%'
+                                height='450px'
+                                bg='white'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                            >
+                                <GridItem
+                                    w='100%'
+                                    height='450px'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    padding='4px'
                                 >
                                     <StackedBarChart dataStacked={newDataStacked} />
                                 </GridItem>
 
-                                {/* Pie Chart */}
+                            </GridItem>
+
+                            {/* Pie Chart */}
+                            <GridItem
+                                mr='30px'
+                                paddingTop={2}
+                                w='100%'
+                                height='450px'
+                                bg='white'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                            >
                                 <GridItem
-                                    w='90%'
+                                    w='100%'
                                     height='450px'
                                     justifySelf='center'
                                     alignSelf='center'
+                                    padding='4px'
                                 >
                                     <PieChartUniv dataPie={newDataPie} />
                                 </GridItem>
+
                             </GridItem>
 
                         </Box>
                     </Box>
+
+                    {/* Second Chart Card */}
+                    <Box
+                        h='665px'
+                        w='100%'
+                        display='flex'
+                        flexDirection='row'
+                    >
+                        <Box
+                            p={2}
+                            paddingTop={2}
+                            w='100%'
+                            height='550px'
+                            borderRadius='2xl'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            gap="30px"
+                        >
+                            {/* Bar Chart */}
+                            <GridItem
+                                w='75%'
+                                height='550px'
+                                justifySelf='center'
+                                alignSelf='center'
+                                display='flex'
+                                padding='4px'
+                                bg='white'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                            >
+                                <BarChartSKS sksBar={newDataSKS} />
+                            </GridItem>
+
+                            {/* Information IPK Side */}
+                            <Box
+                                h='550px'
+                                p={0}
+                                w='20%'
+                            >
+                                <Box
+                                    p={0}
+                                    w='100%'
+                                    h='100%'
+                                    color="black"
+                                    borderRadius='md'
+                                    display='flex'
+                                    flexDirection='column'
+
+                                    gap='50px'
+                                >
+
+                                    {/* IPK Overall */}
+                                    <GridItem
+                                        w='100%'
+                                        height='150px'
+                                        bg='white'
+                                        borderRadius='2xl'
+                                        boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                        display="grid"
+                                        gridTemplateColumns="1fr"
+                                    >
+                                        <Box>
+                                            <Center>
+                                                <Text mt='15px' lineHeight="20px" fontSize="20px" color="black">
+                                                    Rerata IPK
+                                                </Text>
+                                            </Center>
+                                            <Center>
+                                                <Text fontSize="20px" fontWeight="bold" color="black">
+                                                    Overall
+                                                </Text>
+                                            </Center>
+                                        </Box>
+                                        <Center >
+                                            <Text fontSize='46px' fontWeight='bold'>
+                                                {dataAvgIPK[6]?.avg_ipk_overall.toFixed(2)}
+                                            </Text>
+                                        </Center>
+
+                                    </GridItem>
+
+                                    {/* Rata-rata waktu kelulusan */}
+                                    <GridItem
+                                        bg='white'
+                                        w='100%'
+                                        height='150px'
+                                        borderRadius='2xl'
+                                        boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                        display="grid"
+                                        gridTemplateColumns="1fr"
+                                    >
+                                        <Box>
+                                            <Center>
+                                                <Text mt='15px' lineHeight="20px" fontSize="20px" color="black">
+                                                    Rerata IPK
+                                                </Text>
+                                            </Center>
+                                            <Center>
+                                                <Text fontSize="20px" fontWeight="bold" color="black">
+                                                    Lulus Tepat Waktu
+                                                </Text>
+                                            </Center>
+                                        </Box>
+                                        <Center>
+                                            <Text fontSize="46px" fontWeight="bold">
+                                                {dataAvgIPK[6]?.avg_ipk_tepat_waktu.toFixed(2)}
+                                            </Text>
+                                        </Center>
+                                    </GridItem>
+
+                                    {/* Persentase Kelulusan */}
+                                    <GridItem
+                                        bg='white'
+                                        w='100%'
+                                        height='150px'
+                                        borderRadius='2xl'
+                                        boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                        display="grid"
+                                        gridTemplateColumns="1fr"
+                                    >
+                                        <Box>
+                                            <Center>
+                                                <Text mt='15px' lineHeight="20px" fontSize="20px" color="black">
+                                                    Rerata IPK
+                                                </Text>
+                                            </Center>
+                                            <Center>
+                                                <Text fontSize="20px" fontWeight="bold" color="black">
+                                                    Lulus Terlambat
+                                                </Text>
+                                            </Center>
+                                        </Box>
+                                        <Center>
+                                            <Text fontSize="46px" fontWeight="bold" >
+                                                {dataAvgIPK[6]?.avg_ipk_telat.toFixed(2)}
+                                            </Text>
+                                        </Center>
+
+
+
+                                    </GridItem>
+
+                                </Box>
+                            </Box>
+
+                        </Box>
+
+
+                    </Box>
+
 
                 </Container>
                 <Footer />

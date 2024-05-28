@@ -4,7 +4,7 @@ import {
     ChakraProvider, VStack, Container,
     Flex, Spacer, Center, Square, Text,
     Box, Grid, GridItem, Button, Input,
-    SimpleGrid, useDisclosure, List,
+    SimpleGrid, useDisclosure, Link,
     ListItem, ListIcon
 } from "@chakra-ui/react";
 import { MdCheckCircle } from 'react-icons/md';
@@ -47,6 +47,7 @@ export default function PredictBulk(props) {
             endpoint: `/bulk-handle/${formData.prodiInputID}`,
             data: OrgData.file,
         });
+        console.log("ret", retreiveBulk)
         localStorage.setItem('PROCESSDATAID', JSON.stringify(formData))
         localStorage.setItem('PROCESSDATA', JSON.stringify(retreiveBulk));
         router.push('/PredictBulk/Result');
@@ -136,35 +137,16 @@ export default function PredictBulk(props) {
         return result;
     }
 
-    const stepsData = [
-        {
-            stepTitle: "Prepare File",
-            listItems: [
-                "Merupakan mahasiswa semester 4 atau lebih yang sudah memiliki IP dan IPK",
-                "Nilai IP dan IPK tiap semester tidak boleh kosong/null",
-                "Isi dari tabel berupa Nomor Induk Mahasiswa, IPK, SKS diperoleh, dan SKS total dari semester 1 hingga 4"
-            ]
-        },
-        {
-            stepTitle: "Format File",
-            listItems: [
-                "Setelah tabel berhasil terisi simpan tabel tersebut dalam format .csv"
-            ]
-        },
-        {
-            stepTitle: "Input File",
-            listItems: [
-                "Pilih file, kemudian unggah pada tempat yang telah disediakan"
-            ]
-        },
-        {
-            stepTitle: "Predict",
-            listItems: [
-                "Setelah file berhasil terunggah seluruhnya, tekan tombol \"Predict\" untuk memulai prediksi"
-            ]
-        }
-    ];
 
+    const handleDownload = () => {
+        const downloadPath = "/assets/training_contoh.csv";
+        const link = document.createElement("a");
+        link.href = downloadPath;
+        link.download = "training_contoh.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     return (
         <ChakraProvider resetCSS={false}>
@@ -172,281 +154,323 @@ export default function PredictBulk(props) {
                 <Navbar />
                 <Container
                     margin={0}
+                    bg='#EFF0F1'
                     maxWidth='100vw'
                     w='100%'
                     h='100%'
                 >
                     {/* Header */}
-                    <Box p={4}>
-                        <Flex color='black' >
-                            <Box p='4' width='300px' height='100px' display='flex' alignItems='center' justifyContent='center'>
-                                <Text fontSize='30px' color='black'>
-                                    Grouped Predict
-                                </Text>
+                    <Box p={4} position='relative'>
+                        <Center>
+                            <Box
+                                p='4'
+                                mt='55px'
+                                width='800px'
+                                height='150px'
+                                display='flex'
+                                alignItems='center'
+                                justifyContent='center'
+                            >
+                                <Box>
+                                    <Center>
+                                        <Text fontSize="22px" color="black">
+                                            Prediksi Ketepatan Waktu Lulus Mahasiswa
+                                        </Text>
+                                    </Center>
+
+                                    <Center>
+                                        <Text lineHeight='75px' fontSize="48px" color="black" fontStyle='italic' fontWeight="bold">
+                                            Bulk Prediction
+                                        </Text>
+                                    </Center>
+                                </Box>
                             </Box>
-                        </Flex>
+                        </Center>
                     </Box>
 
                     {/* Step by Step */}
-                    <Box w='100%' p={4}>
-                        <Grid
-                            templateRows='repeat(2, 1fr)'
-                            templateColumns={['1fr', 'repeat(2, 1fr)']}
-                            gap={4}
-                            height={['auto', '550px']}
+                    <Box
+                        mt='10px'
+                        w='100%'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                    >
+                        <Box
+                            w='40%'
+                            p={4}
+                            color='white'
+                            height='300px'
+                            display='flex'
+
+                            borderRadius='2xl'
+                            alignItems='center'
+                            justifyContent='center'
                         >
-                            {stepsData.map((step, index) => (
+                            <GridItem
+                                p={2}
+                                w='100%'
+                                height='300px'
+                                borderRadius='2xl'
+                            >
+                                {/* Header */}
                                 <GridItem
-                                    colStart={[1, (index % 2) + 1]}
-                                    rowStart={[index + 1, Math.floor(index / 2) + 1]}
-                                    p={4}
-                                    bg='#3161A3'
-                                    borderRadius="md"
-                                    boxShadow="lg"
-                                    color="white"
+                                    h='20%'
+                                    borderBottomWidth='2px'
+                                    borderColor='#EFF0F1'
+                                    bg='white'
+                                    borderTopLeftRadius='2xl'
+                                    borderTopRightRadius='2xl'
+                                    boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    width='100%'
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexDirection="column"
+                                >
+                                    <Text color='black' fontWeight='bold' fontSize='20px'>
+                                        Menyiapkan file CSV
+                                    </Text>
+                                </GridItem>
+
+                                {/* Input */}
+                                <GridItem
+                                    h='80%'
+                                    bg='white'
+                                    borderBottomLeftRadius='2xl'
+                                    borderBottomRightRadius='2xl'
+                                    boxShadow='md'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    width='100%'
                                     display="flex"
                                     flexDirection="column"
-                                    overflowY="auto"
-                                    position="relative"
+                                    p={4}
+                                    fontSize='20px'
                                 >
-                                    <GridItem
-                                        rowStart={1}
-                                        rowEnd={2}
-                                        bg='#13ABC4'
-                                        borderRadius='md'
-                                        boxShadow='md'
-                                        height='50px'
-                                        justifySelf='center'
-                                        alignSelf='center'
-                                        width='100%'
-                                        display="flex"
-                                        alignItems="center"
-                                        justifyContent="center"
-                                        flexDirection="column"
-                                    >
-                                        <Text fontSize={["md", "lg"]} fontWeight="bold">Step {index + 1}: {step.stepTitle}</Text>
-                                    </GridItem>
-                                    <GridItem
-                                        rowStart={2}
-                                        rowEnd={5}
-                                        bg='white'  // Using Chakra UI color scheme
-                                        borderRadius='md'
-                                        boxShadow='md'
-                                        justifySelf='center'
-                                        alignSelf='center'
-                                        width='100%'
-                                        display="flex"
-                                        flexDirection="column"
-                                        p={4}
-                                    >
-
-                                        <List spacing={[2, 3]} textAlign='left'>
-                                            {step.listItems.map(item => (
-                                                <ListItem key={item}>
-                                                    <Flex alignItems="center">
-                                                        <ListIcon as={MdCheckCircle} color='green.500' />
-                                                        <Text color="black">{item}</Text>
-                                                    </Flex>
-                                                </ListItem>
-                                            ))}
-                                        </List>
-                                    </GridItem>
-
+                                    <Text color='black'>
+                                        1. Unduh <Link as="button" onClick={handleDownload} color="blue.500" textDecoration="underline">template</Link> ini.
+                                    </Text>
+                                    <Text color='black'>
+                                        2. Isi dengan data akademik masing-masing mahasiswa.
+                                    </Text>
+                                    <Text color='black'>
+                                        3. Kolom '<em>Identifier</em> Mahasiswa' disarankan untuk diisi<br />dengan nama atau Nomor Induk Mahasiswa.
+                                    </Text>
+                                    <Text color='red'>
+                                        4. Jangan menghapus atau menambahkan kolom baru.
+                                    </Text>
+                                    <Text color='black'>
+                                        5. Save file sebagai <strong>CSV</strong> dan unggah pada <em>field</em> di bawah.
+                                    </Text>
                                 </GridItem>
-                            ))}
-                        </Grid>
-                    </Box>
-
-                    {/* Univ Search */}
-                    <Box>
-                        <Center>
-                            <Box
-                                p={4}
-                                width={['100%', '70%']}
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                                display='flex'
-                                flexDirection={['column', 'row']}
-                                alignItems="center"
-                                justifyContent="center"
-                                mt='20px'
-                                bg='#3161A3'
-                            >
-                                {/* Univ */}
-                                <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                                    <Box p='1' ml='1' color='white'>
-                                        Nama Universitas
-                                    </Box>
-                                    <Box p='2'>
-                                        <Select
-                                            className="w-full"
-                                            name="univInput"
-                                            value={formData.univInput}
-                                            onChange={handleChangeUniv}
-                                            options={optionsUni}
-                                            placeholder={formData.univInput ? formData.univInput : 'Input Universitas Pilihan'}
-                                            styles={{
-                                                control: (base) => ({
-                                                    ...base,
-                                                    minHeight: '40px',
-                                                    overflow: 'hidden',
-                                                    whiteSpace: 'nowrap',
-                                                    textOverflow: 'ellipsis',
-                                                    borderRadius: "0.5rem",
-                                                    paddingLeft: "0.2rem",
-                                                    height: "55px",
-                                                }),
-                                                indicatorSeparator: (base) => ({
-                                                    ...base,
-                                                    visibility: "hidden",
-                                                }),
-                                                dropdownIndicator: (base) => ({
-                                                    ...base,
-                                                    paddingRight: "0.5rem",
-                                                    svg: {
-                                                        height: 24,
-                                                        width: 24,
-                                                        fill: "black",
-                                                    },
-                                                }),
-                                                option: (provided) => ({
-                                                    ...provided,
-                                                    color: "black", // Change label font color to black
-                                                }),
-                                            }}
-                                        />
-                                    </Box>
-                                </SimpleGrid>
-
-                                {/* Prodi */}
-                                <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='25%'>
-                                    <Box p='1' ml='1' color='white'>
-                                        Nama Prodi/Jurusan
-                                    </Box>
-                                    <Box p='2'>
-                                        <Select
-                                            className="w-full"
-                                            name="prodiInput"
-                                            value={formData.prodiInput}
-                                            onChange={handleChangeProdi}
-                                            options={optionsProdi}
-                                            isDisabled={!formData.univInput ? true : false}
-                                            placeholder={!formData.univInput ? '' : (formData.prodiInput ? formData.prodiInput : 'Input Jurusan Pilihan')}
-                                            styles={{
-                                                control: (base, state) => ({
-                                                    ...base,
-                                                    minHeight: '40px',
-                                                    overflow: 'hidden',
-                                                    whiteSpace: 'nowrap',
-                                                    textOverflow: 'ellipsis',
-                                                    borderRadius: "0.5rem",
-                                                    paddingLeft: "0.2rem",
-                                                    height: "55px",
-                                                    backgroundColor: state.isDisabled ? 'lightgray' : 'white'
-                                                }),
-                                                indicatorSeparator: (base) => ({
-                                                    ...base,
-                                                    visibility: "hidden",
-                                                }),
-                                                dropdownIndicator: (base) => ({
-                                                    ...base,
-                                                    paddingRight: "0.5rem",
-                                                    svg: {
-                                                        height: 24,
-                                                        width: 24,
-                                                        fill: "black",
-                                                    },
-                                                }),
-                                                // New style to change label font color to black
-                                                option: (provided) => ({
-                                                    ...provided,
-                                                    color: "black", // Change label font color to black
-                                                }),
-                                            }}
-                                        />
-                                    </Box>
-                                </SimpleGrid>
-                            </Box>
-                        </Center>
-                    </Box>
-
-
-                    {/* File Input */}
-                    <Center>
-                        <Box
-                            p={4}
-                            width={['100%', '50%', '30%']}
-                            borderRadius='md'
-                            boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                            display='flex'
-                            flexDirection={['column', 'row']}
-                            alignItems="center"
-                            justifyContent="center"
-                            mt='20px'
-                        >
-
-                            {/* Button and hidden input box */}
-                            <Box height="50px" width={['100%', 'auto']} display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
-                                <label htmlFor="fileUpload">
-
-                                    {/* Hidden input box */}
-                                    <input
-                                        id="fileUpload"
-                                        type="file"
-                                        accept=".csv"
-                                        style={{ display: 'none' }}
-                                        onChange={handleFileChange}
-                                    />
-
-                                    {/* Button */}
-                                    <Button
-                                        color='white'
-                                        bg='#13ABC4'
-                                        variant="outline"
-                                        as="span"
-                                        width={['100%', 'auto']} // Full width on smaller screens
-                                    >
-                                        Choose File
-                                    </Button>
-                                </label>
-                            </Box>
-
-                            {/* New input Box */}
-                            <Box height="50px" width={['100%', '200px']} display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
-                                <label htmlFor="fileUpload" style={{ width: '100%' }}>
-                                    <p
-                                        className="w-full p-2 border rounded-lg cursor-pointer"
-                                        style={{
-                                            minHeight: '40px',
-                                            overflow: 'hidden',
-                                            whiteSpace: 'nowrap',
-                                            textOverflow: 'ellipsis'
-                                        }}
-                                    >
-                                        <a className="text-gray-500">
-                                            {selectedFile || 'Select a file'}
-                                        </a>
-                                    </p>
-                                </label>
-                            </Box>
+                            </GridItem>
                         </Box>
-                    </Center>
-
-                    {/* Button */}
-                    <Box p={4} marginTop='20px' marginBottom='20px'>
-                        <Center>
-                            <Button
-                                color='white'
-                                bg='#13ABC4'
-                                w='200px'
-                                h='50px'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
-                                onClick={handleSubmit}
-                            >
-                                Predict
-                            </Button>
-                        </Center>
                     </Box>
+
+                    {/* Univ Search's Box */}
+                    <Box
+                        p={4}
+                        color='white'
+                        height='200px'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                    >
+                        <Flex
+                            bg='white'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            w='40%'
+                            h='100%'
+                            p={2}
+                            borderWidth='3px'
+                            borderRadius='2xl'
+                            borderColor='#7B7B7B'
+                        >
+                            <Grid
+                                h='100%'
+                                w='100%'
+                                display='flex'
+                                justifyContent='center'
+                                alignItems='center'
+                                flexDirection='column'
+                            >
+                                {/* Univ Prodi Input */}
+                                <GridItem w='100%' display='flex'>
+                                    {/* Univ Search */}
+                                    <SimpleGrid columns='1' w='50%'>
+                                        <Box p='2'>
+                                            <Select
+                                                className="w-full"
+                                                name="univInput"
+                                                value={formData.univInputLabel}
+                                                onChange={handleChangeUniv}
+                                                options={optionsUni}
+                                                placeholder={formData.univInputLabel ? formData.univInputLabel : 'Nama Universitas'}
+                                                styles={{
+                                                    control: (base) => ({
+                                                        ...base,
+                                                        borderRadius: "0.5rem",
+                                                        borderWidth: "0.2rem",
+                                                        paddingLeft: "0.2rem",
+                                                        height: "55px",
+                                                    }),
+                                                    indicatorSeparator: (base) => ({
+                                                        ...base,
+                                                        visibility: "hidden",
+                                                    }),
+                                                    dropdownIndicator: (base) => ({
+                                                        ...base,
+                                                        paddingRight: "0.5rem",
+                                                        svg: {
+                                                            height: 24,
+                                                            width: 24,
+                                                            fill: "black",
+                                                        },
+                                                    }),
+                                                    option: (provided) => ({
+                                                        ...provided,
+                                                        color: "black",
+                                                    }),
+                                                }}
+                                            />
+                                        </Box>
+                                    </SimpleGrid>
+
+                                    {/* Prodi Search */}
+                                    <SimpleGrid columns='1' w='50%'>
+                                        <Box p='2'>
+                                            <Select
+                                                className="w-full"
+                                                name="prodiInput"
+                                                value={formData.prodiInput}
+                                                onChange={handleChangeProdi}
+                                                options={optionsProdi}
+                                                isDisabled={!formData.univInput ? true : false}
+                                                placeholder={!formData.univInput ? '' : (formData.prodiInput ? formData.prodiInput : 'Input Jurusan Pilihan')}
+                                                styles={{
+                                                    control: (base, state) => ({
+                                                        ...base,
+                                                        borderRadius: "0.5rem",
+                                                        borderWidth: "0.2rem",
+                                                        paddingLeft: "0.2rem",
+                                                        height: "55px",
+                                                        backgroundColor: state.isDisabled ? 'lightgray' : 'white'
+
+                                                    }),
+                                                    indicatorSeparator: (base) => ({
+                                                        ...base,
+                                                        visibility: "hidden",
+                                                    }),
+                                                    dropdownIndicator: (base) => ({
+                                                        ...base,
+                                                        paddingRight: "0.5rem",
+                                                        svg: {
+                                                            height: 24,
+                                                            width: 24,
+                                                            fill: "black",
+                                                        },
+                                                    }),
+                                                    option: (provided) => ({
+                                                        ...provided,
+                                                        color: "black",
+                                                    }),
+                                                }}
+                                            />
+                                        </Box>
+                                    </SimpleGrid>
+                                </GridItem>
+
+                                {/* File Input */}
+                                <GridItem w='100%' display='flex'>
+                                    {/* Button */}
+                                    <SimpleGrid
+                                        columns='1' 
+                                        w='30%' 
+                                        p={2}>
+                                        <label htmlFor="fileUpload" className="h-full">
+
+                                            <input
+                                                id="fileUpload"
+                                                type="file"
+                                                accept=".csv"
+                                                style={{ display: 'none' }}
+                                                onChange={handleFileChange}
+                                            />
+                                            <Box
+                                                h='100%'
+                                                w='100%'
+                                                display='flex'
+                                                alignItems='center'
+                                                justifyContent='center'>
+                                                <Button
+                                                    h='100%'
+                                                    w='100%'
+                                                    color='white'
+                                                    bg='#004AAD'
+                                                    variant="outline"
+                                                    as="span"
+                                                >
+                                                    <Text fontSize='21px'>
+                                                        Choose File
+                                                    </Text>
+                                                </Button>
+                                            </Box>
+                                        </label>
+                                    </SimpleGrid>
+
+                                    {/* Input Box */}
+                                    <SimpleGrid columns='1' w='70%' p={2}>
+                                        <Box height="50px" width={['100%', 'auto']} display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
+                                            <label htmlFor="fileUpload" style={{ width: '100%' }}>
+                                                <p
+                                                    className="w-full p-2 border rounded-lg cursor-pointer"
+                                                    style={{
+                                                        minHeight: '40px',
+                                                        overflow: 'hidden',
+                                                        whiteSpace: 'nowrap',
+                                                        textOverflow: 'ellipsis',
+                                                        borderWidth: "0.2rem",
+                                                        borderColor: "#EFF0F1"
+
+                                                    }}
+                                                >
+                                                    <a className="text-gray-500">
+                                                        {selectedFile || 'Select a file'}
+                                                    </a>
+                                                </p>
+                                            </label>
+                                        </Box>
+                                    </SimpleGrid>
+                                </GridItem>
+                            </Grid>
+
+
+                        </Flex>
+
+                    </Box>
+
+                    {/* Bulk Predict's Button */}
+                    <SimpleGrid columns='1' h='200px' justifyContent="center" w='100%'>
+                        <Box p={4}>
+                            <Center>
+                                <Button
+                                    color='white'
+                                    bg='#004AAD'
+                                    w='200px'
+                                    h='50px'
+                                    boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                                    onClick={handleSubmit}
+                                >
+                                    Lakukan Prediksi
+                                </Button>
+                            </Center>
+                        </Box>
+                    </SimpleGrid>
                 </Container>
                 <Footer />
 

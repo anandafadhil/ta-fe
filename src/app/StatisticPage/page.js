@@ -4,6 +4,12 @@ import PageComponent from "./PageComponent"
 export default async function Page() {
     const data = await fetchData('/univ-name');
 
+    const selectYear = await fetchData('/select-year');
+
+    const totalProdi = await fetchData('/get-total-prodi');
+
+    const totalUniv = await fetchData('/get-total-univ');
+
     const avgYearAllUniv = await fetchData('/get-avg-grad-time-univ-all')
 
     const dataPie = await fetchData('/get-ketepatan-grad-time-univ-all')
@@ -22,6 +28,9 @@ export default async function Page() {
 
     return <PageComponent
         data={data}
+        selectYear={selectYear}
+        totalProdi={totalProdi}
+        totalUniv={totalUniv}
         avgYearAllUniv={avgYearAllUniv}
         dataPie={dataPie}
         dataStacked={dataStacked}

@@ -40,12 +40,22 @@ function LineChartEx({ dataSKST }) {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <div>
-                <Box alignItems='center' justifyContent='center'>
+                <Box>
                     <Center>
-                        <Text mb='6px' fontSize="18px" color="white" fontWeight="bold">
-                            Perbandingan Progresi Kenaikan IPK Mahasiswa x Avg Jurusan                        </Text>
+                        <Text fontSize="18px" color="#545454"  fontWeight="bold">
+                            Perbandingan
+                        </Text>
+                    </Center>
+
+                    <Center>
+                        <Text fontSize="18px" color="#545454" fontWeight="bold">
+                            Kenaikan IPK                        
+                            </Text>
                     </Center>
                 </Box>
+                {/* Divider */}
+                <Box mt="2" mb="4" height="4px" width="100%" bg="#EFF0F1"></Box>
+
             </div>
             <LineChart
                 width={500}
@@ -54,15 +64,14 @@ function LineChartEx({ dataSKST }) {
                 margin={{
                     top: 10,
                     right: 25,
-                    bottom: 30,
+                    bottom: 100,
                     left: 10,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fill: 'white' }} padding={{ left: 30, right: 30 }} />
-                <YAxis tick={{ fill: 'white' }} />
+                <XAxis dataKey="name" tick={{ fill: 'black' }} padding={{ left: 30, right: 30 }} />
+                <YAxis tick={{ fill: 'black' }} />
                 <Tooltip />
-                <Legend />
                 <Line type="monotone" dataKey="pv" stroke="#ffd400" activeDot={{ r: 8 }} strokeWidth={4} name="IPK Mahasiswa" />
                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" activeDot={{ r: 8 }} strokeWidth={4} name="Average IPK Prodi" />
             </LineChart>

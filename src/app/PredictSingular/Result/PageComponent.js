@@ -35,155 +35,197 @@ export default function PageComponent(props) {
                 <Navbar />
                 <Container
                     margin={0}
+                    bg='#EFF0F1'
                     maxWidth='100vw'
                     w='100%'
                     h='100%'>
+
                     {/* Header */}
-                    <Box p={4} >
-                        <Flex color='black' >
+                    <Box p={4} position='relative'>
+                        <Center>
                             <Box
+                                mt='40px'
                                 p='4'
-                                width='300px'
-                                height='100px'
+                                width='950px'
+                                height='200px'
                                 display='flex'
                                 alignItems='center'
                                 justifyContent='center'
                             >
-                                <Text fontSize='30px' color='black'>
-                                    Result Predict
-                                </Text>
+                                <Box>
+                                    <Center>
+                                        <Text fontSize="22px" color="black">
+                                            Prediksi Ketepatan Waktu Lulus Mahasiswa
+                                        </Text>
+                                    </Center>
+
+                                    <Center>
+                                        <Text lineHeight='90px' fontSize="60px" color="black" fontWeight="bold">
+                                            Hasil Prediksi
+                                        </Text>
+                                    </Center>
+                                </Box>
                             </Box>
-                        </Flex>
+                        </Center>
                     </Box>
 
-                    <Box position="relative" >
+                    <Box position="relative">
                         {/* Lulus Card */}
                         <Center>
                             <Box
                                 p={4}
-                                bg='#3161A3'
-                                width="60%"
-                                borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                                bg='#004AAD'
+                                width="80%"
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
                                 marginBottom='20px'
                             >
-                                <Box p="4" height="100px" display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
-                                    <Text fontSize="30px" color='white' fontWeight='bold'>
-                                        Anda Diprediksi Untuk Lulus
+                                <Box p="4" display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
+                                    <Text fontSize="48px" color='white' fontWeight='bold'>
+                                        Anda diprediksi akan lulus
                                         <span style={{ color: predictResult ? "#82ca9d" : "#FF6961" }}>
                                             {lulusHandler()}
-                                        </span>
+                                        </span> dari
                                     </Text>
                                 </Box>
+                                <Box mb='35px' display="flex" alignItems="center" justifyContent="center">
+                                    <Text lineHeight='20px' fontSize="40px" color='white'>
+                                        {univProdi.prodiInput} | {univProdi.univInput}
+                                    </Text>
+                                </Box>
+
                             </Box>
                         </Center>
 
-                        {/* Lulus Card */}
-                        <Center>
+                        {/* First Card Chart */}
+                        <Box w='100%'>
                             <Box
                                 p={4}
-                                bg='#3161A3'
-                                width="60%"
+                                color='white'
+                                height='500px'
+                                marginTop='30px'
                                 borderRadius='md'
-                                boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)'
+                                display='flex'
+                                alignItems='center'
+                                justifyContent='center'
                             >
-                                <Box p="4" height="150px" alignItems="center" justifyContent="center" borderRadius='md'>
-                                    <Center>
-                                        <Text fontSize="30px" color='white' fontWeight='bold'>
-                                            Dari prodi {univProdi.prodiInput}, {univProdi.univInput}.
-                                        </Text>
-
-                                    </Center>
-                                    <Center>
-                                        <Text fontSize="24px" color='white' fontWeight='bold'>
-                                            Anda disarankan untuk mengambil minimal {Math.ceil(sksNeeded[0]?.sks_needed)} SKS
-                                        </Text>
-                                    </Center>
-                                    <Center>
-                                        <Text fontSize="24px" color='white' fontWeight='bold'>
-                                            pada semester 5, 6, 7, dan 8 agar ekspektasi lulus tepat waktu tercapai.
-                                        </Text>
-                                    </Center>
-                                </Box>
-                            </Box>
-                        </Center>
-
-                        {/* Chart Card 1 */}
-                        <Box w='100%'>
-                            <Box p={4} color='white' height='450px' marginTop='20px' borderRadius='md'>
+                                {/* Line Chart SKS */}
                                 <GridItem
+                                    p={2}
                                     w='100%'
-                                    h='420px'
-                                    bg='#3161A3'
-                                    borderRadius='md'
-                                    boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
+                                    bg='white'
+                                    height='450px'
+                                    borderRadius='2xl'
+                                    boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
                                     display="grid"
-                                    gridTemplateColumns="1fr 1fr" // Two columns
+                                    gridTemplateColumns="1fr"
                                 >
-                                    {/* SKS */}
                                     <GridItem
                                         w='90%'
-                                        h='90%'
+                                        height='450px'
                                         justifySelf='center'
                                         alignSelf='center'
-                                        padding='4px' // Add padding
+                                        padding='4px'
                                     >
                                         <LineChartEx dataSKST={dataSKST} />
                                     </GridItem>
+                                </GridItem>
 
-                                    {/* IPK */}
+                                {/* Line Chart IPK */}
+                                <GridItem
+                                    p={2}
+                                    mr='20px'
+                                    ml='20px'
+                                    w='100%'
+                                    height='450px'
+                                    bg='white'
+                                    borderRadius='2xl'
+                                    boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                    display="grid"
+                                    gridTemplateColumns="1fr"
+                                >
                                     <GridItem
                                         w='90%'
-                                        h='90%'
+                                        height='450px'
                                         justifySelf='center'
                                         alignSelf='center'
+                                        padding='4px'
                                     >
                                         <LineChartEx2 dataSKST={dataIPK} />
                                     </GridItem>
+
+                                </GridItem>
+
+                                {/* Pie Chart */}
+                                <GridItem
+                                    p={2}
+                                    w='100%'
+                                    height='450px'
+                                    bg='white'
+                                    borderRadius='2xl'
+                                    boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                    display="grid"
+                                    gridTemplateColumns="1fr"
+                                >
+                                    <GridItem
+                                        w='90%'
+                                        height='450px'
+                                        justifySelf='center'
+                                        alignSelf='center'
+                                        padding='4px'
+                                    >
+                                        <PieChartPredict dataPie={ketepatanGradTime} />
+                                    </GridItem>
+
                                 </GridItem>
 
                             </Box>
-
                         </Box>
 
-                        {/* Chart Card 2 */}
-                        <Box p={4} color='white' height='450px' marginBottom='20px' borderRadius='md'>
-                            <Grid
-                                templateColumns="1fr"
-                                templateRows="1fr"
-                                height="100%"
-                                justifyContent="center"
-                                alignItems="center"
+                        {/* Rekomendasi SKS */}
+                        <Box
+                            p={4}
+                            color='white'
+                            height='200px'
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            w='100%'
+                        >
+                            <Flex
+                                display='flex'
+                                alignItems='center'
+                                justifyContent='center'
+                                gap='2'
+                                w='100%'
+                                p={2}
+                                borderWidth='3px'
+                                borderRadius='2xl'
+                                borderColor='#7B7B7B'
+                                bg='#EFF0F1'
                             >
-                                <Center>
-                                    {/* Peringkat Ketepatan */}
-                                    <GridItem
-                                        w='40%'
-                                        h='400px'
-                                        bg='#3161A3'
-                                        borderRadius='md'
-                                        boxShadow='0px 4px 6px rgba(0, 0, 0, 0.7)' // Add this line for shadow
-                                        display='flex'
-                                        justifyContent='center'
-                                        alignItems='center'
-                                    >
-                                        <GridItem
-                                            w='100%'
-                                            h='100%'
-                                            justifySelf='center'
-                                            alignSelf='center'
-                                            padding='4px'
-                                        >
-                                            <PieChartPredict dataPie={ketepatanGradTime} />
 
-                                        </GridItem>
-                                    </GridItem>
-                                </Center>
+                                {/* Text */}
+                                <SimpleGrid
+                                    display='flex'
+                                    alignItems='center'
+                                    justifyContent='center'
+                                    columns='1'
+                                    marginTop='10px'
+                                    marginBottom='10px'
+                                    w='70%'>
+                                    <Box p='2'>
+                                        <Text color='black' fontSize='20px'>
+                                            Anda disarankan untuk mengambil <strong>minimal {sksNeeded[0].sks_needed} SKS</strong> di setiap semester selanjutnya untuk lulus tepat waktu.
+                                        </Text>
+                                    </Box>
+                                </SimpleGrid>
 
-
-                            </Grid>
+                            </Flex>
                         </Box>
                     </Box>
+
+
                 </Container>
                 <Footer />
 
