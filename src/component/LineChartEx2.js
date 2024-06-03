@@ -13,7 +13,6 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 function LineChartEx({ dataSKST }) {
-    console.log("datasss", dataSKST)
     const data = [
         {
             name: 'Sem 1',

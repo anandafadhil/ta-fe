@@ -4,10 +4,10 @@ import React, { PureComponent, useEffect, useState } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Text, Box, Center } from "@chakra-ui/react";
 import Select from "react-select";
-import { fetchDatawithYear } from '../api/fetch';
+import { fetchDatawithIDYear } from '../api/fetch';
 import '../app/styles.css';
 
-function BarChartExample2({ defaultBar, selectYear }) {
+function BarChartProdi({ defaultBar, selectYear, idProdi }) {
   const [formData, setFormData] = useState({});
   const [optionsProdi, setOptionsProdi] = useState([]);
   const [chartData, setChartData] = useState([
@@ -27,8 +27,9 @@ function BarChartExample2({ defaultBar, selectYear }) {
     setOptionsProdi(newYear);
   }, []);
   const handleChangeYear = async (selectedOption, fieldName) => {
-    const newData = await fetchDatawithYear({
-      endpoint: `/grad-time-distribution-prodi`,
+    const newData = await fetchDatawithIDYear({
+      endpoint: '/grad-time-distribution-prodi',
+      selectedIDUniv: idProdi,
       selectedYear: selectedOption.value,
     })
 
@@ -124,4 +125,4 @@ function BarChartExample2({ defaultBar, selectYear }) {
   );
 }
 
-export default BarChartExample2;
+export default BarChartProdi;

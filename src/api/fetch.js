@@ -3,7 +3,7 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-const BASE_URL = 'http://127.0.0.1:8000';
+const BASE_URL = 'https://pddikti-be-7nv4o5wmyq-uc.a.run.app';
 
 export const fetchData = async (endpoint) => {
     try {
@@ -67,14 +67,6 @@ export const fetchDatawithIDYear = async ({ endpoint, selectedIDUniv, selectedYe
 
 export const fetchTable = async ({ endpoint, data, pageSize = 5, pageNumber = 1, }) => {
     try {
-
-        // let url = `${process.env.NEXT_PUBLIC_BASEURL}${endpoint}?pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}`;
-        // if (endpoint.includes("?")) {
-        //     url = `${process.env.NEXT_PUBLIC_BASEURL}${endpoint}&pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}`;
-        // }
-        // if (endpoint === "/AuditLogs") {
-        //     url = `${process.env.NEXT_PUBLIC_BASEURL}${endpoint}?pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}&action=${action}`;
-        // }
         const url = `${BASE_URL}${endpoint}`;
 
         const response = await fetch(url, {
@@ -115,16 +107,15 @@ export const postData = async ({ endpoint, data, id }) => {
     }
 };
 
-export const postNoIDData = async ({ endpoint, data }) => {
+export const postNoIDData = async ({ endpoint, data, id }) => {
     try {
         const url = `${BASE_URL}${endpoint}`;
-        // const response = await axios.post(url, data);
         const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ data }),
+            body: JSON.stringify({ data, id }),
         });
         if (!response.ok) {
             throw new Error('Network response was not ok');

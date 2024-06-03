@@ -35,7 +35,7 @@ export default function PageComponent(props) {
 
     const handleChangeUniv = async (selectedOption, fieldName) => {
         const selected_id_univ = selectedOption.value;
-        const dataProdi = await fetchData(`/prodi/${selected_id_univ}`);
+        const dataProdi = await fetchData(`/prodi-predict/${selected_id_univ}`);
 
         const optionsProdi = dataProdi.prodi.map(([id, name]) => ({
             value: id,
@@ -81,11 +81,11 @@ export default function PageComponent(props) {
     const handleSearchClick = async () => {
         console.log('Form submitted:', formData);
         localStorage.setItem('formData', JSON.stringify(formData));
-        router.push('/PredictSingular/PredictForm');
+        router.push('/predictsingular/predictform');
     };
 
     const handleBulkPredict = async () => {
-        router.push('/PredictBulk');
+        router.push('/predictbulk');
     };
 
 

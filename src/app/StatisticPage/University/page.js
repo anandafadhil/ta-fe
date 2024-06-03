@@ -18,7 +18,7 @@ import StackedBarChart from '../../../component/StackedBarChart';
 import { fetchData, fetchDatawithIDUniv, fetchDatawithIDYear, fetchDatawithYear } from '@/src/api/fetch';
 import Swal from 'sweetalert2';
 
-export default function UniversityStatistic() {
+export default function University() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     prodiInput: '',
@@ -32,7 +32,6 @@ export default function UniversityStatistic() {
   const [newDataBar, setDataBar] = useState([]);
   const [newDataStacked, setDataStack] = useState([]);
   const [newDataPie, setDataPie] = useState([]);
-  console.log("new", newYear)
   const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
   const parsId = JSON.parse(idUnivStat)
 
@@ -42,24 +41,24 @@ export default function UniversityStatistic() {
   }
   const handleGetInfo = async () => {
     const selected_id_univ = parsId
-    const univInfo = await fetchData(`/get-univ-info/${selected_id_univ}`)
+    const univInfo = await fetchData(`/univ-information/${selected_id_univ}`)
     setUnivInfo(univInfo[0])
   }
 
   const handleGetAvgGrad = async () => {
     const selected_id_univ = parsId
-    const getAvgGrad = await fetchData(`/get-avg-grad-time-univ-filter/${selected_id_univ}`)
+    const getAvgGrad = await fetchData(`/average-grad-time-univ/${selected_id_univ}`)
     setAvgGrad(getAvgGrad)
   }
   const handleSearchClick = () => {
     const prodiID = formData.prodiInput;
     localStorage.setItem('IDPRODISTAT', JSON.stringify(prodiID));
-    router.push(`/StatisticPage/Prodi`);
+    router.push(`/statisticpage/major`);
   };
 
   const handleProdi = async () => {
     const selected_id_univ = parsId
-    const dataProdi = await fetchData(`/prodi/${selected_id_univ}`);
+    const dataProdi = await fetchData(`/prodi-vis/${selected_id_univ}`);
 
     const optionsProdi = dataProdi.prodi.map(([id, name]) => ({
       value: id,
@@ -87,7 +86,7 @@ export default function UniversityStatistic() {
 
   const handleGetBar = async () => {
     const dataBar = await fetchDatawithIDYear({
-      endpoint: '/get-dist-grad-univ-filter',
+      endpoint: '/grad-time-distribution-univ',
       selectedIDUniv: parsId,
       selectedYear: 'All',
     })
@@ -97,7 +96,7 @@ export default function UniversityStatistic() {
 
   const handleGetStacked = async () => {
     const dataStacked = await fetchDatawithIDUniv({
-      endpoint: '/get-prog-grad-time-univ-filter',
+      endpoint: '/grad-progression-univ',
       selectedIDUniv: parsId,
     })
     const transformedData = dataStacked.map(item => ({
@@ -111,7 +110,7 @@ export default function UniversityStatistic() {
 
   const handleGetPie = async () => {
     const dataPie = await fetchDatawithYear({
-      endpoint: '/get-ketepatan-grad-time-univ-filter',
+      endpoint: '/grad-timeliness-univ',
       selectedYear: parsId,
     })
     const transformedAllTimeEntry = dataPie ? {
@@ -125,7 +124,7 @@ export default function UniversityStatistic() {
   const [TableData, setTableData] = useState([]);
   const handleGetRanking = async () => {
     const dataRank = await fetchDatawithIDUniv({
-      endpoint: '/get-prodi-ranking',
+      endpoint: '/prodi-ranking',
       selectedIDUniv: parsId,
     })
     setTableData(dataRank);
@@ -198,12 +197,24 @@ export default function UniversityStatistic() {
                   </Center>
 
                   <Center>
-                    <Text fontSize="80px" color="black" fontWeight="bold">
+                    <Text
+                      fontSize="80px"
+                      color="black"
+                      fontWeight="bold"
+                      sx={{ filter: 'blur(20px)' }}
+                    >
                       {dataUnivInfo.nm_univ}
                     </Text>
                   </Center>
                   <Center>
-                    <Text lineHeight='10px' fontSize="26px" color="black" fontWeight="bold">
+                    <Text
+                      lineHeight='10px'
+                      fontSize="26px"
+                      color="black"
+                      fontWeight="bold"
+                      sx={{ filter: 'blur(20px)' }}
+
+                    >
                       {dataUnivInfo.provinsi_label} | Tahun berdiri {dataUnivInfo.thn}
                     </Text>
                   </Center>
@@ -494,7 +505,7 @@ export default function UniversityStatistic() {
                   alignSelf='center'
                   padding='4px'
                 >
-                  <PieChartUniv  dataPie={newDataPie} />
+                  <PieChartUniv dataPie={newDataPie} />
                 </GridItem>
 
               </GridItem>
@@ -505,7 +516,7 @@ export default function UniversityStatistic() {
 
           {/* Ranking Prodi */}
           <Box w='60%%'>
-            <Box  p={4} color='white' marginTop='30px' borderRadius='md'>
+            <Box p={4} color='white' marginTop='30px' borderRadius='md'>
               <GridItem
                 w='80%%'
               >
@@ -529,7 +540,7 @@ export default function UniversityStatistic() {
                       {TableData.map((dataTable, index) => (
                         <tr key={index} className='mb-2  pb-[60px]'>
                           <td className="px-6 py-4 text-center">{dataTable.position}</td>
-                          <td className="px-6 py-4 text-left">{dataTable.nm_prodi}</td>
+                          <td className="px-6 py-4 text-left blur-lg">{dataTable.nm_prodi}</td>
                           <td className="px-6 py-4 text-left">{(dataTable.persentase * 100).toFixed(1)}%</td>
                         </tr>
                       ))}

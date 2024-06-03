@@ -18,8 +18,6 @@ import StackedBarChart from "../../component/StackedBarChart"
 import GeoChartExample from "../../component/GeoChartExample"
 import PieChartExample from "../../component/PieChartExample"
 import Footer from "../../component/footer"
-// import { UniversityStatistic } from "./University/page"
-
 
 import '../styles.css';
 import { fetchDatawithYear } from "@/src/api/fetch";
@@ -27,11 +25,10 @@ import { fetchDatawithYear } from "@/src/api/fetch";
 export default function PageComponent(props) {
   const router = useRouter();
   const { data, selectYear, totalProdi, totalUniv, avgYearAllUniv, dataPie, dataStacked, defaultBar, defaultGeo } = props;
-
   const handleSearchClick = () => {
     const univID = formData.univInput;
     localStorage.setItem('IDUNIVSTAT', JSON.stringify(univID));
-    router.push(`/StatisticPage/University`);
+    router.push(`/statisticpage/university`);
   };
 
   const [formData, setFormData] = useState({
@@ -76,7 +73,7 @@ export default function PageComponent(props) {
   const [chartData, setChartData] = useState("" || defaultGeo)
   const handleChangeYear = async (selectedOption, fieldName) => {
     const newData = await fetchDatawithYear({
-      endpoint: `/get-geochart`,
+      endpoint: `/geochart`,
       selectedYear: selectedOption.value,
     })
 

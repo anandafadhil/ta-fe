@@ -122,8 +122,7 @@ export default function PageComponent() {
                 margin={0}
                 bg='#EFF0F1'
                 maxWidth='100vw'
-                w='100%'
-                h={`${perPage === 5 ? '100vh' : '100%'}`}>
+                h={`${perPage === 5 ? '100%' : '100%'}`}>
 
                 <Box p={4} position='relative'>
                     <Center>
@@ -149,7 +148,7 @@ export default function PageComponent() {
                                     </Text>
                                 </Center>
                                 <Center>
-                                    <Text lineHeight='10px' fontSize="26px" color="black">
+                                    <Text lineHeight='10px' fontSize="26px" color="black" sx={{ filter: 'blur(15px)' }} >
                                         {prodiName} | {univName}
                                     </Text>
                                 </Center>
@@ -164,23 +163,6 @@ export default function PageComponent() {
                         <table className='bg-white border-2 w-full text-sm text-left my-4 rounded-2xl overflow-hidden shadow-md'>
                             <thead className='text-black font-bold text-[26px] px-6 py-3 text-center'>
                                 <tr className='border-2 '>
-                                    {/* {title.map((item, index) => (
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3"
-                                            key={index}
-                                            style={{
-                                                width: index === 0 ? "5px" : "",
-                                                textAlign: index === 0 ? "center" : "",
-                                            }}
-                                        >
-                                            <div className="flex items-center gap-2" key={index}>
-                                                <p>{item}</p>
-                                                <div className="w-6 relative">
-                                                </div>
-                                            </div>
-                                        </th>
-                                    ))} */}
                                     <td scope="col" className="px-6 py-3 text-center">Nomor</td>
                                     <td scope="col" className="px-6 py-3 text-left">Identifier Mahasiswa</td>
                                     <td scope="col" className="px-6 py-3 text-left">Hasil Prediksi</td>
@@ -190,31 +172,8 @@ export default function PageComponent() {
                                 {TableData !== null ? (
                                     TableData?.map((dataTable, index) => (
                                         <tr className="text-[20px]" key={index}>
-                                            {/* {param.map((item, index) => (
-                                                <td className="px-6 py-4" key={index}>
-                                                    {item === "RES" ? (
-
-                                                        dataTable[item] === "Tepat Waktu" ? (
-                                                            <p className="font-bold text-green-500">
-                                                                {dataTable[item]}
-                                                            </p>
-                                                        ) : (
-                                                            <p className="font-bold text-red-500">
-                                                                {dataTable[item]}
-                                                            </p>
-                                                        )
-
-
-                                                    ) : item === "created_date" || item === "expired_date" ? (
-                                                        formatDate(dataTable?.[item])
-                                                    ) : (
-                                                        dataTable[item]
-                                                    )}
-                                                </td>
-                                                
-                                            ))} */}
                                             <td className="px-6 py-4 text-center">{dataTable.number}</td>
-                                            <td className="px-6 py-4 text-left">{dataTable.NPM}</td>
+                                            <td className="px-6 py-4 text-left blur-lg">{dataTable.NPM}</td>
                                             <td className={`px-6 py-4 text-left font-bold ${dataTable.RES === "Tepat Waktu" ? 'text-green-400' : 'text-red-400'}`}>
                                                 {dataTable.RES}
                                             </td>
@@ -261,7 +220,7 @@ export default function PageComponent() {
                 </div>
 
                 {/* Button */}
-                <Box p={4} marginTop='20px'>
+                <Box p={4}  h='200px' marginTop='20px'>
                     <Center>
                         <Button
                             color='white'

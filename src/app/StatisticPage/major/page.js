@@ -17,16 +17,16 @@ import "../../styles.css";
 import StackedBarChart from '../../../component/StackedBarChart';
 import { fetchData, fetchDatawithIDUniv, fetchDatawithIDYear, fetchDatawithYear } from '@/src/api/fetch';
 import Swal from 'sweetalert2';
-import BarChartExample2 from '@/src/component/BarChartExample2';
+import BarChartProdi from '../../../component/BarChartProdi';
 
-export default function UniversityStatistic() {
+export default function Major() {
     const router = useRouter();
     const [formData, setFormData] = useState({
         prodiInput: '',
         prodiInputLabel: ''
     });
     const [isLoading, setIsLoading] = useState(true);
-    const [optionsProdi, setOptionsProdi] = useState([]);
+    const [idProdi, setID] = useState([]);
     const [dataProdiInfo, setProdiInfo] = useState([]);
     const [newYear, setNewYear] = useState([]);
     const [dataAvgGrad, setAvgGrad] = useState([]);
@@ -38,7 +38,7 @@ export default function UniversityStatistic() {
 
     const idProdiStat = typeof window !== 'undefined' ? localStorage.getItem("IDPRODISTAT") : undefined;
     const parsId = JSON.parse(idProdiStat)
-
+    
     const handleGetYear = async () => {
         const selectYear = await fetchData('/select-year');
         setNewYear(selectYear);
@@ -46,38 +46,37 @@ export default function UniversityStatistic() {
 
     const handleGetInfo = async () => {
         const selected_id_prodi = parsId
-        const univInfo = await fetchData(`/get-prodi-info/${selected_id_prodi}`)
+        const univInfo = await fetchData(`/prodi-information/${selected_id_prodi}`)
         setProdiInfo(univInfo)
     }
 
     const handleGetAvgGrad = async () => {
         const selected_id_prodi = parsId
-        const getAvgGrad = await fetchData(`/get-avg-grad-time-prodi-filter/${selected_id_prodi}`)
+        const getAvgGrad = await fetchData(`/average-grad-time-prodi/${selected_id_prodi}`)
 
         setAvgGrad(getAvgGrad)
     }
 
     const handleGetAvgIPK = async () => {
         const selected_id_prodi = parsId
-        const getAvgIPK = await fetchData(`/get-avg-ipk/${selected_id_prodi}`)
+        const getAvgIPK = await fetchData(`/avg-ipk/${selected_id_prodi}`)
 
         setAvgIPK(getAvgIPK)
     }
 
     const handleGetBar = async () => {
         const dataBar = await fetchDatawithIDYear({
-            endpoint: '/get-dist-grad-prodi-filter',
+            endpoint: '/grad-time-distribution-prodi',
             selectedIDUniv: parsId,
             selectedYear: 'All',
         })
-        console.log(dataBar)
-
         setDataBar(dataBar);
+        setID(parsId);
     }
 
     const handleGetSKS = async () => {
         const selected_id_prodi = parsId
-        const dataSKS = await fetchData(`/get-avg-sks/${selected_id_prodi}`)
+        const dataSKS = await fetchData(`/avg-sks/${selected_id_prodi}`)
         console.log(dataSKS)
 
         setDataSKS(dataSKS);
@@ -86,7 +85,7 @@ export default function UniversityStatistic() {
 
     const handleGetStacked = async () => {
         const dataStacked = await fetchDatawithIDUniv({
-            endpoint: '/get-prog-grad-time-prodi-filter',
+            endpoint: '/grad-progression-prodi',
             selectedIDUniv: parsId,
         })
         console.log(dataStacked)
@@ -100,7 +99,7 @@ export default function UniversityStatistic() {
 
     const handleGetPie = async () => {
         const dataPie = await fetchDatawithYear({
-            endpoint: '/get-ketepatan-grad-time-filter-prodi',
+            endpoint: '/grad-timeliness-prodi',
             selectedYear: parsId,
         })
         const transformedAllTimeEntry = dataPie ? {
@@ -176,13 +175,18 @@ export default function UniversityStatistic() {
                                     </Center>
 
                                     <Center>
-                                        <Text fontSize="80px" color="black" fontWeight="bold">
+                                        <Text
+                                            fontSize="80px"
+                                            color="black"
+                                            fontWeight="bold"
+                                            sx={{ filter: 'blur(20px)' }}
+                                        >
                                             {dataProdiInfo.nm_prodi}
                                         </Text>
                                     </Center>
                                     <Center>
-                                        <Text lineHeight='10px' fontSize="26px" color="black" fontWeight="bold">
-                                            <Text as="span" textDecoration="underline">
+                                        <Text lineHeight='10px' fontSize="26px" color="black" fontWeight="bold" sx={{ filter: 'blur(20px)' }}>
+                                            <Text as="span" >
                                                 {dataProdiInfo.nm_univ}
                                             </Text>{" "} | Tahun Berdiri {dataProdiInfo.tahun_berdiri_prodi}
                                         </Text>
@@ -324,7 +328,7 @@ export default function UniversityStatistic() {
                                     alignSelf='center'
                                     padding='4px'
                                 >
-                                    <BarChartExample2 defaultBar={newDataBar} selectYear={newYear} />
+                                    <BarChartProdi defaultBar={newDataBar} selectYear={newYear} idProdi={idProdi}/>
                                 </GridItem>
                             </GridItem>
 
@@ -455,7 +459,7 @@ export default function UniversityStatistic() {
                                         </Box>
                                         <Center >
                                             <Text fontSize='46px' fontWeight='bold'>
-                                                {dataAvgIPK[6]?.avg_ipk_overall.toFixed(2)}
+                                                {dataAvgIPK[0]?.avg_ipk_overall.toFixed(2)}
                                             </Text>
                                         </Center>
 
@@ -485,7 +489,7 @@ export default function UniversityStatistic() {
                                         </Box>
                                         <Center>
                                             <Text fontSize="46px" fontWeight="bold">
-                                                {dataAvgIPK[6]?.avg_ipk_tepat_waktu.toFixed(2)}
+                                                {dataAvgIPK[0]?.avg_ipk_tepat_waktu.toFixed(2)}
                                             </Text>
                                         </Center>
                                     </GridItem>
@@ -514,7 +518,7 @@ export default function UniversityStatistic() {
                                         </Box>
                                         <Center>
                                             <Text fontSize="46px" fontWeight="bold" >
-                                                {dataAvgIPK[6]?.avg_ipk_telat.toFixed(2)}
+                                                {dataAvgIPK[0]?.avg_ipk_telat.toFixed(2)}
                                             </Text>
                                         </Center>
 

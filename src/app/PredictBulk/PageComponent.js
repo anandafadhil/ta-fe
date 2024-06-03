@@ -19,10 +19,6 @@ import { fetchData, postData, postNoIDData } from "@/src/api/fetch";
 export default function PredictBulk(props) {
     const { data } = props;
     const router = useRouter();
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const handleUploadClick = () => {
-        router.push('/PredictBulk');
-    };
 
     const optionsUni = data.distinct_universities.map(([id, name]) => ({
         value: id,
@@ -42,21 +38,20 @@ export default function PredictBulk(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
         const retreiveBulk = await postNoIDData({
-            endpoint: `/bulk-handle/${formData.prodiInputID}`,
+            endpoint: `/predict-bulk`,
             data: OrgData.file,
+            id: formData.prodiInputID
         });
-        console.log("ret", retreiveBulk)
         localStorage.setItem('PROCESSDATAID', JSON.stringify(formData))
         localStorage.setItem('PROCESSDATA', JSON.stringify(retreiveBulk));
-        router.push('/PredictBulk/Result');
+        router.push('/predictbulk/result');
     };
 
     const [optionsProdi, setOptionsProdi] = useState([])
     const handleChangeUniv = async (selectedOption, fieldName) => {
         const selected_id_univ = selectedOption.value;
-        const dataProdi = await fetchData(`/prodi/${selected_id_univ}`);
+        const dataProdi = await fetchData(`/prodi-predict/${selected_id_univ}`);
         const optionsProdi = dataProdi.prodi.map(([id, name]) => ({
             value: id,
             label: name
@@ -198,7 +193,7 @@ export default function PredictBulk(props) {
                     >
                         <Box
                             w='40%'
-                            p={4}
+                            p={0}
                             color='white'
                             height='300px'
                             display='flex'
@@ -251,7 +246,7 @@ export default function PredictBulk(props) {
                                     fontSize='20px'
                                 >
                                     <Text color='black'>
-                                        1. Unduh <Link as="button" onClick={handleDownload} color="blue.500" textDecoration="underline">template</Link> ini.
+                                        1. Unduh <Link as="button" onClick={handleDownload} color="blue.500" textDecoration="underline"><em>template</em></Link> ini.
                                     </Text>
                                     <Text color='black'>
                                         2. Isi dengan data akademik masing-masing mahasiswa.

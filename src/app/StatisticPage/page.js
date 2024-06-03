@@ -2,27 +2,27 @@ import { fetchData, fetchDatawithYear } from "../../api/fetch"
 import PageComponent from "./PageComponent"
 
 export default async function Page() {
-    const data = await fetchData('/univ-name');
+    const data = await fetchData('/univ-vis');
 
     const selectYear = await fetchData('/select-year');
 
-    const totalProdi = await fetchData('/get-total-prodi');
+    const totalProdi = await fetchData('/total-prodi');
 
-    const totalUniv = await fetchData('/get-total-univ');
+    const totalUniv = await fetchData('/total-univ');
 
-    const avgYearAllUniv = await fetchData('/get-avg-grad-time-univ-all')
+    const avgYearAllUniv = await fetchData('/average-grad-time')
 
-    const dataPie = await fetchData('/get-ketepatan-grad-time-univ-all')
+    const dataPie = await fetchData('/grad-timeliness')
 
-    const dataStacked = await fetchData('/get-prog-grad-time-univ-all')
+    const dataStacked = await fetchData('/grad-progression')
 
     const defaultBar = await fetchDatawithYear({
-        endpoint: '/get-dist-grad-univ-all',
+        endpoint: '/grad-distribution',
         selectedYear: 'All',
     })
 
     const defaultGeo = await fetchDatawithYear({
-        endpoint: '/get-geochart',
+        endpoint: '/geochart',
         selectedYear: 'All',
     })
 

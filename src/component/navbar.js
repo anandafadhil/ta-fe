@@ -24,11 +24,11 @@ export default function Navbar() {
 
                 {/* Links Section */}
                 <Flex align='center' justify='center'>
-                    <Link href='/StatisticPage' fontSize='20px' px='2' fontWeight='bold' color='black'>
+                    <Link href='/statisticpage' fontSize='20px' px='2' fontWeight='bold' color='black'>
                         Statistik
                     </Link>
                     <Divider orientation='vertical' borderWidth='1px' borderColor='black' height='30px' mx='2' />
-                    <Link href='/PredictSingular' fontSize='20px' px='2' fontWeight='bold' color='black'>
+                    <Link href='/predictsingular' fontSize='20px' px='2' fontWeight='bold' color='black'>
                         Prediksi Ketepatan Waktu Lulus
                     </Link>
                 </Flex>

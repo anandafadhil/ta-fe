@@ -19,45 +19,45 @@ export default function PredictForm() {
     const univOld = JSON.parse(localStorage.getItem('formData'));
     const router = useRouter();
     const [formDataSKS, setFormDataSKS] = useState({
-        sem1sksSemester: '',
-        sem1sksDPO: '',
-        sem1ipsKumulatif: '',
-        sem2sksSemester: '',
-        sem2sksDPO: '',
-        sem2ipsKumulatif: '',
-        sem3sksSemester: '',
-        sem3sksDPO: '',
-        sem3ipsKumulatif: '',
-        sem4sksSemester: '',
-        sem4sksDPO: '',
-        sem4ipsKumulatif: '',
+        IPK_sem_1: "",
+        IPK_sem_2: "",
+        IPK_sem_3: "",
+        IPK_sem_4: "",
+        SKS_sem_1: "",
+        SKS_sem_2: "",
+        SKS_sem_3: "",
+        SKS_sem_4: "",
+        SKSL_sem_1: "",
+        SKSL_sem_2: "",
+        SKSL_sem_3: "",
+        SKSL_sem_4: ""
     });
     console.log(formDataSKS)
 
     const handleSubmit = async () => {
         const univOld = JSON.parse(localStorage.getItem('formData'));
         const sks = await postData({
-            endpoint: `/sks-handle`,
+            endpoint: `/predict`,
             data: formDataSKS,
             id: univOld.prodiInputID,
         });
         const skst = await postData({
-            endpoint: `/get-sks-total`,
+            endpoint: `/total-sks`,
             data: formDataSKS,
             id: univOld.prodiInputID,
         });
         const ipk = await postData({
-            endpoint: `/get-ipk-total`,
+            endpoint: `/total-ipk`,
             data: formDataSKS,
             id: univOld.prodiInputID,
         });
         const sksNeeded = await postData({
-            endpoint: `/get-sks-needed`,
+            endpoint: `/sks-needed`,
             data: formDataSKS,
             id: univOld.prodiInputID,
         });
         const ketepatanGradTime = await fetchDatawithIDUniv({
-            endpoint: `/get-ketepatan-grad-time`,
+            endpoint: `/grad-timeliness-prodi`,
             selectedIDUniv: univOld.prodiInputID,
         });
         localStorage.setItem('PREDICTRES', JSON.stringify(sks));
@@ -66,7 +66,7 @@ export default function PredictForm() {
         localStorage.setItem('SKSNEEDED', JSON.stringify(sksNeeded));
         localStorage.setItem('GRADTIME', JSON.stringify(ketepatanGradTime));
 
-        router.push('/PredictSingular/Result');
+        router.push('/predictSingular/result');
 
     };
 
@@ -131,7 +131,7 @@ export default function PredictForm() {
                             alignItems='center'
                             justifyContent='center'
                             gap='2'
-                            w='100%'
+                            w='80%'
                             p={2}
                             borderWidth='3px'
                             borderRadius='2xl'
@@ -149,7 +149,7 @@ export default function PredictForm() {
                                 marginBottom='10px'
                                 w='70%'>
                                 <Box p='2'>
-                                    <Text color='black' fontSize='20px' fontWeight='bold'>
+                                    <Text color='black' fontSize='20px' fontWeight='bold' sx={{ filter: 'blur(20px)' }}>
                                         {univOld.prodiInput} | {univOld.univInput}
                                     </Text>
                                 </Box>
@@ -161,8 +161,11 @@ export default function PredictForm() {
                     <Box w='100%'>
                         {/* IP Input */}
                         <form onSubmit={handleSubmit}>
-                            <Box p={4} color='black' height='auto' marginTop='50px' borderRadius='md'>
-                                <Grid templateColumns='repeat(4, 1fr)' gap={6}>
+                            
+                            <Box w='100%' p={4} color='black' height='auto' marginTop='50px' borderRadius='md'                                            display="flex"
+                                            alignItems="center"
+                                            justifyContent="center">
+                                <Grid templateColumns='repeat(4, 1fr)' w='80%' gap={6}>
 
                                     {/* Semester 1 */}
                                     <GridItem
@@ -204,8 +207,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem1sksSemester"
-                                                        value={formDataSKS.sem1sksSemester}
+                                                        name="SKS_sem_1"
+                                                        value={formDataSKS.SKS_sem_1}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -225,8 +228,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem1sksDPO"
-                                                        value={formDataSKS.sem1sksDPO}
+                                                        name="SKSL_sem_1"
+                                                        value={formDataSKS.SKSL_sem_1}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -246,8 +249,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem1ipsKumulatif"
-                                                        value={formDataSKS.sem1ipsKumulatif}
+                                                        name="IPK_sem_1"
+                                                        value={formDataSKS.IPK_sem_1}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -303,8 +306,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem2sksSemester"
-                                                        value={formDataSKS.sem2sksSemester}
+                                                        name="SKS_sem_2"
+                                                        value={formDataSKS.SKS_sem_2}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -324,8 +327,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem2sksDPO"
-                                                        value={formDataSKS.sem2sksDPO}
+                                                        name="SKSL_sem_2"
+                                                        value={formDataSKS.SKSL_sem_2}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -345,8 +348,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem2ipsKumulatif"
-                                                        value={formDataSKS.sem2ipsKumulatif}
+                                                        name="IPK_sem_2"
+                                                        value={formDataSKS.IPK_sem_2}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -402,8 +405,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem3sksSemester"
-                                                        value={formDataSKS.sem3sksSemester}
+                                                        name="SKS_sem_3"
+                                                        value={formDataSKS.SKS_sem_3}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -423,8 +426,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem3sksDPO"
-                                                        value={formDataSKS.sem3sksDPO}
+                                                        name="SKSL_sem_3"
+                                                        value={formDataSKS.SKSL_sem_3}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -444,8 +447,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem3ipsKumulatif"
-                                                        value={formDataSKS.sem3ipsKumulatif}
+                                                        name="IPK_sem_3"
+                                                        value={formDataSKS.IPK_sem_3}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -501,8 +504,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem4sksSemester"
-                                                        value={formDataSKS.sem4sksSemester}
+                                                        name="SKS_sem_4"
+                                                        value={formDataSKS.SKS_sem_4}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -522,8 +525,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem4sksDPO"
-                                                        value={formDataSKS.sem4sksDPO}
+                                                        name="SKSL_sem_4"
+                                                        value={formDataSKS.SKSL_sem_4}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',
@@ -543,8 +546,8 @@ export default function PredictForm() {
                                                 <Box p='2' w='20%'>
                                                     <input
                                                         type="text"
-                                                        name="sem4ipsKumulatif"
-                                                        value={formDataSKS.sem4ipsKumulatif}
+                                                        name="IPK_sem_4"
+                                                        value={formDataSKS.IPK_sem_4}
                                                         onChange={handleChange}
                                                         style={{
                                                             width: '100%',

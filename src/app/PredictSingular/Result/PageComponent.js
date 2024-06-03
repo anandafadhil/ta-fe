@@ -4,7 +4,6 @@ import {
     ChakraProvider, Container, Flex, Center, Text,
     Box, GridItem, Grid, SimpleGrid
 } from "@chakra-ui/react";
-import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
 import PieChartPredict from "../../../component/PieChartPredict";
@@ -89,7 +88,7 @@ export default function PageComponent(props) {
                                     </Text>
                                 </Box>
                                 <Box mb='35px' display="flex" alignItems="center" justifyContent="center">
-                                    <Text lineHeight='20px' fontSize="40px" color='white'>
+                                    <Text lineHeight='20px' fontSize="40px" color='white' sx={{ filter: 'blur(20px)' }}>
                                         {univProdi.prodiInput} | {univProdi.univInput}
                                     </Text>
                                 </Box>

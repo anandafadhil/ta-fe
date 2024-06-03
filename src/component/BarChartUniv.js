@@ -31,7 +31,7 @@ function BarChartUniv({ defaultBar, selectYear }) {
 
   const handleChangeYear = async (selectedOption, fieldName) => {
     const newData = await fetchDatawithIDYear({
-      endpoint: `/get-dist-grad-univ-filter`,
+      endpoint: `/grad-time-distribution-univ`,
       selectedIDUniv: parsId,
       selectedYear: selectedOption.value,
     })
