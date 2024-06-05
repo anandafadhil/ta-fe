@@ -28,7 +28,7 @@ export default function Navbar() {
                         Statistik
                     </Link>
                     <Divider orientation='vertical' borderWidth='1px' borderColor='black' height='30px' mx='2' />
-                    <Link href='/predictsingular' fontSize='20px' px='2' fontWeight='bold' color='black'>
+                    <Link href='/predict' fontSize='20px' px='2' fontWeight='bold' color='black'>
                         Prediksi Ketepatan Waktu Lulus
                     </Link>
                 </Flex>
