@@ -18,9 +18,18 @@ function BarChartUniv({ defaultBar, selectYear }) {
     { name: '6.0', jumlahMahasiswa: defaultBar[0].jml_mhs_lulus_60 },
   ]);
 
-  const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
-  const parsId = JSON.parse(idUnivStat)
-  console.log("tahunn", selectYear)
+  // const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
+  // const parsId = JSON.parse(idUnivStat)
+
+  const [parsId, setKetepatanGrad] = useState([])
+
+  useEffect(() => {
+      if (typeof window !== "undefined") {
+          const idUniv = JSON.parse(localStorage.getItem('IDUNIVSTAT'));
+          setKetepatanGrad(idUniv);
+
+      }
+  }, []);
   useEffect(() => {
     const newYear = selectYear.map(item => ({
       value: item.value_tahun,

@@ -32,8 +32,18 @@ export default function University() {
   const [newDataBar, setDataBar] = useState([]);
   const [newDataStacked, setDataStack] = useState([]);
   const [newDataPie, setDataPie] = useState([]);
-  const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
-  const parsId = JSON.parse(idUnivStat)
+  const [parsId, setIDUniv] = useState([])
+
+
+  useEffect(() => {
+      if (typeof window !== "undefined") {
+          const idUnivStat = JSON.parse(localStorage.getItem('IDUNIVSTAT'));
+          setIDUniv(idUnivStat);
+
+      }
+  }, []);
+  // const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
+  // const parsId = JSON.parse(idUnivStat)
 
   const handleGetYear = async () => {
     const selectYear = await fetchData('/select-year');
