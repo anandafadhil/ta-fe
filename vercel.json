@@ -1,16 +1,6 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "app/**/*.{js,jsx,ts,tsx}",
-        "use": "@vercel/next"
-      }
-    ],
     "rewrites": [
-      { "source": "/statisticpage", "destination": "/statisticpage" },
-      { "source": "/statisticpage/:path*", "destination": "/statisticpage/:path*" },
-      { "source": "/predictbulk/result", "destination": "/predictbulk/result" },
-      { "source": "/predictsingular/predictform", "destination": "/predictsingular/predictform" },
-      { "source": "/predictsingular/result", "destination": "/predictsingular/result" }
+        {"source": "/", "destination": "/"},
+        {"source": "/statisticpage", "destination": "/statisticpage"}
     ]
-  }
+}
