@@ -9,9 +9,9 @@ import {
 import Navbar from '@/src/component/navbar';
 import { useRouter } from 'next/navigation'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import generateExcel from '../../../../component/GenerateExcel';
+import generateExcel from '@/src/component/GenerateExcel';
 import Footer from '@/src/component/footer';
-import '../../styles.css';
+import '@/src/app/styles.css';
 import ReactPaginate from 'react-paginate';
 import React, { useEffect, useState } from "react";
 import { fetchTable } from '@/src/api/fetch';

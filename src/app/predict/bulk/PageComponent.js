@@ -7,12 +7,11 @@ import {
     SimpleGrid, useDisclosure, Link,
     ListItem, ListIcon
 } from "@chakra-ui/react";
-import { MdCheckCircle } from 'react-icons/md';
 import Select from "react-select";
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
-import '../styles.css';
+import "@/src/app/styles.css"
 import Footer from "@/src/component/footer";
 import { fetchData, postData, postNoIDData } from "@/src/api/fetch";
 

@@ -6,41 +6,13 @@ import {
 } from "@chakra-ui/react";
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
-import PieChartPredict from "../../../../component/PieChartPredict";
-import LineChartEx from "../../../../component/LineChartEx";
-import LineChartEx2 from "../../../../component/LineChartEx2";
-import '../../styles.css';
+import PieChartPredict from "@/src/component/PieChartPredict";
+import LineChartEx from "@/src/component/LineChartEx";
+import LineChartEx2 from "@/src/component/LineChartEx2";
+import '@/src/app/styles.css';
 import Footer from "@/src/component/footer";
 
 export default function PageComponent() {
-    // const univProdi =
-    //     typeof window !== "undefined"
-    //         ? JSON.parse(localStorage.getItem("formData"))
-    //         : "";
-
-    // const dataSKST =
-    //     typeof window !== "undefined"
-    //         ? JSON.parse(localStorage.getItem("SKST"))
-    //         : "";
-
-    // const dataIPK =
-    //     typeof window !== "undefined"
-    //         ? JSON.parse(localStorage.getItem("IPKT"))
-    //         : "";
-
-    // const predictResult =
-    //     typeof window !== "undefined"
-    //         ? JSON.parse(localStorage.getItem("PREDICTRES")).prediction
-    //         : "";
-    // const sksNeeded =
-    //     typeof window !== "undefined"
-    //         ? JSON.parse(localStorage.getItem("SKSNEEDED"))
-    //         : "";
-    //         console.log("a", sksNeeded)
-    // const ketepatanGradTime =
-    //     typeof window !== "undefined"
-    //         ? JSON.parse(localStorage.getItem("GRADTIME"))
-    //         : "";
     const [univProdi, setUnivProdi] = useState({});
     const [dataSKST, setDataSKST] = useState([]);
     const [dataIPK, setDataIPK] = useState([]);
@@ -63,12 +35,7 @@ export default function PageComponent() {
 
         fetchLocalStorageData();
     }, []);
-    // const univProdi = JSON.parse(localStorage.getItem('formData'));
-    // const dataSKST = JSON.parse(localStorage.getItem('SKST'));
-    // const dataIPK = JSON.parse(localStorage.getItem('IPKT'));
-    // const predictResult = JSON.parse(localStorage.getItem('PREDICTRES')).prediction;
-    // const sksNeeded = JSON.parse(localStorage.getItem('SKSNEEDED'));
-    // const ketepatanGradTime = JSON.parse(localStorage.getItem('GRADTIME'));
+
     const lulusHandler = () => {
         if (predictResult === true) {
             return " Tepat Waktu";
