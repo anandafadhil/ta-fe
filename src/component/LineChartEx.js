@@ -16,23 +16,23 @@ function LineChartEx({ dataSKST }) {
     const data = [
         {
             name: 'Sem 1',
-            uv: dataSKST[0].avg_skst_sem1,
-            pv: dataSKST[1].skst_sem1,
+            uv: dataSKST[0]?.avg_skst_sem1,
+            pv: dataSKST[1]?.skst_sem1,
         },
         {
             name: 'Sem 2',
-            uv: dataSKST[0].avg_skst_sem2,
-            pv: dataSKST[1].skst_sem2,
+            uv: dataSKST[0]?.avg_skst_sem2,
+            pv: dataSKST[1]?.skst_sem2,
         },
         {
             name: 'Sem 3',
-            uv: dataSKST[0].avg_skst_sem3,
-            pv: dataSKST[1].skst_sem3,
+            uv: dataSKST[0]?.avg_skst_sem3,
+            pv: dataSKST[1]?.skst_sem3,
         },
         {
             name: 'Sem 4',
-            uv: dataSKST[0].avg_skst_sem4,
-            pv: dataSKST[1].skst_sem4,
+            uv: dataSKST[0]?.avg_skst_sem4,
+            pv: dataSKST[1]?.skst_sem4,
         },
     ];
 

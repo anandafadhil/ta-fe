@@ -13,35 +13,56 @@ import '../../styles.css';
 import Footer from "@/src/component/footer";
 
 export default function PageComponent() {
-    const univProdi =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("formData"))
-            : "";
+    // const univProdi =
+    //     typeof window !== "undefined"
+    //         ? JSON.parse(localStorage.getItem("formData"))
+    //         : "";
 
-    const dataSKST =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("SKST"))
-            : "";
+    // const dataSKST =
+    //     typeof window !== "undefined"
+    //         ? JSON.parse(localStorage.getItem("SKST"))
+    //         : "";
 
-    const dataIPK =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("IPKT"))
-            : "";
+    // const dataIPK =
+    //     typeof window !== "undefined"
+    //         ? JSON.parse(localStorage.getItem("IPKT"))
+    //         : "";
 
-    const predictResult =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("PREDICTRES")).prediction
-            : "";
-    const sksNeeded =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("SKSNEEDED"))
-            : "";
-            console.log("a", sksNeeded)
-    const ketepatanGradTime =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("GRADTIME"))
-            : "";
+    // const predictResult =
+    //     typeof window !== "undefined"
+    //         ? JSON.parse(localStorage.getItem("PREDICTRES")).prediction
+    //         : "";
+    // const sksNeeded =
+    //     typeof window !== "undefined"
+    //         ? JSON.parse(localStorage.getItem("SKSNEEDED"))
+    //         : "";
+    //         console.log("a", sksNeeded)
+    // const ketepatanGradTime =
+    //     typeof window !== "undefined"
+    //         ? JSON.parse(localStorage.getItem("GRADTIME"))
+    //         : "";
+    const [univProdi, setUnivProdi] = useState({});
+    const [dataSKST, setDataSKST] = useState([]);
+    const [dataIPK, setDataIPK] = useState([]);
+    const [predictResult, setPredictResult] = useState(false);
+    const [sksNeeded, setSksNeeded] = useState([{ sks_needed: 0 }]);
+    const [ketepatanGradTime, setKetepatanGradTime] = useState([]);
 
+    useEffect(() => {
+        const fetchLocalStorageData = () => {
+            if (typeof window !== "undefined") {
+                setUnivProdi(JSON.parse(localStorage.getItem("formData")) || {});
+                setDataSKST(JSON.parse(localStorage.getItem("SKST")) || []);
+                setDataIPK(JSON.parse(localStorage.getItem("IPKT")) || []);
+                const predictData = JSON.parse(localStorage.getItem("PREDICTRES"));
+                setPredictResult(predictData ? predictData.prediction : false);
+                setSksNeeded(JSON.parse(localStorage.getItem("SKSNEEDED")) || [{ sks_needed: 0 }]);
+                setKetepatanGradTime(JSON.parse(localStorage.getItem("GRADTIME")) || []);
+            }
+        };
+
+        fetchLocalStorageData();
+    }, []);
     // const univProdi = JSON.parse(localStorage.getItem('formData'));
     // const dataSKST = JSON.parse(localStorage.getItem('SKST'));
     // const dataIPK = JSON.parse(localStorage.getItem('IPKT'));
@@ -242,7 +263,7 @@ export default function PageComponent() {
                                     w='70%'>
                                     <Box p='2'>
                                         <Text color='black' fontSize='20px'>
-                                            Anda disarankan untuk mengambil <strong>minimal {sksNeeded[0].sks_needed} SKS</strong> di setiap semester selanjutnya untuk lulus tepat waktu.
+                                            Anda disarankan untuk mengambil <strong>minimal {sksNeeded[0]?.sks_needed} SKS</strong> di setiap semester selanjutnya untuk lulus tepat waktu.
                                         </Text>
                                     </Box>
                                 </SimpleGrid>
