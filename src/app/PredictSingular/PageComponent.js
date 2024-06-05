@@ -3,8 +3,7 @@
 import {
     ChakraProvider, VStack, Container,
     Flex, Spacer, Center, Square, Text,
-    Box, Grid, GridItem, Button, Input,
-    SimpleGrid, InputSelect,
+    Box, Button, Input, SimpleGrid, 
 } from "@chakra-ui/react";
 import Select from "react-select";
 // import AsyncSelect from 'react-select/async';

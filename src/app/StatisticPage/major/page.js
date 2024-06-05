@@ -36,9 +36,18 @@ export default function Major() {
     const [newDataStacked, setDataStack] = useState([]);
     const [newDataPie, setDataPie] = useState([]);
 
-    const idProdiStat = typeof window !== 'undefined' ? localStorage.getItem("IDPRODISTAT") : undefined;
-    const parsId = JSON.parse(idProdiStat)
-    
+    // const idProdiStat = typeof window !== 'undefined' ? localStorage.getItem("IDPRODISTAT") : undefined;
+    // const parsId = JSON.parse(idProdiStat)
+    const [parsId, setIDProdi] = useState([])
+
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const idProdiStat = JSON.parse(localStorage.getItem('IDPRODISTAT'));
+            setIDProdi(idProdiStat);
+
+        }
+    }, []);
     const handleGetYear = async () => {
         const selectYear = await fetchData('/select-year');
         setNewYear(selectYear);

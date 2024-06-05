@@ -6,9 +6,9 @@ const Footer = () => {
     <Box color="white" w="100%" p={4} mt={0}>
       <Container maxW="container.xl">
         <VStack spacing={1}>
-          <Text color='black' fontSize="sm">© {new Date().getFullYear()} PredictApp. All rights reserved.</Text>
-          <Text color='black' fontSize="xs">
-            Designed by <Link color="teal.500" href="https://pddikti.kemdikbud.go.id/">PDDIKTI</Link>
+          <Text color='black' fontSize="sm">End to End Machine Learning, Analisis, dan Visualisasi Data Pendidikan Tinggi Indonesia</Text>
+          <Text color='black' fontSize="sm">
+            © 2024
           </Text>
         </VStack>
       </Container>

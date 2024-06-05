@@ -16,18 +16,34 @@ import ReactPaginate from 'react-paginate';
 import React, { useEffect, useState } from "react";
 import { fetchTable } from '@/src/api/fetch';
 
-
 export default function PageComponent() {
     const router = useRouter();
 
-    // Lulus Text
-    const lulus = true;
-    const univName = JSON.parse(localStorage.getItem('PROCESSDATAID')).univInput;
-    const prodiName = JSON.parse(localStorage.getItem('PROCESSDATAID')).prodiInput;
+    const univName =
+        typeof window !== "undefined"
+            ? JSON.parse(localStorage.getItem("PROCESSDATAID")).univInput
+            : "";
+    const prodiName =
+        typeof window !== "undefined"
+            ? JSON.parse(localStorage.getItem("PROCESSDATAID")).prodiInput
+            : "";
+    const processData =
+        typeof window !== "undefined"
+            ? JSON.parse(localStorage.getItem("PROCESSDATA"))
+            : "";
 
-    const length = localStorage.getItem('PROCESSDATA');
-    const processedLength = JSON.parse(length);
-    const [totalData, setTotalData] = useState(processedLength?.data?.length || 0)
+    // const [processData, setProcessedData] = useState([])
+    // const univName = JSON.parse(localStorage.getItem('PROCESSDATAID')).univInput;
+    // const prodiName = JSON.parse(localStorage.getItem('PROCESSDATAID')).prodiInput;
+    // const length = localStorage.getItem('PROCESSDATA');
+    // useEffect(() => {
+    //     if (typeof window !== "undefined") {
+    //         const storedFormData = JSON.parse(localStorage.getItem('PROCESSDATA'));
+    //         setProcessedData(storedFormData);
+    //     }
+    // }, []);
+    // const processedLength = JSON.parse(length);
+    const [totalData, setTotalData] = useState(processData?.data?.length || 0)
     const [TableData, setTableData] = useState([]);
     const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
@@ -220,7 +236,7 @@ export default function PageComponent() {
                 </div>
 
                 {/* Button */}
-                <Box p={4}  h='200px' marginTop='20px'>
+                <Box p={4} h='200px' marginTop='20px'>
                     <Center>
                         <Button
                             color='white'

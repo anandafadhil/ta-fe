@@ -16,7 +16,11 @@ import Footer from "@/src/component/footer";
 import { fetchDatawithIDUniv, postData } from "@/src/api/fetch";
 
 export default function PredictForm() {
-    const univOld = JSON.parse(localStorage.getItem('formData'));
+    // const [univOld, setUnivOld] = useState(null);
+    const univOld =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("formData"))
+      : "";    
     const router = useRouter();
     const [formDataSKS, setFormDataSKS] = useState({
         IPK_sem_1: "",
@@ -32,10 +36,8 @@ export default function PredictForm() {
         SKSL_sem_3: "",
         SKSL_sem_4: ""
     });
-    console.log(formDataSKS)
 
     const handleSubmit = async () => {
-        const univOld = JSON.parse(localStorage.getItem('formData'));
         const sks = await postData({
             endpoint: `/predict`,
             data: formDataSKS,
@@ -56,6 +58,7 @@ export default function PredictForm() {
             data: formDataSKS,
             id: univOld.prodiInputID,
         });
+        console.log(sksNeeded)
         const ketepatanGradTime = await fetchDatawithIDUniv({
             endpoint: `/grad-timeliness-prodi`,
             selectedIDUniv: univOld.prodiInputID,
@@ -66,7 +69,7 @@ export default function PredictForm() {
         localStorage.setItem('SKSNEEDED', JSON.stringify(sksNeeded));
         localStorage.setItem('GRADTIME', JSON.stringify(ketepatanGradTime));
 
-        router.push('/predictSingular/result');
+        router.push('/predictsingular/result');
 
     };
 
@@ -161,10 +164,10 @@ export default function PredictForm() {
                     <Box w='100%'>
                         {/* IP Input */}
                         <form onSubmit={handleSubmit}>
-                            
-                            <Box w='100%' p={4} color='black' height='auto' marginTop='50px' borderRadius='md'                                            display="flex"
-                                            alignItems="center"
-                                            justifyContent="center">
+
+                            <Box w='100%' p={4} color='black' height='auto' marginTop='50px' borderRadius='md' display="flex"
+                                alignItems="center"
+                                justifyContent="center">
                                 <Grid templateColumns='repeat(4, 1fr)' w='80%' gap={6}>
 
                                     {/* Semester 1 */}

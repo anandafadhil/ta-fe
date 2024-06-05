@@ -40,8 +40,8 @@ export default class PieChartPredict extends PureComponent {
         const { dataPie } = this.props;
         console.log("pie", dataPie)
         const data = [
-            { name: 'Tepat Waktu', value: dataPie[0]?.avg_persentase_lulus_tepat_waktu },
-            { name: 'Tidak Tepat Waktu', value: (1 - dataPie[0]?.avg_persentase_lulus_tepat_waktu) },
+            { name: 'Tepat Waktu', value: dataPie?.avg_grad_time },
+            { name: 'Tidak Tepat Waktu', value: (1 - dataPie?.avg_grad_time) },
         ];
 
         return (
