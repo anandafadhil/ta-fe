@@ -69,7 +69,7 @@ export default function PredictForm() {
         localStorage.setItem('SKSNEEDED', JSON.stringify(sksNeeded));
         localStorage.setItem('GRADTIME', JSON.stringify(ketepatanGradTime));
 
-        router.push('/predictsingular/result');
+        router.push('/predict/singular/result');
 
     };
 

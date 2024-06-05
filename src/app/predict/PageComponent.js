@@ -80,11 +80,11 @@ export default function PageComponent(props) {
     const handleSearchClick = async () => {
         console.log('Form submitted:', formData);
         localStorage.setItem('formData', JSON.stringify(formData));
-        router.push('/predictsingular/predictform');
+        router.push('/predict/singular');
     };
 
     const handleBulkPredict = async () => {
-        router.push('/predictbulk');
+        router.push('/predict/bulk');
     };
 
 

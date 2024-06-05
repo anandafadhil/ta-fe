@@ -9,7 +9,7 @@ import {
 import Navbar from '@/src/component/navbar';
 import { useRouter } from 'next/navigation'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import generateExcel from '../../../component/GenerateExcel';
+import generateExcel from '../../../../component/GenerateExcel';
 import Footer from '@/src/component/footer';
 import '../../styles.css';
 import ReactPaginate from 'react-paginate';

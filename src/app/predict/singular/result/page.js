@@ -6,9 +6,9 @@ import {
 } from "@chakra-ui/react";
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
-import PieChartPredict from "../../../component/PieChartPredict";
-import LineChartEx from "../../../component/LineChartEx";
-import LineChartEx2 from "../../../component/LineChartEx2";
+import PieChartPredict from "../../../../component/PieChartPredict";
+import LineChartEx from "../../../../component/LineChartEx";
+import LineChartEx2 from "../../../../component/LineChartEx2";
 import '../../styles.css';
 import Footer from "@/src/component/footer";
 

@@ -28,7 +28,7 @@ export default function PageComponent(props) {
   const handleSearchClick = () => {
     const univID = formData.univInput;
     localStorage.setItem('IDUNIVSTAT', JSON.stringify(univID));
-    router.push(`/statisticpage/university`);
+    router.push(`/statistic/university`);
   };
 
   const [formData, setFormData] = useState({

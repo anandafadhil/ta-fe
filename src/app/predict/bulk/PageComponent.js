@@ -45,7 +45,7 @@ export default function PredictBulk(props) {
         });
         localStorage.setItem('PROCESSDATAID', JSON.stringify(formData))
         localStorage.setItem('PROCESSDATA', JSON.stringify(retreiveBulk));
-        router.push('/predictbulk/result');
+        router.push('/predict/bulk/result');
     };
 
     const [optionsProdi, setOptionsProdi] = useState([])
