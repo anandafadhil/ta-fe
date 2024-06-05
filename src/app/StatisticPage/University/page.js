@@ -159,7 +159,7 @@ export default function University() {
   }, []);
 
   if (isLoading) {
-    return <div></div>; // Show loading indicator while data is being fetched
+    return <div></div>; 
   }
 
 
