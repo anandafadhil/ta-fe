@@ -73,6 +73,7 @@ function LineChartEx({ dataSKST }) {
                 <Tooltip />
                 <Line type="monotone" dataKey="pv" stroke="#ffd400" activeDot={{ r: 8 }} strokeWidth={4} name="SKS Total Mahasiswa" />
                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" activeDot={{ r: 8 }} strokeWidth={4} name="Average SKS Total Prodi" />
+                <Legend/>
             </LineChart>
         </ResponsiveContainer>
     );

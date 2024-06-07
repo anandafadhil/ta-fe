@@ -78,7 +78,7 @@ export default function Home() {
           <Box
             position="absolute"
             bottom={{ base: '100px', md: '100px', lg: '100px' }}
-            left={{ base: '50%', md: '50%', lg: "12%" }}
+            left={{ base: '50%', md: '50%', lg: "12%", xl:"15%" }}
             transform="translateX(-50%)">
             <Button
               color='white'

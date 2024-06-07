@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     Box, Flex, Link, Button, Image, Divider
 } from "@chakra-ui/react";
+import { RiGraduationCapFill } from "react-icons/ri";
 
 export default function Navbar() {
     return (
@@ -9,13 +10,9 @@ export default function Navbar() {
             <Flex h='100%' align='center' justify='start'>
 
                 {/* Logo Section */}
-                <Box p='2' ml={4}>
+                <Box as="span" ml={8}>
                     <a href='/'>
-                        <Image
-                            src='/assets/logopddikti-1.png'
-                            alt='Logo PDDikti'
-                            htmlWidth='150px'
-                        />
+                        <RiGraduationCapFill size="70px" />
                     </a>
                 </Box>
 
