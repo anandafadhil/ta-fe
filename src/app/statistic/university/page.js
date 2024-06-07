@@ -32,18 +32,12 @@ export default function University() {
   const [newDataBar, setDataBar] = useState([]);
   const [newDataStacked, setDataStack] = useState([]);
   const [newDataPie, setDataPie] = useState([]);
-  const [parsId, setIDUniv] = useState([])
 
+  const parsId =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("IDUNIVSTAT"))
+      : "";
 
-  useEffect(() => {
-      if (typeof window !== "undefined") {
-          const idUnivStat = JSON.parse(localStorage.getItem('IDUNIVSTAT'));
-          setIDUniv(idUnivStat);
-
-      }
-  }, []);
-  // const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
-  // const parsId = JSON.parse(idUnivStat)
 
   const handleGetYear = async () => {
     const selectYear = await fetchData('/select-year');
@@ -63,7 +57,7 @@ export default function University() {
   const handleSearchClick = () => {
     const prodiID = formData.prodiInput;
     localStorage.setItem('IDPRODISTAT', JSON.stringify(prodiID));
-    router.push(`/statisticpage/major`);
+    router.push(`/statistic/major`);
   };
 
   const handleProdi = async () => {
@@ -169,7 +163,7 @@ export default function University() {
   }, []);
 
   if (isLoading) {
-    return <div></div>; 
+    return <div></div>;
   }
 
 

@@ -6,12 +6,11 @@ import {
     Box, Grid, GridItem, Button, Input,
     SimpleGrid, useDisclosure,
 } from "@chakra-ui/react";
-import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
 
-import '../../styles.css';
+import '@/src/app/styles.css';
 import Footer from "@/src/component/footer";
 import { fetchDatawithIDUniv, postData } from "@/src/api/fetch";
 
@@ -69,7 +68,7 @@ export default function PredictForm() {
         localStorage.setItem('SKSNEEDED', JSON.stringify(sksNeeded));
         localStorage.setItem('GRADTIME', JSON.stringify(ketepatanGradTime));
 
-        router.push('/predictsingular/result');
+        router.push('/predict/singular/result');
 
     };
 

@@ -26,7 +26,8 @@ const renderCustomizedLabelFull = ({
             fill="white"
             textAnchor={x > cx ? "start" : "end"}
             dominantBaseline="central"
-            className="text-xl font-popins font-semibold"
+            className="font-popins font-semibold"
+            style={{ fontSize: "30px" }}
         >
             {`${(percent * 100).toFixed(0)}%`}
         </text>

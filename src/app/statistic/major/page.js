@@ -35,19 +35,12 @@ export default function Major() {
     const [newDataSKS, setDataSKS] = useState([]);
     const [newDataStacked, setDataStack] = useState([]);
     const [newDataPie, setDataPie] = useState([]);
+    console.log("dataavg", dataAvgIPK)
 
-    // const idProdiStat = typeof window !== 'undefined' ? localStorage.getItem("IDPRODISTAT") : undefined;
-    // const parsId = JSON.parse(idProdiStat)
-    const [parsId, setIDProdi] = useState([])
-
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const idProdiStat = JSON.parse(localStorage.getItem('IDPRODISTAT'));
-            setIDProdi(idProdiStat);
-
-        }
-    }, []);
+    const parsId =
+        typeof window !== "undefined"
+            ? JSON.parse(localStorage.getItem("IDPRODISTAT"))
+            : "";
     const handleGetYear = async () => {
         const selectYear = await fetchData('/select-year');
         setNewYear(selectYear);
@@ -117,6 +110,12 @@ export default function Major() {
         } : null;
         setDataPie(transformedAllTimeEntry);
     }
+
+    const avgGradTime = dataAvgGrad.avg_grad_time ?? 0;
+    const avgIpkOverall = dataAvgIPK[0]?.avg_ipk_overall ?? 0;
+    const avgIpkTepatWaktu = dataAvgIPK[0]?.avg_ipk_tepat_waktu ?? 0;
+    const avgIpkTelat = dataAvgIPK[0]?.avg_ipk_telat ?? 0;
+    const tepatGradPercentage = (newDataPie?.tepat_grad * 100) ?? 0;
 
 
     useEffect(() => {
@@ -236,7 +235,7 @@ export default function Major() {
                                     </Center>
                                     <Center>
                                         <Text fontSize='20px' color='white'>
-                                            Lulus di Indonesia
+                                            Lulus di Universitas
                                         </Text>
                                     </Center>
                                 </Box>
@@ -265,7 +264,7 @@ export default function Major() {
                                 </Center>
                                 <Center>
                                     <Text fontSize="46px" fontWeight="bold" color="white">
-                                        {dataAvgGrad.avg_grad_time.toFixed(1)} Tahun
+                                        {avgGradTime.toFixed(1)} Tahun
                                     </Text>
                                 </Center>
                             </GridItem>
@@ -337,7 +336,7 @@ export default function Major() {
                                     alignSelf='center'
                                     padding='4px'
                                 >
-                                    <BarChartProdi defaultBar={newDataBar} selectYear={newYear} idProdi={idProdi}/>
+                                    <BarChartProdi defaultBar={newDataBar} selectYear={newYear} idProdi={idProdi} />
                                 </GridItem>
                             </GridItem>
 
@@ -468,7 +467,7 @@ export default function Major() {
                                         </Box>
                                         <Center >
                                             <Text fontSize='46px' fontWeight='bold'>
-                                                {dataAvgIPK[0]?.avg_ipk_overall.toFixed(2)}
+                                                {avgIpkOverall.toFixed(2)}
                                             </Text>
                                         </Center>
 
@@ -498,7 +497,7 @@ export default function Major() {
                                         </Box>
                                         <Center>
                                             <Text fontSize="46px" fontWeight="bold">
-                                                {dataAvgIPK[0]?.avg_ipk_tepat_waktu.toFixed(2)}
+                                                {avgIpkTepatWaktu.toFixed(2)}
                                             </Text>
                                         </Center>
                                     </GridItem>
@@ -527,7 +526,7 @@ export default function Major() {
                                         </Box>
                                         <Center>
                                             <Text fontSize="46px" fontWeight="bold" >
-                                                {dataAvgIPK[0]?.avg_ipk_telat.toFixed(2)}
+                                                {avgIpkTelat.toFixed(2)}
                                             </Text>
                                         </Center>
 

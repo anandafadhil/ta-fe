@@ -41,15 +41,15 @@ function LineChartEx({ dataSKST }) {
             <div>
                 <Box>
                     <Center>
-                        <Text fontSize="18px" color="#545454"  fontWeight="bold">
+                        <Text fontSize="18px" color="#545454" fontWeight="bold">
                             Perbandingan
                         </Text>
                     </Center>
 
                     <Center>
                         <Text fontSize="18px" color="#545454" fontWeight="bold">
-                            Kenaikan IPK                        
-                            </Text>
+                            Kenaikan IPK
+                        </Text>
                     </Center>
                 </Box>
                 {/* Divider */}
@@ -73,6 +73,7 @@ function LineChartEx({ dataSKST }) {
                 <Tooltip />
                 <Line type="monotone" dataKey="pv" stroke="#ffd400" activeDot={{ r: 8 }} strokeWidth={4} name="IPK Mahasiswa" />
                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" activeDot={{ r: 8 }} strokeWidth={4} name="Average IPK Prodi" />
+                <Legend />
             </LineChart>
         </ResponsiveContainer>
     );

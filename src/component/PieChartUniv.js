@@ -26,7 +26,8 @@ const renderCustomizedLabelFull = ({
             fill="white"
             textAnchor={x > cx ? "start" : "end"}
             dominantBaseline="central"
-            className="text-xl font-popins font-semibold"
+            className="font-popins font-semibold"
+            style={{ fontSize: "30px" }}
         >
             {`${(percent * 100).toFixed(0)}%`}
         </text>
@@ -56,7 +57,7 @@ export default class PieChartUniv extends PureComponent {
                             </Center>
                         </Box>
                     </Box>
-                    
+
                     {/* Divider */}
                     <Box mt="1" mb="4" height="4px" width="100%" bg="#EFF0F1"></Box>
 
