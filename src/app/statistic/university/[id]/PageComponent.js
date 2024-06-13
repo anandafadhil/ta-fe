@@ -10,65 +10,57 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import BarChartUniv from "../../../component/BarChartUniv"
-import PieChartUniv from "../../../component/PieChartUniv"
-import Footer from "../../../component/footer"
-import "../../styles.css";
-import StackedBarChart from '../../../component/StackedBarChart';
+import BarChartUniv from "@/src/component/BarChartUniv"
+import PieChartUniv from "@/src/component/PieChartUniv"
+import Footer from "@/src/component/footer"
+import "../../../styles.css"
+import StackedBarChart from '@/src/component/StackedBarChart';
 import { fetchData, fetchDatawithIDUniv, fetchDatawithIDYear, fetchDatawithYear } from '@/src/api/fetch';
 import Swal from 'sweetalert2';
+import useStore from '@/src/store';
 
-export default function University() {
+export default function University(
+  {
+    newYear,
+    dataProdi,
+    dataUnivInfo,
+    dataAvgGrad,
+    dataPie,
+    dataStacked,
+    newDataBar,
+    TableData
+  }
+) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     prodiInput: '',
     prodiInputLabel: ''
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [optionsProdi, setOptionsProdi] = useState([]);
-  const [newYear, setNewYear] = useState([]);
-  const [dataUnivInfo, setUnivInfo] = useState([]);
-  const [dataAvgGrad, setAvgGrad] = useState([]);
-  const [newDataBar, setDataBar] = useState([]);
-  const [newDataStacked, setDataStack] = useState([]);
-  const [newDataPie, setDataPie] = useState([]);
+  const setProdiID = useStore((state) => state.setProdiID);
+  const selectedID = useStore((state) => state.univID);
+  // const [optionsProdi, setOptionsProdi] = useState([]);
 
-  const parsId =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("IDUNIVSTAT"))
-      : "";
+  const newDataStacked = dataStacked.map(item => ({
+    selected_year: item.tahun_angkatan,
+    tepat_grad: item.persentase,
+    tidak_tepat_grad: 1 - item.persentase,
+  }));
 
+  const newDataPie = dataPie ? {
+    selected_year: dataPie[0].tahun_angkatan,
+    tepat_grad: dataPie[0].persentase,
+    tidak_tepat_grad: 1 - dataPie[0].persentase,
+  } : null;
 
-  const handleGetYear = async () => {
-    const selectYear = await fetchData('/select-year');
-    setNewYear(selectYear);
-  }
-  const handleGetInfo = async () => {
-    const selected_id_univ = parsId
-    const univInfo = await fetchData(`/univ-information/${selected_id_univ}`)
-    setUnivInfo(univInfo[0])
-  }
+  const optionsProdi = dataProdi.prodi.map(([id, name]) => ({
+    value: id,
+    label: name
+  }));
 
-  const handleGetAvgGrad = async () => {
-    const selected_id_univ = parsId
-    const getAvgGrad = await fetchData(`/average-grad-time-univ/${selected_id_univ}`)
-    setAvgGrad(getAvgGrad)
-  }
   const handleSearchClick = () => {
     const prodiID = formData.prodiInput;
-    localStorage.setItem('IDPRODISTAT', JSON.stringify(prodiID));
-    router.push(`/statistic/major`);
-  };
-
-  const handleProdi = async () => {
-    const selected_id_univ = parsId
-    const dataProdi = await fetchData(`/prodi-vis/${selected_id_univ}`);
-
-    const optionsProdi = dataProdi.prodi.map(([id, name]) => ({
-      value: id,
-      label: name
-    }));
-    setOptionsProdi(optionsProdi);
+    setProdiID(prodiID);
+    router.push(`/statistic/major/${prodiID}`);
   };
 
   const handleChangeProdi = async (selectedOption, fieldName) => {
@@ -88,83 +80,74 @@ export default function University() {
     }
   };
 
-  const handleGetBar = async () => {
-    const dataBar = await fetchDatawithIDYear({
-      endpoint: '/grad-time-distribution-univ',
-      selectedIDUniv: parsId,
-      selectedYear: 'All',
-    })
+  // const handleGetBar = async () => {
+  //   const dataBar = await fetchDatawithIDYear({
+  //     endpoint: '/grad-time-distribution-univ',
+  //     selectedIDUniv: parsId,
+  //     selectedYear: 'All',
+  //   })
 
-    setDataBar(dataBar);
-  }
+  //   setDataBar(dataBar);
+  // }
 
-  const handleGetStacked = async () => {
-    const dataStacked = await fetchDatawithIDUniv({
-      endpoint: '/grad-progression-univ',
-      selectedIDUniv: parsId,
-    })
-    const transformedData = dataStacked.map(item => ({
-      selected_year: item.tahun_angkatan,
-      tepat_grad: item.persentase,
-      tidak_tepat_grad: 1 - item.persentase,
-    }));
-    setDataStack(transformedData);
-  }
-
-
-  const handleGetPie = async () => {
-    const dataPie = await fetchDatawithYear({
-      endpoint: '/grad-timeliness-univ',
-      selectedYear: parsId,
-    })
-    const transformedAllTimeEntry = dataPie ? {
-      selected_year: dataPie[0].tahun_angkatan,
-      tepat_grad: dataPie[0].persentase,
-      tidak_tepat_grad: 1 - dataPie[0].persentase,
-    } : null;
-    setDataPie(transformedAllTimeEntry);
-  }
-
-  const [TableData, setTableData] = useState([]);
-  const handleGetRanking = async () => {
-    const dataRank = await fetchDatawithIDUniv({
-      endpoint: '/prodi-ranking',
-      selectedIDUniv: parsId,
-    })
-    setTableData(dataRank);
-  }
+  // const handleGetStacked = async () => {
+  //   const dataStacked = await fetchDatawithIDUniv({
+  //     endpoint: '/grad-progression-univ',
+  //     selectedIDUniv: parsId,
+  //   })
+  //   const transformedData = dataStacked.map(item => ({
+  //     selected_year: item.tahun_angkatan,
+  //     tepat_grad: item.persentase,
+  //     tidak_tepat_grad: 1 - item.persentase,
+  //   }));
+  //   setDataStack(transformedData);
+  // }
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // Show loading alert
-      Swal.fire({
-        title: 'Loading...',
-        text: 'Please wait while we fetch the data.',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
-      await handleGetYear();
-      await handleGetAvgGrad();
-      await handleGetInfo();
-      await handleProdi();
-      await handleGetBar();
-      await handleGetStacked();
-      await handleGetPie();
-      await handleGetRanking();
+  // const handleGetPie = async () => {
+  //   const dataPie = await fetchDatawithYear({
+  //     endpoint: '/grad-timeliness-univ',
+  //     selectedYear: parsId,
+  //   })
+  //   const transformedAllTimeEntry = dataPie ? {
+  //     selected_year: dataPie[0].tahun_angkatan,
+  //     tepat_grad: dataPie[0].persentase,
+  //     tidak_tepat_grad: 1 - dataPie[0].persentase,
+  //   } : null;
+  //   setDataPie(transformedAllTimeEntry);
+  // }
 
-      setIsLoading(false);
-      Swal.close();
-    };
+  // const [TableData, setTableData] = useState([]);
+  // const handleGetRanking = async () => {
+  //   const dataRank = await fetchDatawithIDUniv({
+  //     endpoint: '/prodi-ranking',
+  //     selectedIDUniv: parsId,
+  //   })
+  //   setTableData(dataRank);
+  // }
 
-    fetchData();
-  }, []);
 
-  if (isLoading) {
-    return <div></div>;
-  }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+      //     // Show loading alert
+      //     Swal.fire({
+      //       title: 'Loading...',
+      //       text: 'Please wait while we fetch the data.',
+      //       allowOutsideClick: false,
+      //       didOpen: () => {
+      //         Swal.showLoading();
+      //       }
+      //     });
+      //     setIsLoading(false);
+      //     Swal.close();
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // if (isLoading) {
+  //   return <div></div>;
+  // }
 
 
 
@@ -205,7 +188,6 @@ export default function University() {
                       fontSize="80px"
                       color="black"
                       fontWeight="bold"
-                      sx={{ filter: 'blur(20px)' }}
                     >
                       {dataUnivInfo.nm_univ}
                     </Text>
@@ -216,8 +198,6 @@ export default function University() {
                       fontSize="26px"
                       color="black"
                       fontWeight="bold"
-                      sx={{ filter: 'blur(20px)' }}
-
                     >
                       {dataUnivInfo.provinsi_label} | Tahun berdiri {dataUnivInfo.thn}
                     </Text>
@@ -544,7 +524,7 @@ export default function University() {
                       {TableData.map((dataTable, index) => (
                         <tr key={index} className='mb-2  pb-[60px]'>
                           <td className="px-6 py-4 text-center">{dataTable.position}</td>
-                          <td className="px-6 py-4 text-left blur-lg">{dataTable.nm_prodi}</td>
+                          <td className="px-6 py-4 text-left">{dataTable.nm_prodi}</td>
                           <td className="px-6 py-4 text-left">{(dataTable.persentase * 100).toFixed(1)}%</td>
                         </tr>
                       ))}

@@ -4,6 +4,7 @@ import React, { PureComponent, useEffect, useState } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Text, Box, Center } from "@chakra-ui/react";
 import Select from "react-select";
+import useStore from '@/src/store';
 import { fetchDatawithIDYear, fetchDatawithYear } from '../api/fetch';
 
 function BarChartUniv({ defaultBar, selectYear }) {
@@ -17,19 +18,21 @@ function BarChartUniv({ defaultBar, selectYear }) {
     { name: '5.5', jumlahMahasiswa: defaultBar[0].jml_mhs_lulus_55 },
     { name: '6.0', jumlahMahasiswa: defaultBar[0].jml_mhs_lulus_60 },
   ]);
+  const parsId = useStore((state) => state.univID);
+
 
   // const idUnivStat = typeof window !== 'undefined' ? localStorage.getItem("IDUNIVSTAT") : undefined;
   // const parsId = JSON.parse(idUnivStat)
 
-  const [parsId, setKetepatanGrad] = useState([])
+  // const [parsId, setKetepatanGrad] = useState([])
 
-  useEffect(() => {
-      if (typeof window !== "undefined") {
-          const idUniv = JSON.parse(localStorage.getItem('IDUNIVSTAT'));
-          setKetepatanGrad(idUniv);
+  // useEffect(() => {
+  //     if (typeof window !== "undefined") {
+  //         const idUniv = JSON.parse(localStorage.getItem('IDUNIVSTAT'));
+  //         setKetepatanGrad(idUniv);
 
-      }
-  }, []);
+  //     }
+  // }, []);
   useEffect(() => {
     const newYear = selectYear.map(item => ({
       value: item.value_tahun,
@@ -47,12 +50,12 @@ function BarChartUniv({ defaultBar, selectYear }) {
 
     if (newData) {
       const formattedData = [
-        { name: '3.5', jumlahMahasiswa: newData[0].jml_mhs_lulus_35 },
-        { name: '4.0', jumlahMahasiswa: newData[0].jml_mhs_lulus_40 },
-        { name: '4.5', jumlahMahasiswa: newData[0].jml_mhs_lulus_45 },
-        { name: '5.0', jumlahMahasiswa: newData[0].jml_mhs_lulus_50 },
-        { name: '5.5', jumlahMahasiswa: newData[0].jml_mhs_lulus_55 },
-        { name: '6.0', jumlahMahasiswa: newData[0].jml_mhs_lulus_60 },
+        { name: '3.5', jumlahMahasiswa: newData[0].jml_mhs_lulus_35.toLocaleString() },
+        { name: '4.0', jumlahMahasiswa: newData[0].jml_mhs_lulus_40.toLocaleString() },
+        { name: '4.5', jumlahMahasiswa: newData[0].jml_mhs_lulus_45.toLocaleString() },
+        { name: '5.0', jumlahMahasiswa: newData[0].jml_mhs_lulus_50.toLocaleString() },
+        { name: '5.5', jumlahMahasiswa: newData[0].jml_mhs_lulus_55.toLocaleString() },
+        { name: '6.0', jumlahMahasiswa: newData[0].jml_mhs_lulus_60.toLocaleString() },
       ];
       setChartData(formattedData);
     }

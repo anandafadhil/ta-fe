@@ -82,9 +82,8 @@ const generateExcel = async (
         const rowData = params.map(param => {
             return item[param];
         });
-        console.log("row", rowData)
         const row = worksheet.addRow([number, ...rowData]);
-        row.height = 20;
+        row.height = 50;
         row.font = { name: 'Times New Roman', size: 14 };
 
         row.getCell(1).alignment = { vertical: 'middle', horizontal: 'center' }; // Number centered
