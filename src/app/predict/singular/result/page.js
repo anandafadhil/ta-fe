@@ -5,39 +5,22 @@ import {
     Box, GridItem, Grid, SimpleGrid
 } from "@chakra-ui/react";
 import Navbar from '@/src/component/navbar';
-import React, { useEffect, useState } from "react";
 import PieChartPredict from "@/src/component/PieChartPredict";
 import LineChartEx from "@/src/component/LineChartEx";
 import LineChartEx2 from "@/src/component/LineChartEx2";
 import '@/src/app/styles.css';
 import Footer from "@/src/component/footer";
+import useStore from "@/src/store"
 
 export default function PageComponent() {
-    const [univProdi, setUnivProdi] = useState({});
-    const [dataSKST, setDataSKST] = useState([]);
-    const [dataIPK, setDataIPK] = useState([]);
-    const [predictResult, setPredictResult] = useState(false);
-    const [sksNeeded, setSksNeeded] = useState([{ sks_needed: 0 }]);
-    const [ketepatanGradTime, setKetepatanGradTime] = useState([]);
-
-    useEffect(() => {
-        const fetchLocalStorageData = () => {
-            if (typeof window !== "undefined") {
-                setUnivProdi(JSON.parse(localStorage.getItem("formData")) || {});
-                setDataSKST(JSON.parse(localStorage.getItem("SKST")) || []);
-                setDataIPK(JSON.parse(localStorage.getItem("IPKT")) || []);
-                const predictData = JSON.parse(localStorage.getItem("PREDICTRES"));
-                setPredictResult(predictData ? predictData.prediction : false);
-                setSksNeeded(JSON.parse(localStorage.getItem("SKSNEEDED")) || [{ sks_needed: 0 }]);
-                setKetepatanGradTime(JSON.parse(localStorage.getItem("GRADTIME")) || []);
-            }
-        };
-
-        fetchLocalStorageData();
-    }, []);
-
+    const univProdi = useStore((state) => state.formData);
+    const dataSKST = useStore((state) => state.skst);
+    const dataIPK = useStore((state) => state.ipk);
+    const sksNeeded = useStore((state) => state.sksNeeded) || [{ sks_needed: 0 }];
+    const ketepatanGradTime = useStore((state) => state.ketepatanWaktu);
+    const predictResult = useStore((state) => state.predictResult)
     const lulusHandler = () => {
-        if (predictResult === true) {
+        if (predictResult?.prediction === true) {
             return " Tepat Waktu";
         } else {
             return " Tidak Tepat Waktu";
@@ -97,13 +80,13 @@ export default function PageComponent() {
                                 <Box p="4" display="flex" alignItems="center" justifyContent="center" borderRadius='md'>
                                     <Text fontSize="48px" color='white' fontWeight='bold'>
                                         Anda diprediksi akan lulus
-                                        <span style={{ color: predictResult ? "#82ca9d" : "#FF6961" }}>
+                                        <span style={{ color: predictResult?.prediction ? "#82ca9d" : "#FF6961" }}>
                                             {lulusHandler()}
                                         </span> dari
                                     </Text>
                                 </Box>
                                 <Box mb='35px' display="flex" alignItems="center" justifyContent="center">
-                                    <Text lineHeight='20px' fontSize="40px" color='white' sx={{ filter: 'blur(20px)' }}>
+                                    <Text lineHeight='20px' fontSize="40px" color='white'>
                                         {univProdi.prodiInput} | {univProdi.univInput}
                                     </Text>
                                 </Box>
@@ -165,7 +148,7 @@ export default function PageComponent() {
                                         alignSelf='center'
                                         padding='4px'
                                     >
-                                        <LineChartEx2 dataSKST={dataIPK} />
+                                        <LineChartEx2 dataIPK={dataIPK} />
                                     </GridItem>
 
                                 </GridItem>

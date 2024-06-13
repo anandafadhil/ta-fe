@@ -61,7 +61,7 @@ export default function Home() {
           </Box>
 
           <Box
-            p={{base:'4px', md:'4px'}}
+            p={{ base: '4px', md: '4px' }}
             ml={{ base: '0px', md: '40px', lg: '60px' }}
             display="flex"
             flexWrap="wrap"
@@ -78,7 +78,7 @@ export default function Home() {
           <Box
             position="absolute"
             bottom={{ base: '100px', md: '100px', lg: '100px' }}
-            left={{ base: '50%', md: '50%', lg: "12%", xl:"15%" }}
+            left={{ base: '50%', md: '50%', lg: "12%", xl: "15%" }}
             transform="translateX(-50%)">
             <Button
               color='white'
@@ -115,7 +115,7 @@ export default function Home() {
       >
         {/* Left Card */}
         <GridItem
-          w={{ base: '100%', md: '50%', lg: '30%' }}
+          w={{ base: '100%', md: '50%', lg: '30%', xl:'40%' }}
           mt='30px'
           height='250px'
           bg='#EFF0F1'
@@ -128,7 +128,9 @@ export default function Home() {
           p="40px"
         >
           {/* Text Box */}
-          <Box color="black" w='70%'>
+          <Box
+            color="black"
+          >
             <Text fontSize={{ base: '18px', md: '24px' }} fontWeight="bold">
               Dapatkan petunjuk
             </Text>
@@ -139,7 +141,7 @@ export default function Home() {
 
           {/* Icon */}
           <Box
-            ml='50px'
+            ml='40px'
             display='flex'
             justifyContent="center"
             alignItems="center" w='30%'>
@@ -152,7 +154,7 @@ export default function Home() {
 
         {/* Right Card */}
         <GridItem
-          w={{ base: '100%', md: '50%', lg: '30%' }}
+          w={{ base: '100%', md: '50%', lg: '30%', xl:'40%' }}
           mt='30px'
           height='250px'
           bg='#EFF0F1'
@@ -177,7 +179,7 @@ export default function Home() {
 
           {/* Icon */}
           <Box
-            ml='50px'
+            ml='40px'
             display='flex'
             justifyContent="center"
             alignItems="center" w='30%'>

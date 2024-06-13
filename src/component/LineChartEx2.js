@@ -12,27 +12,30 @@ import {
     ReferenceLine,
     ResponsiveContainer,
 } from 'recharts';
-function LineChartEx({ dataSKST }) {
+function LineChartEx({ dataIPK }) {
+    const dataIPKArray = dataIPK || [];
+
+    console.log("a", dataIPK)
     const data = [
         {
             name: 'Sem 1',
-            uv: dataSKST[0]?.avg_ipk_sem1,
-            pv: dataSKST[1]?.ipk_sem1,
+            uv: dataIPKArray[0]?.avg_ipk_sem1,
+            pv: dataIPKArray[1]?.ipk_sem1,
         },
         {
             name: 'Sem 2',
-            uv: dataSKST[0]?.avg_ipk_sem2,
-            pv: dataSKST[1]?.ipk_sem2,
+            uv: dataIPKArray[0]?.avg_ipk_sem2,
+            pv: dataIPKArray[1]?.ipk_sem2,
         },
         {
             name: 'Sem 3',
-            uv: dataSKST[0]?.avg_ipk_sem3,
-            pv: dataSKST[1]?.ipk_sem3,
+            uv: dataIPKArray[0]?.avg_ipk_sem3,
+            pv: dataIPKArray[1]?.ipk_sem3,
         },
         {
             name: 'Sem 4',
-            uv: dataSKST[0]?.avg_ipk_sem4,
-            pv: dataSKST[1]?.ipk_sem4,
+            uv: dataIPKArray[0]?.avg_ipk_sem4,
+            pv: dataIPKArray[1]?.ipk_sem4,
         },
     ];
 

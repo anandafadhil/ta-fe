@@ -6,19 +6,19 @@ import {
     Box, Button, Input, SimpleGrid, 
 } from "@chakra-ui/react";
 import Select from "react-select";
-// import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import '@/src/app/styles.css';
 import Footer from "@/src/component/footer";
-import { fetchData, postData } from "@/src/api/fetch";
+import { fetchData } from "@/src/api/fetch";
+import useStore from "@/src/store"
 
 export default function PageComponent(props) {
     const { data } = props;
     const [optionsProdi, setOptionsProdi] = useState([])
     const router = useRouter();
-
+    const setForm = useStore((state) => state.setForm);
     const [formData, setFormData] = useState({
         univInput: '',
         univInputID: '',
@@ -79,7 +79,7 @@ export default function PageComponent(props) {
 
     const handleSearchClick = async () => {
         console.log('Form submitted:', formData);
-        localStorage.setItem('formData', JSON.stringify(formData));
+        setForm(formData);
         router.push('/predict/singular');
     };
 

@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import "@/src/app/styles.css"
 import Footer from "@/src/component/footer";
 import { fetchData, postData, postNoIDData } from "@/src/api/fetch";
+import useStore from "@/src/store"
 
 export default function PredictBulk(props) {
     const { data } = props;
@@ -23,7 +24,8 @@ export default function PredictBulk(props) {
         value: id,
         label: name
     }));
-
+    const setFormBulk = useStore((state) => state.setFormBulk);
+    const setDataBulk = useStore((state) => state.setDataBulk);
     const [formData, setFormData] = useState({
         univInput: '',
         univInputID: '',
@@ -42,8 +44,9 @@ export default function PredictBulk(props) {
             data: OrgData.file,
             id: formData.prodiInputID
         });
-        localStorage.setItem('PROCESSDATAID', JSON.stringify(formData))
-        localStorage.setItem('PROCESSDATA', JSON.stringify(retreiveBulk));
+
+        setFormBulk(formData);
+        setDataBulk(retreiveBulk);
         router.push('/predict/bulk/result');
     };
 

@@ -52,7 +52,7 @@ export default class PieChartPredict extends PureComponent {
                         <Box>
                             <Center>
                                 <Text mt='4px' mb='6px' fontSize="18px" color="#545454" fontWeight="bold">
-                                    Persentase Ketepatan Waktu Lulus Prodi                               </Text>
+                                    Persentase Ketepatan Waktu Lulus                               </Text>
                             </Center>
                         </Box>
                     </Box>

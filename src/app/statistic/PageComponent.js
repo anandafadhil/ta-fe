@@ -13,22 +13,23 @@ import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import dynamic from "next/dynamic";
-import BarChartExample2 from "../../component/BarChartExample2"
-import StackedBarChart from "../../component/StackedBarChart"
-import GeoChartExample from "../../component/GeoChartExample"
-import PieChartExample from "../../component/PieChartExample"
-import Footer from "../../component/footer"
-
+import BarChartExample2 from "@/src/component/BarChartExample2"
+import StackedBarChart from "@/src/component/StackedBarChart"
+import GeoChartExample from "@/src/component/GeoChartExample"
+import PieChartExample from "@/src/component/PieChartExample"
+import Footer from "@/src/component/footer"
+import useStore from "@/src/store"
 import '../styles.css';
 import { fetchDatawithYear } from "@/src/api/fetch";
 
 export default function PageComponent(props) {
   const router = useRouter();
   const { data, selectYear, totalProdi, totalUniv, avgYearAllUniv, dataPie, dataStacked, defaultBar, defaultGeo } = props;
+  const setUnivID = useStore((state) => state.setUnivID);
   const handleSearchClick = () => {
     const univID = formData.univInput;
-    localStorage.setItem('IDUNIVSTAT', JSON.stringify(univID));
-    router.push(`/statistic/university`);
+    setUnivID(univID);
+    router.push(`/statistic/university/${univID}`);
   };
 
   const [formData, setFormData] = useState({

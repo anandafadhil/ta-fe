@@ -1,13 +1,10 @@
 "use client"
-import Image from 'next/image';
 import {
-    ChakraProvider, VStack, Container,
-    Flex, Spacer, Center, Square, Text,
-    Box, Grid, GridItem, Button, Input,
+    ChakraProvider, Container, Center,Text,
+    Box, Button
 
 } from "@chakra-ui/react";
 import Navbar from '@/src/component/navbar';
-import { useRouter } from 'next/navigation'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import generateExcel from '@/src/component/GenerateExcel';
 import Footer from '@/src/component/footer';
@@ -15,34 +12,13 @@ import '@/src/app/styles.css';
 import ReactPaginate from 'react-paginate';
 import React, { useEffect, useState } from "react";
 import { fetchTable } from '@/src/api/fetch';
+import useStore from "@/src/store"
 
 export default function PageComponent() {
-    const router = useRouter();
-
-    const univName =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("PROCESSDATAID")).univInput
-            : "";
-    const prodiName =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("PROCESSDATAID")).prodiInput
-            : "";
-    const processData =
-        typeof window !== "undefined"
-            ? JSON.parse(localStorage.getItem("PROCESSDATA"))
-            : "";
-
-    // const [processData, setProcessedData] = useState([])
-    // const univName = JSON.parse(localStorage.getItem('PROCESSDATAID')).univInput;
-    // const prodiName = JSON.parse(localStorage.getItem('PROCESSDATAID')).prodiInput;
-    // const length = localStorage.getItem('PROCESSDATA');
-    // useEffect(() => {
-    //     if (typeof window !== "undefined") {
-    //         const storedFormData = JSON.parse(localStorage.getItem('PROCESSDATA'));
-    //         setProcessedData(storedFormData);
-    //     }
-    // }, []);
-    // const processedLength = JSON.parse(length);
+    const formBulk = useStore((state) => state.formBulk);
+    const processData = useStore((state) => state.dataBulk);
+    const univName = formBulk.univInput;
+    const prodiName = formBulk.prodiInput;
     const [totalData, setTotalData] = useState(processData?.data?.length || 0)
     const [TableData, setTableData] = useState([]);
     const [perPage, setPerPage] = useState(5);
@@ -54,8 +30,6 @@ export default function PageComponent() {
 
     const handleSubmit = async () => {
         try {
-            const storedData = localStorage.getItem('PROCESSDATA');
-            const processData = JSON.parse(storedData);
             const data = await fetchTable({
                 endpoint: '/handle-table-bulk',
                 data: processData,
@@ -77,8 +51,6 @@ export default function PageComponent() {
     };
 
     const handleTable = async () => {
-        const storedData = localStorage.getItem('PROCESSDATA');
-        const processData = JSON.parse(storedData);
         const data = await fetchTable({
             endpoint: '/handle-table-bulk',
             data: processData,
@@ -89,8 +61,6 @@ export default function PageComponent() {
     }
 
     const renewData = async () => {
-        const storedData = localStorage.getItem('PROCESSDATA');
-        const processData = JSON.parse(storedData);
         const data = await fetchTable({
             endpoint: '/handle-table-bulk',
             data: processData,
@@ -122,15 +92,6 @@ export default function PageComponent() {
         const newPage = e.selected + 1;
         setCurrentPage(newPage);
     };
-
-    useEffect(() => {
-        if (TableData) {
-            console.log("next", TableData);
-        } else {
-            console.log("TableData is not yet set or is empty");
-        }
-    }, [TableData]);
-    // console.log(TableData)
     return (
         <ChakraProvider resetCSS={false}>
             <Navbar />
@@ -164,7 +125,7 @@ export default function PageComponent() {
                                     </Text>
                                 </Center>
                                 <Center>
-                                    <Text lineHeight='10px' fontSize="26px" color="black" sx={{ filter: 'blur(15px)' }} >
+                                    <Text lineHeight='10px' fontSize="26px" color="black" >
                                         {prodiName} | {univName}
                                     </Text>
                                 </Center>
@@ -189,7 +150,7 @@ export default function PageComponent() {
                                     TableData?.map((dataTable, index) => (
                                         <tr className="text-[20px]" key={index}>
                                             <td className="px-6 py-4 text-center">{dataTable.number}</td>
-                                            <td className="px-6 py-4 text-left blur-lg">{dataTable.NPM}</td>
+                                            <td className="px-6 py-4 text-left">{dataTable.NPM}</td>
                                             <td className={`px-6 py-4 text-left font-bold ${dataTable.RES === "Tepat Waktu" ? 'text-green-400' : 'text-red-400'}`}>
                                                 {dataTable.RES}
                                             </td>

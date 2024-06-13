@@ -1,27 +1,26 @@
 "use client"
 
 import {
-    ChakraProvider, VStack, Container,
-    Flex, Spacer, Center, Square, Text,
-    Box, Grid, GridItem, Button, Input,
-    SimpleGrid, useDisclosure,
+    ChakraProvider, Container, Flex, Center, 
+    Text, Box, Grid, GridItem, Button, SimpleGrid,
 } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation'
 import Navbar from '@/src/component/navbar';
-import React, { useEffect, useState } from "react";
-
+import React, { useState } from "react";
 import '@/src/app/styles.css';
 import Footer from "@/src/component/footer";
 import { fetchDatawithIDUniv, postData } from "@/src/api/fetch";
+import useStore from "@/src/store"
 
-export default function PredictForm() {
-    // const [univOld, setUnivOld] = useState(null);
-    const univOld =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("formData"))
-      : "";    
+export default function PredictForm() {  
+    const formData = useStore((state) => state.formData);
+    const setResult = useStore((state) => state.setResult);
+    const setSKST = useStore((state) => state.setSKST);
+    const setIPK = useStore((state) => state.setIPK);
+    const setSKSNeeded = useStore((state) => state.setSKSNeeded);
+    const setKetepatan = useStore((state) => state.setKetepatan);  
     const router = useRouter();
-    const [formDataSKS, setFormDataSKS] = useState({
+    const [formDataSKS, setformDataSKS] = useState({
         IPK_sem_1: "",
         IPK_sem_2: "",
         IPK_sem_3: "",
@@ -37,44 +36,42 @@ export default function PredictForm() {
     });
 
     const handleSubmit = async () => {
-        const sks = await postData({
+        const predictRes = await postData({
             endpoint: `/predict`,
             data: formDataSKS,
-            id: univOld.prodiInputID,
+            id: formData.prodiInputID,
         });
         const skst = await postData({
             endpoint: `/total-sks`,
             data: formDataSKS,
-            id: univOld.prodiInputID,
+            id: formData.prodiInputID,
         });
         const ipk = await postData({
             endpoint: `/total-ipk`,
             data: formDataSKS,
-            id: univOld.prodiInputID,
+            id: formData.prodiInputID,
         });
         const sksNeeded = await postData({
             endpoint: `/sks-needed`,
             data: formDataSKS,
-            id: univOld.prodiInputID,
+            id: formData.prodiInputID,
         });
-        console.log(sksNeeded)
         const ketepatanGradTime = await fetchDatawithIDUniv({
             endpoint: `/grad-timeliness-prodi`,
-            selectedIDUniv: univOld.prodiInputID,
+            selectedIDUniv: formData.prodiInputID,
         });
-        localStorage.setItem('PREDICTRES', JSON.stringify(sks));
-        localStorage.setItem('SKST', JSON.stringify(skst));
-        localStorage.setItem('IPKT', JSON.stringify(ipk));
-        localStorage.setItem('SKSNEEDED', JSON.stringify(sksNeeded));
-        localStorage.setItem('GRADTIME', JSON.stringify(ketepatanGradTime));
-
+        setResult(predictRes);
+        setSKST(skst);
+        setIPK(ipk);
+        setSKSNeeded(sksNeeded);
+        setKetepatan(ketepatanGradTime);
         router.push('/predict/singular/result');
 
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormDataSKS({ ...formDataSKS, [name]: value });
+        setformDataSKS({ ...formDataSKS, [name]: value });
     };
 
     return (
@@ -151,8 +148,8 @@ export default function PredictForm() {
                                 marginBottom='10px'
                                 w='70%'>
                                 <Box p='2'>
-                                    <Text color='black' fontSize='20px' fontWeight='bold' sx={{ filter: 'blur(20px)' }}>
-                                        {univOld.prodiInput} | {univOld.univInput}
+                                    <Text color='black' fontSize='20px' fontWeight='bold'>
+                                        {formData.prodiInput} | {formData.univInput}
                                     </Text>
                                 </Box>
                             </SimpleGrid>
@@ -206,7 +203,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Diambil
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKS_sem_1"
@@ -227,7 +224,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Lulus
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKSL_sem_1"
@@ -248,7 +245,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     IPK
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="IPK_sem_1"
@@ -305,7 +302,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Diambil
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKS_sem_2"
@@ -326,7 +323,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Lulus
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKSL_sem_2"
@@ -347,7 +344,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     IPK
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="IPK_sem_2"
@@ -404,7 +401,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Diambil
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKS_sem_3"
@@ -425,7 +422,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Lulus
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKSL_sem_3"
@@ -446,7 +443,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     IPK
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="IPK_sem_3"
@@ -503,7 +500,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Diambil
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKS_sem_4"
@@ -524,7 +521,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     SKS Lulus
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="SKSL_sem_4"
@@ -545,7 +542,7 @@ export default function PredictForm() {
                                                 <Box ml='2' w='80%'>
                                                     IPK
                                                 </Box>
-                                                <Box p='2' w='20%'>
+                                                <Box p='2' w='40%'>
                                                     <input
                                                         type="text"
                                                         name="IPK_sem_4"
