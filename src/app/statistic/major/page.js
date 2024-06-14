@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import BarChartSKS from "@/src/component/BarChartSKS"
 import PieChartUniv from "@/src/component/PieChartUniv"
 import Footer from "@/src/component/footer"
-import "../../../styles.css";
+import "../../styles.css";
 import StackedBarChart from '@/src/component/StackedBarChart';
 import BarChartProdi from '@/src/component/BarChartProdi';
 import useStore from '@/src/store';
