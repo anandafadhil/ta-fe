@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 const useStore = create((set) => ({
     univID: null,
@@ -20,8 +20,11 @@ const useStore = create((set) => ({
         prodiInput: '',
         prodiInputID: '',
     },
+    formDatas: {
+        univInput: '',
+        univInputLabel: '',
+    },
     dataBulk: [],
-
 
     setUnivID: (id) => set({ univID: id }),
     setProdiID: (id) => set({ prodiID: id }),
@@ -32,7 +35,8 @@ const useStore = create((set) => ({
     setKetepatan: (id) => set({ ketepatanWaktu: id }),
     setForm: (data) => set({ formData: data }),
     setFormBulk: (data) => set({ formBulk: data }),
-    setDataBulk: (data) => set({ dataBulk: data}),
+    setDataBulk: (data) => set({ dataBulk: data }),
+    setFormDatas: (data) => set({ formDatas: data }),
 }));
 
 export default useStore;

@@ -25,30 +25,35 @@ import { fetchDatawithYear } from "@/src/api/fetch";
 export default function PageComponent(props) {
   const router = useRouter();
   const { data, selectYear, totalProdi, totalUniv, avgYearAllUniv, dataPie, dataStacked, defaultBar, defaultGeo } = props;
-  const setUnivID = useStore((state) => state.setUnivID);
+  const setFormDatas = useStore((state) => state.setFormDatas);
+  const formDatas = useStore((state) => state.formDatas);
+
+  // const [formData, setformData] = useS({
+  //   univInput: '',
+  //   univInputLabel: '',
+  // });
+  // console.log(formDatas);
+  // console.log(formDatas.univInput)
+
   const handleSearchClick = () => {
-    const univID = formData.univInput;
-    setUnivID(univID);
-    router.push(`/statistic/university/${univID}`);
+    router.push(`/statistic/university/${formDatas.univInput}`);
+    // setUnivID(univID);
   };
 
-  const [formData, setFormData] = useState({
-    univInput: '',
-    univInputLabel: ''
-  });
-
+  // console.log(univID);
 
   const handleChange = async (selectedOption, fieldName) => {
     if (selectedOption) {
+      console.log("a", selectedOption.value)
       const { value, label } = selectedOption;
-      setFormData({
-        ...formData,
+      setFormDatas({
+        ...formDatas,
         [`${fieldName}Input`]: value,
         [`${fieldName}InputLabel`]: label
       });
     } else {
-      setFormData({
-        ...formData,
+      setFormDatas({
+        ...formDatas,
         [`${fieldName}Input`]: '',
         [`${fieldName}InputLabel`]: ''
       });
@@ -84,13 +89,13 @@ export default function PageComponent(props) {
     }
     if (selectedOption) {
       const { value } = selectedOption;
-      setFormData({
-        ...formData,
+      setformDatas({
+        ...formDatas,
         [`${fieldName.name}Value`]: value
       });
     } else {
-      setFormData({
-        ...formData,
+      setformDatas({
+        ...formDatas,
         [`${fieldName.name}Value`]: ''
       });
     }
@@ -122,13 +127,20 @@ export default function PageComponent(props) {
 
                 <Box>
                   <Center>
-                    <Text lineHeight='30px' fontSize="64px" color="black" fontWeight="bold">
+                    <Text
+                      lineHeight='30px'
+                      fontSize={{ base: '26px', sm: '26px', md: '40px', lg: '50px', xl: '64px' }}
+                      // fontSize="64px"
+                      color="black"
+                      fontWeight="bold">
                       Statistik Pendidikan
                     </Text>
                   </Center>
 
                   <Center>
-                    <Text fontSize="64px" color="black" fontWeight="bold">
+                    <Text
+                      fontSize={{ base: '26px', sm: '26px', md: '40px', lg: '50px', xl: '64px' }}
+                      color="black" fontWeight="bold">
                       Tinggi Indonesia
                     </Text>
                   </Center>
@@ -172,7 +184,7 @@ export default function PageComponent(props) {
               alignItems='center'
               justifyContent='center'
               gap='0'
-              w='30%'
+              w={{ base: '80%', sm: '80%', md: '50%', lg: '30%', xl: '30%' }}
               borderWidth='3px'
               borderRadius='2xl'
               borderColor='#7B7B7B'
@@ -184,10 +196,10 @@ export default function PageComponent(props) {
                   <Select
                     className="w-full"
                     name="univInput"
-                    value={formData.univInputLabel}
+                    value={formDatas.univInputLabel}
                     onChange={(option) => handleChange(option, 'univ')}
                     options={optionsUni}
-                    placeholder={formData.univInputLabel ? formData.univInputLabel : 'Input Nama Universitas'}
+                    placeholder={formDatas.univInputLabel ? formDatas.univInputLabel : 'Input Nama Universitas'}
                     styles={{
                       control: (base) => ({
                         ...base,
@@ -240,21 +252,27 @@ export default function PageComponent(props) {
           </Box>
 
           {/* Inforation in Text */}
-          <Box w='100%'>
+          <Box
+            w='100%'
+            display='flex'
+            alignItems='center'
+            justifyContent='center'>
+            {/* Normal */}
             <Box
               p={4}
-              ml='20px'
+              bg='red'
+              w='80%'
               color='white'
               height='200px'
               marginTop='50px'
               borderRadius='2xl'
-              display='flex'
+              display={{ base: 'none', sm: 'none', lg: 'flex' }}
               alignItems='center'
               justifyContent='center'
             >
               {/* Jumlah Institusi */}
               <GridItem
-                w='20%'
+                w='100%'
                 height='150px'
                 bg='#004AAD'
                 borderRadius='2xl'
@@ -262,7 +280,9 @@ export default function PageComponent(props) {
                 gridTemplateColumns="1fr"
               >
                 <Center>
-                  <Text fontSize='20px' color='white'>
+                  <Text
+                    fontSize={{ base: '16px', xl: '20px' }}
+                    color='white'>
                     Jumlah Institusi
                   </Text>
                 </Center>
@@ -277,7 +297,7 @@ export default function PageComponent(props) {
               {/* Jumlah Prodi */}
               <GridItem
                 ml='20px'
-                w='20%'
+                w='100%'
                 height='150px'
                 bg='#004AAD'
                 borderRadius='2xl'
@@ -298,14 +318,15 @@ export default function PageComponent(props) {
               </GridItem>
 
               {/* Rata-rata waktu kelulusan */}
+              {/* Normal */}
               <GridItem
                 ml='20px'
-                w='20%'
+                w='100%'
                 height='150px'
                 bg='#004AAD'
                 borderRadius='2xl'
                 boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
-                display="grid"
+                display={{ base: "none", md: "none", lg: "none", xl: "none", '2xl': "grid" }}
                 gridTemplateColumns="1fr"
               >
                 <Center>
@@ -320,10 +341,36 @@ export default function PageComponent(props) {
                 </Center>
               </GridItem>
 
+              {/* Small */}
+              <GridItem
+                ml='20px'
+                w='100%'
+                height='150px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display={{ base: "none", md: "none", lg: "grid", xl: "grid", '2xl': "none" }}
+                gridTemplateColumns="1fr"
+              >
+                <Box>
+                  <Center>
+                    <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                      Rata-rata
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text fontSize="20px" color="white">
+                      waktu kelulusan
+                    </Text>
+                  </Center>
+                </Box>
+              </GridItem>
+
+
               {/* Persentase Kelulusan */}
               <GridItem
                 ml='20px'
-                w='20%'
+                w='100%'
                 height='150px'
                 bg='#004AAD'
                 borderRadius='2xl'
@@ -355,16 +402,150 @@ export default function PageComponent(props) {
               </GridItem>
 
             </Box>
+
+            {/* Small */}
+            <Box
+              w='80%'
+              p={4}
+              color='white'
+              height='auto'
+              marginTop='50px'
+              borderRadius='2xl'
+              display={{ base: 'grid', sm: 'grid', lg: 'none' }}
+              gridTemplateColumns={{ base: '1fr', sm: '1fr', md: '1fr 1fr' }}
+              gap={10}
+              alignItems='center'
+              justifyContent='center'
+            >
+              {/* Jumlah Institusi */}
+              <GridItem
+                w='100%'
+                height='100px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <Center>
+                  <Text
+                    fontSize={{ base: '16px', sm: '20px' }}
+                    color='white'>
+                    Jumlah Institusi
+                  </Text>
+                </Center>
+                <Center>
+                  <Text
+                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontWeight='bold' color='white'>
+                    {totalUniv.toLocaleString()}
+                  </Text>
+                </Center>
+              </GridItem>
+
+              {/* Jumlah Prodi */}
+              <GridItem
+                w='100%'
+                height='100px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+              >
+                <Center>
+                  <Text
+                    fontSize={{ base: '16px', sm: '20px' }}
+                    color='white'>
+                    Jumlah Prodi
+                  </Text>
+                </Center>
+                <Center>
+                  <Text
+                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontWeight='bold' color='white'>
+                    {totalProdi.toLocaleString()}
+                  </Text>
+                </Center>
+              </GridItem>
+
+              {/* Rata-rata waktu kelulusan */}
+              <GridItem
+                w='100%'
+                height='100px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <Center>
+                  <Text
+                    fontSize={{ base: '16px', sm: '20px' }}
+                    color="white">
+                    Rata-rata waktu kelulusan
+                  </Text>
+                </Center>
+                <Center>
+                  <Text
+                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontWeight="bold" color="white">
+                    {avgYearAllUniv[0]?.avg_grad} Tahun
+                  </Text>
+                </Center>
+              </GridItem>
+
+              {/* Persentase Kelulusan */}
+              <GridItem
+                w='100%'
+                height='100px'
+                bg='#004AAD'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <Box>
+                  <Center>
+                    <Text
+                      mt='15px' lineHeight="20px"
+                      fontSize={{ base: '16px', sm: '20px' }}
+                      color="white">
+                      Persentase Mahasiswa
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text
+                      fontSize={{ base: '16px', sm: '20px' }}
+                      color="white">
+                      Lulus Tepat Waktu
+                    </Text>
+                  </Center>
+                </Box>
+                <Center>
+                  <Text mb='10px'
+                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontWeight="bold" color="white">
+                    {dataPie[0]?.tepat_grad}%
+                  </Text>
+                </Center>
+              </GridItem>
+            </Box>
           </Box>
 
           {/* 3 Chart */}
-          <Box w='100%' p={0}>
+          <Box
+            w='100%'
+            p={0}
+            // display='flex'
+            alignItems='center'
+            justifyContent='center'>
+            {/* Normal */}
             <Box
               color='white'
               height='500px'
               marginTop='30px'
               borderRadius='md'
-              display='flex'
+              display={{ base: 'none', sm: 'none', md: 'flex' }}
               alignItems='center'
               justifyContent='center'
             >
@@ -441,6 +622,92 @@ export default function PageComponent(props) {
               </GridItem>
 
             </Box>
+
+            {/* Small */}
+            <Box
+              color='white'
+              bg='red'
+              height='1000px'
+              marginTop='30px'
+              borderRadius='md'
+              display={{ base: 'column', sm: 'column', md: 'flex' }}
+              alignItems='center'
+              justifyContent='center'
+            >
+              {/* Bar Chart */}
+              <GridItem
+                ml='30px'
+                paddingTop={2}
+                w='80%'
+                bg='white'
+                height='200px'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.2)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <GridItem
+                  w='100%'
+                  height='200px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px'
+                >
+                  <BarChartExample2 defaultBar={defaultBar} selectYear={selectYear} />
+                </GridItem>
+              </GridItem>
+
+              {/* Stacked Bar */}
+              <GridItem
+                paddingTop={2}
+                mr='30px'
+                ml='30px'
+                w='80%'
+                bg='white'
+                height='200px'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <GridItem
+                  w='100%'
+                  height='200px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px'
+                >
+                  <StackedBarChart dataStacked={dataStacked} />
+                </GridItem>
+
+              </GridItem>
+
+              {/* Pie Chart */}
+              <GridItem
+                mr='30px'
+                paddingTop={2}
+                w='80%'
+                bg='white'
+                height='200px'
+                borderRadius='2xl'
+                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                display="grid"
+                gridTemplateColumns="1fr"
+              >
+                <GridItem
+                  w='100%'
+                  height='200px'
+                  justifySelf='center'
+                  alignSelf='center'
+                  padding='4px'
+                >
+                  <PieChartExample dataPie={dataPie} />
+                </GridItem>
+
+              </GridItem>
+
+            </Box>
+
           </Box>
 
           {/* Geo Chart's Box */}
@@ -479,10 +746,10 @@ export default function PageComponent(props) {
                               color='black'
                               width='100%'
                               name="yearSelected"
-                              value={formData.yearSelected}
+                              value={formDatas.yearSelected}
                               onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
                               options={optionsProdi}
-                              placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
+                              placeholder={formDatas.yearSelected ? formDatas.yearSelected : 'All Time'}
                               styles={{
                                 option: (provided) => ({
                                   ...provided,
