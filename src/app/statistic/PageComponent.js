@@ -33,7 +33,7 @@ export default function PageComponent(props) {
   //   univInputLabel: '',
   // });
   // console.log(formDatas);
-  // console.log(formDatas.univInput)
+  console.log(formDatas.univInput)
 
   const handleSearchClick = () => {
     router.push(`/statistic/university/${formDatas.univInput}`);
@@ -44,7 +44,6 @@ export default function PageComponent(props) {
 
   const handleChange = async (selectedOption, fieldName) => {
     if (selectedOption) {
-      console.log("a", selectedOption.value)
       const { value, label } = selectedOption;
       setFormDatas({
         ...formDatas,
