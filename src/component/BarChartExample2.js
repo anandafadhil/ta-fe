@@ -28,7 +28,7 @@ function BarChartExample2({ defaultBar, selectYear }) {
   }, []);
   const handleChangeYear = async (selectedOption, fieldName) => {
     const newData = await fetchDatawithYear({
-      endpoint: `/grad-time-distribution-prodi`,
+      endpoint: `/grad-distribution`,
       selectedYear: selectedOption.value,
     })
 
@@ -62,17 +62,64 @@ function BarChartExample2({ defaultBar, selectYear }) {
   return (
     <ResponsiveContainer width="100%" height="90%">
       <div>
-        <Box  alignItems='center' justifyContent='center' display='flex'>
+        <Box
+          alignItems='center'
+          justifyContent='center'
+          display={{ base: 'column', sm: 'column', md: 'flex' }}
+        >
           {/* Text */}
-          <Box width='70%' alignItems='center' justifyContent='center' display='flex'>
-            <Text fontSize="22px" color="#545454" fontWeight="bold">
+          <Box
+            width='70%'
+            alignItems='center'
+            justifyContent='center'
+            display='flex'
+          >
+            <Text
+              fontSize={{ base: '14px', sm: '14px', md: '18px', lg: '20px', xl: '22px' }}
+              textAlign={{ base: 'center', sm: 'center', md: 'justify' }}
+              color="#545454" fontWeight="bold">
               Distribusi Waktu Kelulusan
             </Text>
           </Box>
 
-          {/* Select */}
-          <Box width='30%' justifyContent='center' alignItems='center' display='flex'>
+          {/* Normal Select */}
+          <Box
+            width='30%'
+            justifyContent='center'
+            alignItems='center'
+            display={{ base: 'none', xl: 'flex' }}
+          >
             <Box width='150px'>
+              <Center>
+                <Select
+                  color='black'
+                  width='100%'
+                  name="yearSelected"
+                  value={formData.yearSelected}
+                  onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
+                  options={optionsProdi}
+                  placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
+                  styles={{
+                    option: (provided) => ({
+                      ...provided,
+                      color: 'black',
+                    }),
+                    placeholder: (provided) => ({
+                      ...provided,
+                      color: 'black',
+                    })
+                  }}
+                />
+              </Center>
+            </Box>
+          </Box>
+
+          {/* Small Select */}
+          <Box width='30%' justifyContent='center' alignItems='center'
+            display={{ base: 'column', sm: 'column', md: 'none' }}
+          >
+            <Box width='150px' justifyContent='center' alignItems='center'
+            display={{ base: 'flex', sm: 'flex', md: 'none' }}>
               <Center>
                 <Select
                   color='black'

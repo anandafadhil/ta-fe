@@ -3,7 +3,7 @@ import Image from 'next/image';
 import {
     ChakraProvider, VStack, Container,
     Flex, Spacer, Center, Square, Text,
-    Box, Grid, GridItem, 
+    Box, Grid, GridItem,
 } from "@chakra-ui/react";
 import Navbar from '@/src/component/navbar';
 import React, { useEffect, useState } from "react";
@@ -15,35 +15,140 @@ import StackedBarChart from '@/src/component/StackedBarChart';
 import BarChartProdi from '@/src/component/BarChartProdi';
 import useStore from '@/src/store';
 
-export default function Major({
-    newYear,
-    dataProdiInfo,
-    dataAvgGrad,
-    dataPie,
-    dataStacked,
-    newDataBar,
-    dataAvgIPK,
-    newDataSKS
-}) {
+export default function Major() {
+    const formData = useStore((state) => state.formDataUni);
+    const parsId = formData.prodiInput
+    console.log(parsId)
 
     const [isLoading, setIsLoading] = useState(true);
-    const idProdi = useStore((state) => state.prodiID);
-    const newDataPie = dataPie ? {
-        tepat_grad: dataPie.avg_grad_time,
-        tidak_tepat_grad: 1 - dataPie.avg_grad_time,
-    } : null;
+    const [idProdi, setID] = useState([]);
+    const [dataProdiInfo, setProdiInfo] = useState([]);
+    const [newYear, setNewYear] = useState([]);
+    const [dataAvgGrad, setAvgGrad] = useState([]);
+    const [dataAvgIPK, setAvgIPK] = useState([]);
+    const [newDataBar, setDataBar] = useState([]);
+    const [newDataSKS, setDataSKS] = useState([]);
+    const [newDataStacked, setDataStack] = useState([]);
+    const [newDataPie, setDataPie] = useState([]);
+    // const idProdi = useStore((state) => state.prodiID);
 
-    const newDataStacked = dataStacked.map(item => ({
-        selected_year: item.tahun_angkatan,
-        tepat_grad: item.avg_grad_time,
-        tidak_tepat_grad: 1 - item.avg_grad_time,
-    }));
+    // const newDataPie = dataPie ? {
+    //     tepat_grad: dataPie.avg_grad_time,
+    //     tidak_tepat_grad: 1 - dataPie.avg_grad_time,
+    // } : null;
+
+    // const newDataStacked = dataStacked.map(item => ({
+    //     selected_year: item.tahun_angkatan,
+    //     tepat_grad: item.avg_grad_time,
+    //     tidak_tepat_grad: 1 - item.avg_grad_time,
+    // }));
+
+    const handleGetYear = async () => {
+        const selectYear = await fetchData('/select-year');
+        setNewYear(selectYear);
+    }
+
+    const handleGetInfo = async () => {
+        const selected_id_prodi = parsId
+        const univInfo = await fetchData(`/prodi-information/${selected_id_prodi}`)
+        setProdiInfo(univInfo)
+    }
+
+    const handleGetAvgGrad = async () => {
+        const selected_id_prodi = parsId
+        const getAvgGrad = await fetchData(`/average-grad-time-prodi/${selected_id_prodi}`)
+
+        setAvgGrad(getAvgGrad)
+    }
+
+    const handleGetAvgIPK = async () => {
+        const selected_id_prodi = parsId
+        const getAvgIPK = await fetchData(`/avg-ipk/${selected_id_prodi}`)
+
+        setAvgIPK(getAvgIPK)
+    }
+
+    const handleGetBar = async () => {
+        const dataBar = await fetchDatawithIDYear({
+            endpoint: '/grad-time-distribution-prodi',
+            selectedIDUniv: parsId,
+            selectedYear: 'All',
+        })
+        setDataBar(dataBar);
+        setID(parsId);
+    }
+
+    const handleGetSKS = async () => {
+        const selected_id_prodi = parsId
+        const dataSKS = await fetchData(`/avg-sks/${selected_id_prodi}`)
+        console.log(dataSKS)
+
+        setDataSKS(dataSKS);
+    }
+
+
+    const handleGetStacked = async () => {
+        const dataStacked = await fetchDatawithIDUniv({
+            endpoint: '/grad-progression-prodi',
+            selectedIDUniv: parsId,
+        })
+        console.log(dataStacked)
+        const transformedData = dataStacked.map(item => ({
+            selected_year: item.tahun_angkatan,
+            tepat_grad: item.avg_grad_time,
+            tidak_tepat_grad: 1 - item.avg_grad_time,
+        }));
+        setDataStack(transformedData);
+    }
+
+    const handleGetPie = async () => {
+        const dataPie = await fetchDatawithYear({
+            endpoint: '/grad-timeliness-prodi',
+            selectedYear: parsId,
+        })
+        const transformedAllTimeEntry = dataPie ? {
+            tepat_grad: dataPie.avg_grad_time,
+            tidak_tepat_grad: 1 - dataPie.avg_grad_time,
+        } : null;
+        setDataPie(transformedAllTimeEntry);
+    }
 
     const avgGradTime = dataAvgGrad.avg_grad_time ?? 0;
     const avgIpkOverall = dataAvgIPK[0]?.avg_ipk_overall ?? 0;
     const avgIpkTepatWaktu = dataAvgIPK[0]?.avg_ipk_tepat_waktu ?? 0;
     const avgIpkTelat = dataAvgIPK[0]?.avg_ipk_telat ?? 0;
     const tepatGradPercentage = (newDataPie?.tepat_grad * 100) ?? 0;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            // Show loading alert
+            Swal.fire({
+                title: 'Loading...',
+                text: 'Please wait while we fetch the data.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            await handleGetYear();
+            await handleGetInfo();
+            await handleGetAvgGrad();
+            await handleGetAvgIPK();
+            await handleGetBar();
+            await handleGetSKS();
+            await handleGetStacked();
+            await handleGetPie();
+
+            setIsLoading(false);
+            Swal.close();
+        };
+
+        fetchData();
+    }, []);
+
+    if (isLoading) {
+        return <div></div>;
+    }
 
     return (
         <ChakraProvider resetCSS={false}>

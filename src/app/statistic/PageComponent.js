@@ -32,11 +32,11 @@ export default function PageComponent(props) {
   //   univInput: '',
   //   univInputLabel: '',
   // });
-  // console.log(formDatas);
+  console.log(formDatas);
   console.log(formDatas.univInput)
 
   const handleSearchClick = () => {
-    router.push(`/statistic/university/${formDatas.univInput}`);
+    router.push(`/statistic/university`);
     // setUnivID(univID);
   };
 
@@ -88,12 +88,12 @@ export default function PageComponent(props) {
     }
     if (selectedOption) {
       const { value } = selectedOption;
-      setformDatas({
+      setFormDatas({
         ...formDatas,
         [`${fieldName.name}Value`]: value
       });
     } else {
-      setformDatas({
+      setFormDatas({
         ...formDatas,
         [`${fieldName.name}Value`]: ''
       });
@@ -363,6 +363,11 @@ export default function PageComponent(props) {
                     </Text>
                   </Center>
                 </Box>
+                <Center>
+                  <Text fontSize="46px" fontWeight="bold" color="white">
+                    {avgYearAllUniv[0]?.avg_grad} Tahun
+                  </Text>
+                </Center>
               </GridItem>
 
 
