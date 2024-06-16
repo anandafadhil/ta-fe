@@ -28,19 +28,9 @@ export default function PageComponent(props) {
   const setFormDatas = useStore((state) => state.setFormDatas);
   const formDatas = useStore((state) => state.formDatas);
 
-  // const [formData, setformData] = useS({
-  //   univInput: '',
-  //   univInputLabel: '',
-  // });
-  console.log(formDatas);
-  console.log(formDatas.univInput)
-
   const handleSearchClick = () => {
     router.push(`/statistic/university`);
-    // setUnivID(univID);
   };
-
-  // console.log(univID);
 
   const handleChange = async (selectedOption, fieldName) => {
     if (selectedOption) {
@@ -115,10 +105,10 @@ export default function PageComponent(props) {
           <Box p={4} position='relative'>
             <Center>
               <Box
-                mt='40px'
+                mt={{ base: '0px', sm: '0px', md: '40px' }}
                 p='4'
                 width='800px'
-                height='200px'
+                height={{ base: '150px', sm: '150px', md: '200px' }}
                 display='flex'
                 alignItems='center'
                 justifyContent='center'
@@ -148,6 +138,7 @@ export default function PageComponent(props) {
             </Center>
           </Box>
 
+          {/* Second Header */}
           <Box p={0} position='relative'>
             <Center>
               <Box
@@ -191,7 +182,8 @@ export default function PageComponent(props) {
 
               {/* Univ Search */}
               <SimpleGrid columns='1' marginTop='10px' marginBottom='10px' w='65%'>
-                <Box p='2'>
+                {/* Large Select */}
+                <Box p='2' display={{ base: "none", lg: "block" }}>
                   <Select
                     className="w-full"
                     name="univInput"
@@ -226,6 +218,44 @@ export default function PageComponent(props) {
                     }}
                   />
                 </Box>
+
+                {/* Small Select */}
+                <Box p='2' display={{ base: "block", sm: 'block', lg: "none" }}>
+                  <Select
+                    className="w-full"
+                    name="univInput"
+                    value={formDatas.univInputLabel}
+                    onChange={(option) => handleChange(option, 'univ')}
+                    options={optionsUni}
+                    placeholder={formDatas.univInputLabel ? formDatas.univInputLabel : 'Input Nama Universitas'}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        borderRadius: "0.5rem",
+                        paddingLeft: "0.2rem",
+                        height: "55px",
+                        fontSize: "14px"
+                      }),
+                      indicatorSeparator: (base) => ({
+                        ...base,
+                        visibility: "hidden",
+                      }),
+                      dropdownIndicator: (base) => ({
+                        ...base,
+                        paddingRight: "0.5rem",
+                        svg: {
+                          height: 20,
+                          width: 20,
+                          fill: "black",
+                        },
+                      }),
+                      option: (provided) => ({
+                        ...provided,
+                        color: "black",
+                      }),
+                    }}
+                  />
+                </Box>
               </SimpleGrid>
 
               {/* Univ Search's Button */}
@@ -250,7 +280,7 @@ export default function PageComponent(props) {
             </Flex>
           </Box>
 
-          {/* Inforation in Text */}
+          {/* Information in Text */}
           <Box
             w='100%'
             display='flex'
@@ -259,7 +289,6 @@ export default function PageComponent(props) {
             {/* Normal */}
             <Box
               p={4}
-              bg='red'
               w='80%'
               color='white'
               height='200px'
@@ -280,13 +309,15 @@ export default function PageComponent(props) {
               >
                 <Center>
                   <Text
-                    fontSize={{ base: '16px', xl: '20px' }}
+                    fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
                     color='white'>
                     Jumlah Institusi
                   </Text>
                 </Center>
                 <Center >
-                  <Text fontSize='46px' fontWeight='bold' color='white'>
+                  <Text
+                    fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                    fontWeight='bold' color='white'>
                     {totalUniv.toLocaleString()}
                   </Text>
                 </Center>
@@ -304,12 +335,16 @@ export default function PageComponent(props) {
                 display="grid"
               >
                 <Center>
-                  <Text fontSize='20px' color='white'>
+                  <Text
+                    fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                    color='white'>
                     Jumlah Prodi
                   </Text>
                 </Center>
                 <Center >
-                  <Text fontSize='46px' fontWeight='bold' color='white'>
+                  <Text
+                    fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                    fontWeight='bold' color='white'>
                     {totalProdi.toLocaleString()}
                   </Text>
                 </Center>
@@ -329,18 +364,22 @@ export default function PageComponent(props) {
                 gridTemplateColumns="1fr"
               >
                 <Center>
-                  <Text fontSize="20px" color="white">
+                  <Text
+                    fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                    color="white">
                     Rata-rata waktu kelulusan
                   </Text>
                 </Center>
                 <Center>
-                  <Text fontSize="46px" fontWeight="bold" color="white">
+                  <Text
+                    fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                    fontWeight="bold" color="white">
                     {avgYearAllUniv[0]?.avg_grad} Tahun
                   </Text>
                 </Center>
               </GridItem>
 
-              {/* Small */}
+              {/* Medium */}
               <GridItem
                 ml='20px'
                 w='100%'
@@ -353,18 +392,26 @@ export default function PageComponent(props) {
               >
                 <Box>
                   <Center>
-                    <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                    <Text mt='15px' lineHeight="20px"
+                      fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                      color="white">
                       Rata-rata
                     </Text>
                   </Center>
                   <Center>
-                    <Text fontSize="20px" color="white">
+                    <Text
+                      fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                      color="white">
                       waktu kelulusan
                     </Text>
                   </Center>
                 </Box>
                 <Center>
-                  <Text fontSize="46px" fontWeight="bold" color="white">
+                  <Text
+                    // lineHeight="100px"
+                    mb='10px'
+                    fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                    fontWeight="bold" color="white">
                     {avgYearAllUniv[0]?.avg_grad} Tahun
                   </Text>
                 </Center>
@@ -384,19 +431,25 @@ export default function PageComponent(props) {
               >
                 <Box>
                   <Center>
-                    <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                    <Text mt='15px' lineHeight="20px"
+                      fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                      color="white">
                       Persentase Mahasiswa
                     </Text>
                   </Center>
                   <Center>
-                    <Text fontSize="20px" color="white">
+                    <Text
+                      fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                      color="white">
                       Lulus Tepat Waktu
                     </Text>
                   </Center>
                 </Box>
 
                 <Center>
-                  <Text mb='10px' fontSize="46px" fontWeight="bold" color="white">
+                  <Text mb='10px'
+                    fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                    fontWeight="bold" color="white">
                     {dataPie[0]?.tepat_grad}%
                   </Text>
                 </Center>
@@ -424,7 +477,7 @@ export default function PageComponent(props) {
               {/* Jumlah Institusi */}
               <GridItem
                 w='100%'
-                height='100px'
+                height={{ base: '100px', md: '100px', lg: '150px' }}
                 bg='#004AAD'
                 borderRadius='2xl'
                 boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
@@ -433,14 +486,14 @@ export default function PageComponent(props) {
               >
                 <Center>
                   <Text
-                    fontSize={{ base: '16px', sm: '20px' }}
+                    fontSize={{ base: '16px', sm: '16px', lg: '20px' }}
                     color='white'>
                     Jumlah Institusi
                   </Text>
                 </Center>
                 <Center>
                   <Text
-                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontSize={{ base: '24px', sm: '24px', md: '32px', lg: '40px', xl: '46px' }}
                     fontWeight='bold' color='white'>
                     {totalUniv.toLocaleString()}
                   </Text>
@@ -450,7 +503,7 @@ export default function PageComponent(props) {
               {/* Jumlah Prodi */}
               <GridItem
                 w='100%'
-                height='100px'
+                height={{ base: '100px', md: '100px', lg: '150px' }}
                 bg='#004AAD'
                 borderRadius='2xl'
                 boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
@@ -465,7 +518,7 @@ export default function PageComponent(props) {
                 </Center>
                 <Center>
                   <Text
-                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontSize={{ base: '24px', sm: '24px', md: '32px', lg: '40px', xl: '46px' }}
                     fontWeight='bold' color='white'>
                     {totalProdi.toLocaleString()}
                   </Text>
@@ -475,7 +528,7 @@ export default function PageComponent(props) {
               {/* Rata-rata waktu kelulusan */}
               <GridItem
                 w='100%'
-                height='100px'
+                height={{ base: '100px', md: '100px', lg: '150px' }}
                 bg='#004AAD'
                 borderRadius='2xl'
                 boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
@@ -491,7 +544,7 @@ export default function PageComponent(props) {
                 </Center>
                 <Center>
                   <Text
-                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontSize={{ base: '24px', sm: '24px', md: '32px', lg: '40px', xl: '46px' }}
                     fontWeight="bold" color="white">
                     {avgYearAllUniv[0]?.avg_grad} Tahun
                   </Text>
@@ -501,7 +554,7 @@ export default function PageComponent(props) {
               {/* Persentase Kelulusan */}
               <GridItem
                 w='100%'
-                height='100px'
+                height={{ base: '100px', md: '100px', lg: '150px' }}
                 bg='#004AAD'
                 borderRadius='2xl'
                 boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
@@ -527,7 +580,7 @@ export default function PageComponent(props) {
                 </Box>
                 <Center>
                   <Text mb='10px'
-                    fontSize={{ base: '20px', sm: '20px', md: '32px', lg: '40px', xl: '46px' }}
+                    fontSize={{ base: '24px', sm: '24px', md: '32px', lg: '40px', xl: '46px' }}
                     fontWeight="bold" color="white">
                     {dataPie[0]?.tepat_grad}%
                   </Text>
@@ -539,23 +592,23 @@ export default function PageComponent(props) {
           {/* 3 Chart */}
           <Box
             w='100%'
-            p={0}
-            // display='flex'
+            display='flex'
             alignItems='center'
             justifyContent='center'>
             {/* Normal */}
             <Box
+              p={4}
+              w={{ lg: '80%', xl: '100%' }}
               color='white'
               height='500px'
               marginTop='30px'
               borderRadius='md'
-              display={{ base: 'none', sm: 'none', md: 'flex' }}
+              display={{ base: 'none', sm: 'none', md: 'none', lg: 'none', xl: 'flex' }}
               alignItems='center'
               justifyContent='center'
             >
               {/* Bar Chart */}
               <GridItem
-                ml='30px'
                 paddingTop={2}
                 w='100%'
                 bg='white'
@@ -603,7 +656,6 @@ export default function PageComponent(props) {
 
               {/* Pie Chart */}
               <GridItem
-                mr='30px'
                 paddingTop={2}
                 w='100%'
                 height='450px'
@@ -629,30 +681,34 @@ export default function PageComponent(props) {
 
             {/* Small */}
             <Box
-              color='white'
-              bg='red'
-              height='1000px'
-              marginTop='30px'
-              borderRadius='md'
-              display={{ base: 'column', sm: 'column', md: 'flex' }}
-              alignItems='center'
-              justifyContent='center'
+              p={4}
+              color="white"
+              height="1300px"
+              marginTop="30px"
+              borderRadius="md"
+              display={{ base: 'grid', sm: 'grid', md: 'grid', lg: 'grid', xl: 'none' }}
+              gridTemplateColumns={{ base: '1fr', sm: '1fr' }}
+              alignItems="center"
+              justifyContent="center"
+              w='80%'
             >
               {/* Bar Chart */}
               <GridItem
-                ml='30px'
                 paddingTop={2}
-                w='80%'
-                bg='white'
-                height='200px'
-                borderRadius='2xl'
-                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.2)'
+                w='100%'
+                bg="white"
+                height="400px"
+                borderRadius="2xl"
+                boxShadow="0px 4px 10px rgba(0, 0, 0, 0.2)"
                 display="grid"
+                alignItems="center"
+                justifyContent="center"
                 gridTemplateColumns="1fr"
+
               >
                 <GridItem
                   w='100%'
-                  height='200px'
+                  height='370px'
                   justifySelf='center'
                   alignSelf='center'
                   padding='4px'
@@ -664,11 +720,9 @@ export default function PageComponent(props) {
               {/* Stacked Bar */}
               <GridItem
                 paddingTop={2}
-                mr='30px'
-                ml='30px'
-                w='80%'
+                w='100%'
                 bg='white'
-                height='200px'
+                height='400px'
                 borderRadius='2xl'
                 boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
                 display="grid"
@@ -676,7 +730,7 @@ export default function PageComponent(props) {
               >
                 <GridItem
                   w='100%'
-                  height='200px'
+                  height='370px'
                   justifySelf='center'
                   alignSelf='center'
                   padding='4px'
@@ -688,11 +742,10 @@ export default function PageComponent(props) {
 
               {/* Pie Chart */}
               <GridItem
-                mr='30px'
                 paddingTop={2}
-                w='80%'
+                w='100%'
                 bg='white'
-                height='200px'
+                height='400px'
                 borderRadius='2xl'
                 boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
                 display="grid"
@@ -700,7 +753,7 @@ export default function PageComponent(props) {
               >
                 <GridItem
                   w='100%'
-                  height='200px'
+                  height='370px'
                   justifySelf='center'
                   alignSelf='center'
                   padding='4px'
@@ -715,40 +768,58 @@ export default function PageComponent(props) {
           </Box>
 
           {/* Geo Chart's Box */}
-          <Box w='100%'>
-            <Box ml='30px' mr='30px' color='white' height='1120px' borderRadius='md'>
+          <Box
+            w='100%'
+            display='flex'
+            alignItems='center'
+            justifyContent='center'>
+            <Box
+              color="white" height="1120px" borderRadius="md"
+              marginTop='30px'
+              display={{ base: 'flex', sm: 'flex', md: 'flex', lg: 'flex', xl: 'flex' }}
+              alignItems='center'
+              justifyContent='center'
+              w={{ base: '80%', lg: '80%', xl: '100%' }}
+              p={4}
+
+            >
               {/* Geo Chart */}
               <GridItem
                 p={4}
                 w='100%'
-                height='1000px'
-                bg='white'
-                borderRadius='2xl'
-                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                height="1000px"
+                bg="white"
+                borderRadius="2xl"
+                boxShadow="0px 4px 10px rgba(0, 0, 0, 0.1)"
+                className="geo-chart-container"
               >
                 <GridItem
-                  height='900px'
-                  width='100%'
-                  justifySelf='center'
-                  alignSelf='center'
-                  padding='4px' // Add padding
+                  height="900px"
+                  width="100%"
+                  justifySelf="center"
+                  alignSelf="center"
+                  padding="4px"
                 >
                   <div>
-                    <Box alignItems='center' justifyContent='center' display='flex'>
+                    <Box alignItems="center" justifyContent="center" display="flex">
                       {/* Text */}
-                      <Box width='90%'>
-                        <Text mb='6px' fontSize="22px" color="#545454" fontWeight="bold">
+                      <Box width="90%">
+                        <Text mb="6px"
+                          fontSize={{ base: '14px', sm: '14px', md: '16px', lg: '16px', xl: '16px', '2xl': '22px' }}
+                          color="#545454" fontWeight="bold">
                           Persentase Ketepatan Waktu Lulus Per Provinsi
                         </Text>
                       </Box>
 
                       {/* Select */}
-                      <Box width='10%' justifyContent='center' alignItems='center' display='flex'>
-                        <Box width='150px'>
+                      <Box
+                        width={{ base: '30%', lg: '20%', xl: "10%" }}
+                        justifyContent="center" alignItems="center" display="flex">
+                        <Box width="150px">
                           <Center>
                             <Select
-                              color='black'
-                              width='100%'
+                              color="black"
+                              width="100%"
                               name="yearSelected"
                               value={formDatas.yearSelected}
                               onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}

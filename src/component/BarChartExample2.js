@@ -65,18 +65,13 @@ function BarChartExample2({ defaultBar, selectYear }) {
         <Box
           alignItems='center'
           justifyContent='center'
-          display={{ base: 'column', sm: 'column', md: 'flex' }}
+          display={{ base: 'column', sm: 'column', md: 'column', lg: 'column', xl: 'flex' }}
         >
           {/* Text */}
-          <Box
-            width='70%'
-            alignItems='center'
-            justifyContent='center'
-            display='flex'
-          >
+          <Box alignItems='center' justifyContent='center'>
             <Text
-              fontSize={{ base: '14px', sm: '14px', md: '18px', lg: '20px', xl: '22px' }}
-              textAlign={{ base: 'center', sm: 'center', md: 'justify' }}
+              fontSize={{ base: '14px', sm: '14px', md: '16px', lg: '16px', xl: '16px', '2xl': '22px' }}
+              textAlign={{ base: 'center', lg: 'center', xl: 'justify' }}
               color="#545454" fontWeight="bold">
               Distribusi Waktu Kelulusan
             </Text>
@@ -87,7 +82,7 @@ function BarChartExample2({ defaultBar, selectYear }) {
             width='30%'
             justifyContent='center'
             alignItems='center'
-            display={{ base: 'none', xl: 'flex' }}
+            display={{ base: 'none', lg: 'none', xl: 'flex' }}
           >
             <Box width='150px'>
               <Center>
@@ -115,32 +110,56 @@ function BarChartExample2({ defaultBar, selectYear }) {
           </Box>
 
           {/* Small Select */}
-          <Box width='30%' justifyContent='center' alignItems='center'
-            display={{ base: 'column', sm: 'column', md: 'none' }}
+          <Box
+            width="100%"
+            display={{ base: 'flex', sm: 'flex', md: 'flex', lg: 'flex', xl: 'none' }}
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
           >
-            <Box width='150px' justifyContent='center' alignItems='center'
-            display={{ base: 'flex', sm: 'flex', md: 'none' }}>
-              <Center>
-                <Select
-                  color='black'
-                  width='100%'
-                  name="yearSelected"
-                  value={formData.yearSelected}
-                  onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
-                  options={optionsProdi}
-                  placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
-                  styles={{
-                    option: (provided) => ({
-                      ...provided,
-                      color: 'black',
-                    }),
-                    placeholder: (provided) => ({
-                      ...provided,
-                      color: 'black',
-                    })
-                  }}
-                />
-              </Center>
+            <Box
+              width="40%"
+              maxWidth="200px"
+              justifyContent="center"
+              alignItems="center"
+              display="flex"
+            >
+              <Select
+                color="black"
+                width="100%"
+                name="yearSelected"
+                value={formData.yearSelected}
+                onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
+                options={optionsProdi}
+                placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
+                styles={{
+                  control: (provided) => ({
+                    ...provided,
+                    color: 'black',
+                    minHeight: '30px',
+                    fontSize: '12px',
+                  }),
+                  singleValue: (provided) => ({
+                    ...provided,
+                    fontSize: '12px',
+                  }),
+                  placeholder: (provided) => ({
+                    ...provided,
+                    color: 'black',
+                    fontSize: '12px',
+                  }),
+                  input: (provided) => ({
+                    ...provided,
+                    color: 'black',
+                    fontSize: '12px',
+                  }),
+                  option: (provided) => ({
+                    ...provided,
+                    color: 'black',
+                    fontSize: '12px',
+                  }),
+                }}
+              />
             </Box>
           </Box>
         </Box>

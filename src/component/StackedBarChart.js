@@ -36,7 +36,9 @@ export default class StackedBarChart extends PureComponent {
                     <Box alignItems='center' justifyContent='center'>
                         <Box>
                             <Center>
-                                <Text mt="1" fontSize="22px" color="#545454" fontWeight="bold">
+                                <Text mt="1"
+                                    fontSize={{ base: '14px', sm: '14px', md: '16px', lg: '16px', xl: '16px', '2xl': '22px' }}
+                                    textAlign={{ base: 'center', sm: 'center', md: 'justify' }} color="#545454" fontWeight="bold">
                                     Progresi Ketepatan Waktu Lulus
                                 </Text>
                             </Center>

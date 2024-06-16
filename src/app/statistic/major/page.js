@@ -17,7 +17,7 @@ import useStore from '@/src/store';
 
 export default function Major() {
     const formData = useStore((state) => state.formDataUni);
-    const parsId = formData.prodiInput
+    const parsId = formData?.prodiInput
     console.log(parsId)
 
     const [isLoading, setIsLoading] = useState(true);
@@ -30,18 +30,6 @@ export default function Major() {
     const [newDataSKS, setDataSKS] = useState([]);
     const [newDataStacked, setDataStack] = useState([]);
     const [newDataPie, setDataPie] = useState([]);
-    // const idProdi = useStore((state) => state.prodiID);
-
-    // const newDataPie = dataPie ? {
-    //     tepat_grad: dataPie.avg_grad_time,
-    //     tidak_tepat_grad: 1 - dataPie.avg_grad_time,
-    // } : null;
-
-    // const newDataStacked = dataStacked.map(item => ({
-    //     selected_year: item.tahun_angkatan,
-    //     tepat_grad: item.avg_grad_time,
-    //     tidak_tepat_grad: 1 - item.avg_grad_time,
-    // }));
 
     const handleGetYear = async () => {
         const selectYear = await fetchData('/select-year');
@@ -155,7 +143,7 @@ export default function Major() {
             <div>
                 <Navbar />
                 <Container
-                    margin={0}
+                margin={0}
                     bg='#EFF0F1'
                     maxWidth='100vw'
                     w='100%'
