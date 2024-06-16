@@ -14,12 +14,12 @@ import "../../styles.css";
 import StackedBarChart from '@/src/component/StackedBarChart';
 import BarChartProdi from '@/src/component/BarChartProdi';
 import useStore from '@/src/store';
+import { fetchData, fetchDatawithIDUniv, fetchDatawithIDYear, fetchDatawithYear } from '@/src/api/fetch';
 import Swal from 'sweetalert2';
 
 export default function Major() {
-    const formData = useStore((state) => state.formDataUni);
-    const parsId = formData?.prodiInput
-    console.log(parsId)
+    const formDatass = useStore((state) => state.formDatass);
+    const parsId = formDatass?.prodiInput;
 
     const [isLoading, setIsLoading] = useState(true);
     const [idProdi, setID] = useState([]);

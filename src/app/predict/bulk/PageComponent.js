@@ -15,6 +15,7 @@ import "@/src/app/styles.css"
 import Footer from "@/src/component/footer";
 import { fetchData, postData, postNoIDData } from "@/src/api/fetch";
 import useStore from "@/src/store"
+import Swal from 'sweetalert2';
 
 export default function PredictBulk(props) {
     const { data } = props;
@@ -37,17 +38,51 @@ export default function PredictBulk(props) {
         file: "",
     });
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const retreiveBulk = await postNoIDData({
+    //         endpoint: `/predict-bulk`,
+    //         data: OrgData.file,
+    //         id: formData.prodiInputID
+    //     });
+    //     console.log(retreiveBulk)
+    //     setFormBulk(formData);
+    //     setDataBulk(retreiveBulk);
+    //     router.push('/predict/bulk/result');
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const retreiveBulk = await postNoIDData({
-            endpoint: `/predict-bulk`,
-            data: OrgData.file,
-            id: formData.prodiInputID
+        Swal.fire({
+            title: 'Loading...',
+            text: 'Please wait while we fetch the data.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
 
-        setFormBulk(formData);
-        setDataBulk(retreiveBulk);
-        router.push('/predict/bulk/result');
+        try {
+            const retreiveBulk = await postNoIDData({
+                endpoint: `/predict-bulk`,
+                data: OrgData.file,
+                id: formData.prodiInputID
+            });
+            setFormBulk(formData);
+            setDataBulk(retreiveBulk);
+            Swal.close();
+            router.push('/predict/bulk/result');
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+
+            Swal.close();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'There was an error fetching the data. Please try again later.',
+            });
+        }
     };
 
     const [optionsProdi, setOptionsProdi] = useState([])
@@ -386,8 +421,8 @@ export default function PredictBulk(props) {
                                 <GridItem w='100%' display='flex'>
                                     {/* Button */}
                                     <SimpleGrid
-                                        columns='1' 
-                                        w='30%' 
+                                        columns='1'
+                                        w='30%'
                                         p={2}>
                                         <label htmlFor="fileUpload" className="h-full">
 

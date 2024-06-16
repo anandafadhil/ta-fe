@@ -39,6 +39,7 @@ const useStore = create((set) => ({
     setDataBulk: (data) => set({ dataBulk: data }),
     setFormDatass: (data) => set({ formDatass: data }),
     setFormDatas: (data) => set({ formDatas: data }),
+    setForm: (data) => set({formData: data}),
 }));
 
 export default useStore;
