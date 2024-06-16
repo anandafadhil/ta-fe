@@ -14,6 +14,7 @@ import "../../styles.css";
 import StackedBarChart from '@/src/component/StackedBarChart';
 import BarChartProdi from '@/src/component/BarChartProdi';
 import useStore from '@/src/store';
+import Swal from 'sweetalert2';
 
 export default function Major() {
     const formData = useStore((state) => state.formDataUni);
