@@ -125,7 +125,6 @@ export default function University() {
   }
 
   const handleSearchClick = () => {
-    localStorage.setItem('IDPRODISTAT', JSON.stringify(prodiID));
     router.push(`/statistic/major`);
   };
 
