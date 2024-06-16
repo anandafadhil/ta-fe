@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-    univID: null,
     prodiID: null,
     predictResult: null,
     skst: null,
@@ -20,22 +19,25 @@ const useStore = create((set) => ({
         prodiInput: '',
         prodiInputID: '',
     },
+    formDatass: {
+        prodiInput: '',
+        prodiInputLabel: '',
+    },
     formDatas: {
         univInput: '',
         univInputLabel: '',
     },
     dataBulk: [],
 
-    setUnivID: (id) => set({ univID: id }),
     setProdiID: (id) => set({ prodiID: id }),
     setResult: (id) => set({ predictResult: id }),
     setSKST: (id) => set({ skst: id }),
     setIPK: (id) => set({ ipk: id }),
     setSKSNeeded: (id) => set({ sksNeeded: id }),
     setKetepatan: (id) => set({ ketepatanWaktu: id }),
-    setForm: (data) => set({ formData: data }),
     setFormBulk: (data) => set({ formBulk: data }),
     setDataBulk: (data) => set({ dataBulk: data }),
+    setFormDatass: (data) => set({ formDatass: data }),
     setFormDatas: (data) => set({ formDatas: data }),
 }));
 
