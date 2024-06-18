@@ -3,8 +3,8 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-// const BASE_URL = 'https://pddikti-be-7nv4o5wmyq-uc.a.run.app';
-const BASE_URL = 'http://127.0.0.1:8000'
+const BASE_URL = 'https://pddikti-be-7nv4o5wmyq-uc.a.run.app';
+// const BASE_URL = 'http://127.0.0.1:8000'
 export const fetchData = async (endpoint) => {
     try {
         const url = `${BASE_URL}${endpoint}`;
