@@ -171,10 +171,10 @@ export default function PredictBulk(props) {
 
 
     const handleDownload = () => {
-        const downloadPath = "/assets/training_contoh.csv";
+        const downloadPath = "/assets/predict_bulk_template.csv";
         const link = document.createElement("a");
         link.href = downloadPath;
-        link.download = "training_contoh.csv";
+        link.download = "predict_bulk_template.csv";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

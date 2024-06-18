@@ -144,7 +144,7 @@ export default function Major() {
             <div>
                 <Navbar />
                 <Container
-                margin={0}
+                    margin={0}
                     bg='#EFF0F1'
                     maxWidth='100vw'
                     w='100%'
@@ -154,10 +154,10 @@ export default function Major() {
                     <Box p={4} position='relative'>
                         <Center>
                             <Box
-                                mt='40px'
+                                mt={{ base: '0px', sm: '0px', md: '40px' }}
                                 p='4'
                                 width='100%'
-                                height='250px'
+                                height={{ base: '150px', sm: '150px', md: '200px' }}
                                 display='flex'
                                 alignItems='center'
                                 justifyContent='center'
@@ -165,14 +165,18 @@ export default function Major() {
 
                                 <Box>
                                     <Center>
-                                        <Text lineHeight='20px' fontSize="30px" color="black" >
+                                        <Text lineHeight='20px'
+                                            fontSize={{ base: '18px', sm: '18px', md: '24px', lg: '30px', xl: '30px' }}
+                                            color="black" >
                                             Statistik Prodi
                                         </Text>
                                     </Center>
 
                                     <Center>
                                         <Text
-                                            fontSize="80px"
+                                            fontSize={{ base: '24px', sm: '24px', md: '50px', lg: '60px', xl: '80px' }}
+                                            mb={{ base: '20px', sm: '20px', md: '0px' }}
+                                            mt={{ base: '20px', sm: '20px', md: '0px' }}
                                             color="black"
                                             fontWeight="bold"
                                         >
@@ -180,7 +184,9 @@ export default function Major() {
                                         </Text>
                                     </Center>
                                     <Center>
-                                        <Text lineHeight='10px' fontSize="26px" color="black" fontWeight="bold">
+                                        <Text lineHeight='10px'
+                                            fontSize={{ base: '18px', sm: '18px', md: '24px', lg: '26px', xl: '26px' }}
+                                            color="black" fontWeight="bold">
                                             <Text as="span" >
                                                 {dataProdiInfo.nm_univ}
                                             </Text>{" "} | Tahun Berdiri {dataProdiInfo.tahun_berdiri_prodi}
@@ -192,21 +198,27 @@ export default function Major() {
                     </Box>
 
                     {/* Inforation in Text */}
-                    <Box w='100%'>
+                    <Box w='100%'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'>
+                        {/* Normal */}
                         <Box
+                            w='80%'
                             p={4}
+                            ml='20px'
                             color='white'
                             height='200px'
-                            marginTop='20px'
+                            marginTop='50px'
                             borderRadius='2xl'
-                            display='flex'
+                            display={{ base: 'none', sm: 'none', lg: 'flex' }}
                             alignItems='center'
                             justifyContent='center'
                         >
 
                             {/* Peringkat Ketepatan */}
                             <GridItem
-                                w='20%'
+                                w='100%'
                                 height='150px'
                                 bg='#004AAD'
                                 borderRadius='2xl'
@@ -216,18 +228,24 @@ export default function Major() {
                             >
                                 <Box>
                                     <Center>
-                                        <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                                        <Text mt='15px' lineHeight="20px"
+                                            fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                                            color="white">
                                             Peringkat Ketepatan
                                         </Text>
                                     </Center>
                                     <Center>
-                                        <Text fontSize='20px' color='white'>
+                                        <Text
+                                            fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                                            color='white'>
                                             Lulus di Universitas
                                         </Text>
                                     </Center>
                                 </Box>
                                 <Center >
-                                    <Text fontSize='46px' fontWeight='bold' color='white'>
+                                    <Text
+                                        fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                                        fontWeight='bold' color='white'>
                                         Ke-{dataProdiInfo.rank_prodi}
                                     </Text>
                                 </Center>
@@ -237,7 +255,7 @@ export default function Major() {
                             {/* Rata-rata waktu kelulusan */}
                             <GridItem
                                 ml='20px'
-                                w='20%'
+                                w='100%'
                                 height='150px'
                                 bg='#004AAD'
                                 borderRadius='2xl'
@@ -245,12 +263,16 @@ export default function Major() {
                                 display="grid"
                             >
                                 <Center>
-                                    <Text fontSize="20px" color="white">
+                                    <Text
+                                        fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                                        color="white">
                                         Rata-rata waktu kelulusan
                                     </Text>
                                 </Center>
                                 <Center>
-                                    <Text fontSize="46px" fontWeight="bold" color="white">
+                                    <Text
+                                        fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                                        fontWeight="bold" color="white">
                                         {avgGradTime.toFixed(1)} Tahun
                                     </Text>
                                 </Center>
@@ -259,7 +281,7 @@ export default function Major() {
                             {/* Persentase Kelulusan */}
                             <GridItem
                                 ml='20px'
-                                w='20%'
+                                w='100%'
                                 height='150px'
                                 bg='#004AAD'
                                 borderRadius='2xl'
@@ -269,18 +291,136 @@ export default function Major() {
                             >
                                 <Box>
                                     <Center>
-                                        <Text mt='15px' lineHeight="20px" fontSize="20px" color="white">
+                                        <Text mt='15px' lineHeight="20px"
+                                            fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                                            color="white">
                                             Persentase Mahasiswa
                                         </Text>
                                     </Center>
                                     <Center>
-                                        <Text fontSize="20px" color="white">
+                                        <Text
+                                            fontSize={{ base: '14px', lg: '14px', xl: '20px' }}
+                                            color="white">
+                                            Lulus Tepat Waktu
+                                        </Text>
+                                    </Center>
+                                </Box>
+
+                                <Center>
+                                    <Text
+                                        mb='10px'
+                                        fontSize={{ base: '16px', lg: '36px', xl: '46px' }}
+                                        fontWeight="bold" color="white">                                        {tepatGradPercentage.toFixed(0)}%
+                                    </Text>
+                                </Center>
+                            </GridItem>
+                        </Box>
+
+                        {/* Small */}
+                        <Box
+                            w='80%'
+                            p={4}
+                            color='white'
+                            height='auto'
+                            marginTop='50px'
+                            borderRadius='2xl'
+                            display={{ base: 'grid', sm: 'grid', lg: 'none' }}
+                            gridTemplateColumns={{ base: '1fr', sm: '1fr', md: '1fr' }}
+                            gap={10}
+                            alignItems='center'
+                            justifyContent='center'
+                        >
+
+                            {/* Peringkat Ketepatan */}
+                            <GridItem
+                                w='100%'
+                                height={{ base: '100px', md: '100px', lg: '150px' }}
+                                bg='#004AAD'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                            >
+                                <Box>
+                                    <Center>
+                                        <Text mt='15px' lineHeight="20px"
+                                            fontSize={{ base: '16px', sm: '16px', lg: '20px' }}
+                                            color="white">
+                                            Peringkat Ketepatan
+                                        </Text>
+                                    </Center>
+                                    <Center>
+                                        <Text
+                                            fontSize={{ base: '16px', sm: '16px', lg: '20px' }}
+                                            color='white'>
+                                            Lulus di Universitas
+                                        </Text>
+                                    </Center>
+                                </Box>
+                                <Center >
+                                    <Text
+                                        fontSize={{ base: '24px', sm: '24px', md: '24px', lg: '32px', xl: '46px' }}
+                                        fontWeight='bold' color='white'>                                        Ke-{dataProdiInfo.rank_prodi}
+                                    </Text>
+                                </Center>
+
+                            </GridItem>
+
+                            {/* Rata-rata waktu kelulusan */}
+                            <GridItem
+                                w='100%'
+                                height={{ base: '100px', md: '100px', lg: '150px' }}
+                                bg='#004AAD'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                                display="grid"
+                            >
+                                <Center>
+                                    <Text
+                                        fontSize={{ base: '16px', sm: '16px', lg: '20px' }}
+                                        color="white">
+                                        Rata-rata waktu kelulusan
+                                    </Text>
+                                </Center>
+                                <Center>
+                                    <Text
+                                        fontSize={{ base: '24px', sm: '24px', md: '24px', lg: '32px', xl: '46px' }}
+                                        fontWeight="bold" color="white">
+                                        {avgGradTime.toFixed(1)} Tahun
+                                    </Text>
+                                </Center>
+                            </GridItem>
+
+                            {/* Persentase Kelulusan */}
+                            <GridItem
+                                w='100%'
+                                height={{ base: '100px', md: '100px', lg: '150px' }}
+                                bg='#004AAD'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.5)'
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                            >
+                                <Box>
+                                    <Center>
+                                        <Text mt='15px' lineHeight="20px"
+                                            fontSize={{ base: '16px', sm: '16px', lg: '20px' }}
+                                            color="white">
+                                            Persentase Mahasiswa
+                                        </Text>
+                                    </Center>
+                                    <Center>
+                                        <Text
+                                            fontSize={{ base: '16px', sm: '16px', lg: '20px' }}
+                                            color="white">
                                             Lulus Tepat Waktu
                                         </Text>
                                     </Center>
                                 </Box>
                                 <Center>
-                                    <Text fontSize="46px" fontWeight="bold" color="white">
+                                    <Text
+                                        fontSize={{ base: '24px', sm: '24px', md: '24px', lg: '32px', xl: '46px' }}
+                                        fontWeight="bold" color="white">
                                         {tepatGradPercentage.toFixed(0)}%
                                     </Text>
                                 </Center>
