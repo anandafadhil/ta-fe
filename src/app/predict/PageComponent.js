@@ -78,7 +78,6 @@ export default function PageComponent(props) {
     };
 
     const handleSearchClick = async () => {
-        console.log('Form submitted:', formData);
         setForm(formData);
         router.push('/predict/singular');
     };

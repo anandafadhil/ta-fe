@@ -37,7 +37,7 @@ export default function PageComponent() {
                 pageNumber: currentPage,
             });
             const tableTitle = "Result Predict Bulk"
-            const fileName = "predict_bulk.xlsx"
+            const fileName = "predict_bulk_result.xlsx"
             generateExcel(
                 data,
                 title,

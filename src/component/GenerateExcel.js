@@ -10,9 +10,7 @@ const generateExcel = async (
 ) => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet1');
-    // worksheet.row
-    // worksheet.columns.width = 20;
-    // worksheet.columns.width = 20;
+
     const columns = ["A", "B", "C"];
     columns.forEach((column) => {
       if (column == "A") {
@@ -23,41 +21,41 @@ const generateExcel = async (
       }
     });
 
-        const headerCell = worksheet.getCell('A1');
-        headerCell.value = 'PDDIKTI Bulk Prediction';
-        headerCell.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'C0504D' },
-        };
-        headerCell.font = {
-            name: 'Times New Roman',
-            color: { argb: 'FFFFFFFF' },
-            size: 16,
-            bold: true,
-        };
-        headerCell.alignment = { vertical: 'middle', horizontal: 'center' };
-        worksheet.mergeCells('A1:C1');
+    //     const headerCell = worksheet.getCell('A1');
+    //     headerCell.value = 'PDDIKTI Bulk Prediction';
+    //     headerCell.fill = {
+    //         type: 'pattern',
+    //         pattern: 'solid',
+    //         fgColor: { argb: 'C0504D' },
+    //     };
+    //     headerCell.font = {
+    //         name: 'Times New Roman',
+    //         color: { argb: 'FFFFFFFF' },
+    //         size: 16,
+    //         bold: true,
+    //     };
+    //     headerCell.alignment = { vertical: 'middle', horizontal: 'center' };
+    //     worksheet.mergeCells('A1:C1');
     
-        worksheet.addRow([]);
+    //     worksheet.addRow([]);
 
-    const titleCell = worksheet.getCell('A3');
-    titleCell.value = tableTitle;
-    titleCell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: '4F81BD' },
-    };
-    titleCell.font = {
-        name: 'Times New Roman',
-        color: { argb: 'FFFFFFFF' },
-        size: 16,
-        bold: true,
-    };
-    titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
-    worksheet.mergeCells('A3:C3');
+    // const titleCell = worksheet.getCell('A3');
+    // titleCell.value = tableTitle;
+    // titleCell.fill = {
+    //     type: 'pattern',
+    //     pattern: 'solid',
+    //     fgColor: { argb: '4F81BD' },
+    // };
+    // titleCell.font = {
+    //     name: 'Times New Roman',
+    //     color: { argb: 'FFFFFFFF' },
+    //     size: 16,
+    //     bold: true,
+    // };
+    // titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+    // worksheet.mergeCells('A3:C3');
 
-    worksheet.addRow([]);
+    // worksheet.addRow([]);
 
     const headers = title;
     headers.forEach((header, index) => {
@@ -86,14 +84,14 @@ const generateExcel = async (
         row.height = 50;
         row.font = { name: 'Times New Roman', size: 14 };
 
-        row.getCell(1).alignment = { vertical: 'middle', horizontal: 'center' }; // Number centered
-        row.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };   // Identifier left align
-        row.getCell(3).alignment = { vertical: 'middle', horizontal: 'center' }; // Result centered
+        row.getCell(1).alignment = { vertical: 'middle', horizontal: 'center' };
+        row.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
+        row.getCell(3).alignment = { vertical: 'middle', horizontal: 'center' };
 
         if (rowData[1] === 'Tepat Waktu') {
-            row.getCell(3).font = { color: { argb: 'FF008000' }, name: 'Times New Roman', size: 14 }; // Green text
+            row.getCell(3).font = { color: { argb: 'FF008000' }, name: 'Times New Roman', size: 14 };
         } else {
-            row.getCell(3).font = { color: { argb: 'FFFF0000' }, name: 'Times New Roman', size: 14 }; // Red text
+            row.getCell(3).font = { color: { argb: 'FFFF0000' }, name: 'Times New Roman', size: 14 };
         }
 
         number += 1;

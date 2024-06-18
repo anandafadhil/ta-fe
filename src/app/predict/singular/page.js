@@ -1,7 +1,7 @@
 "use client"
 
 import {
-    ChakraProvider, Container, Flex, Center, 
+    ChakraProvider, Container, Flex, Center,
     Text, Box, Grid, GridItem, Button, SimpleGrid,
 } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation'
@@ -11,14 +11,15 @@ import '@/src/app/styles.css';
 import Footer from "@/src/component/footer";
 import { fetchDatawithIDUniv, postData } from "@/src/api/fetch";
 import useStore from "@/src/store"
+import Swal from 'sweetalert2';
 
-export default function PredictForm() {  
+export default function PredictForm() {
     const formData = useStore((state) => state.formData);
     const setResult = useStore((state) => state.setResult);
     const setSKST = useStore((state) => state.setSKST);
     const setIPK = useStore((state) => state.setIPK);
     const setSKSNeeded = useStore((state) => state.setSKSNeeded);
-    const setKetepatan = useStore((state) => state.setKetepatan);  
+    const setKetepatan = useStore((state) => state.setKetepatan);
     const router = useRouter();
     const [formDataSKS, setformDataSKS] = useState({
         IPK_sem_1: "",
@@ -36,37 +37,58 @@ export default function PredictForm() {
     });
 
     const handleSubmit = async () => {
-        const predictRes = await postData({
-            endpoint: `/predict`,
-            data: formDataSKS,
-            id: formData.prodiInputID,
-        });
-        const skst = await postData({
-            endpoint: `/total-sks`,
-            data: formDataSKS,
-            id: formData.prodiInputID,
-        });
-        const ipk = await postData({
-            endpoint: `/total-ipk`,
-            data: formDataSKS,
-            id: formData.prodiInputID,
-        });
-        const sksNeeded = await postData({
-            endpoint: `/sks-needed`,
-            data: formDataSKS,
-            id: formData.prodiInputID,
-        });
-        const ketepatanGradTime = await fetchDatawithIDUniv({
-            endpoint: `/grad-timeliness-prodi`,
-            selectedIDUniv: formData.prodiInputID,
-        });
-        setResult(predictRes);
-        setSKST(skst);
-        setIPK(ipk);
-        setSKSNeeded(sksNeeded);
-        setKetepatan(ketepatanGradTime);
-        router.push('/predict/singular/result');
 
+        Swal.fire({
+            title: 'Loading...',
+            text: ' Please wait while we fetch the data.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        })
+        try {
+            const predictRes = await postData({
+                endpoint: `/predict`,
+                data: formDataSKS,
+                id: formData.prodiInputID,
+            });
+            const skst = await postData({
+                endpoint: `/total-sks`,
+                data: formDataSKS,
+                id: formData.prodiInputID,
+            });
+            const ipk = await postData({
+                endpoint: `/total-ipk`,
+                data: formDataSKS,
+                id: formData.prodiInputID,
+            });
+            const sksNeeded = await postData({
+                endpoint: `/sks-needed`,
+                data: formDataSKS,
+                id: formData.prodiInputID,
+            });
+            const ketepatanGradTime = await fetchDatawithIDUniv({
+                endpoint: `/grad-timeliness-prodi`,
+                selectedIDUniv: formData.prodiInputID,
+            });
+            setResult(predictRes);
+            setSKST(skst);
+            setIPK(ipk);
+            setSKSNeeded(sksNeeded);
+            setKetepatan(ketepatanGradTime);
+
+            Swal.close();
+            router.push('/predict/singular/result');
+        } catch (error) {
+            console.error('Error fetching data:', error);
+
+            Swal.close();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'There was an error fetching the data. Please try again later.',
+            });
+        }
     };
 
     const handleChange = (e) => {
