@@ -63,16 +63,22 @@ function BarChartProdi({ defaultBar, selectYear, idProdi }) {
   return (
     <ResponsiveContainer width="100%" height="90%">
       <div>
-        <Box  alignItems='center' justifyContent='center' display='flex'>
+        <Box alignItems='center' justifyContent='center'
+          display={{ base: 'column', sm: 'column', md: 'column', lg: 'column', xl: 'flex' }}
+        >
           {/* Text */}
-          <Box width='70%' alignItems='center' justifyContent='center' display='flex'>
-            <Text fontSize="22px" color="#545454" fontWeight="bold">
+          <Box alignItems='center' justifyContent='center'>
+            <Text
+              fontSize={{ base: '14px', sm: '14px', md: '16px', lg: '16px', xl: '16px', '2xl': '22px' }}
+              textAlign={{ base: 'center', lg: 'center', xl: 'justify' }}
+              color="#545454" fontWeight="bold">
               Distribusi Waktu Kelulusan
             </Text>
           </Box>
 
-          {/* Select */}
-          <Box width='30%' justifyContent='center' alignItems='center' display='flex'>
+          {/* Normal Select */}
+          <Box width='30%' justifyContent='center' alignItems='center'
+            display={{ base: 'none', lg: 'none', xl: 'flex' }}>
             <Box width='150px'>
               <Center>
                 <Select
@@ -92,6 +98,60 @@ function BarChartProdi({ defaultBar, selectYear, idProdi }) {
                       ...provided,
                       color: 'black',
                     })
+                  }}
+                />
+              </Center>
+            </Box>
+          </Box>
+
+          {/* Small Select */}
+          <Box
+            width="100%"
+            justifyContent='center' alignItems='center'
+            display={{ base: 'flex', sm: 'flex', md: 'flex', lg: 'flex', xl: 'none' }}
+          >
+            <Box
+              width="40%"
+              maxWidth="200px"
+              justifyContent="center"
+              alignItems="center"
+              display="flex"
+            >
+              <Center>
+                <Select
+                  color='black'
+                  width='100%'
+                  name="yearSelected"
+                  value={formData.yearSelected}
+                  onChange={(option) => handleChangeYear(option, { name: 'yearSelected' })}
+                  options={optionsProdi}
+                  placeholder={formData.yearSelected ? formData.yearSelected : 'All Time'}
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      color: 'black',
+                      minHeight: '30px',
+                      fontSize: '12px',
+                    }),
+                    singleValue: (provided) => ({
+                      ...provided,
+                      fontSize: '12px',
+                    }),
+                    placeholder: (provided) => ({
+                      ...provided,
+                      color: 'black',
+                      fontSize: '12px',
+                    }),
+                    input: (provided) => ({
+                      ...provided,
+                      color: 'black',
+                      fontSize: '12px',
+                    }),
+                    option: (provided) => ({
+                      ...provided,
+                      color: 'black',
+                      fontSize: '12px',
+                    }),
                   }}
                 />
               </Center>
@@ -121,7 +181,7 @@ function BarChartProdi({ defaultBar, selectYear, idProdi }) {
         <Tooltip />
         <Bar dataKey="jumlahMahasiswa" fill="#7ABD7E" name="Jumlah Mahasiswa" />
       </BarChart>
-    </ResponsiveContainer>
+    </ResponsiveContainer >
   );
 }
 
