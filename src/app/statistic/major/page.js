@@ -433,20 +433,25 @@ export default function Major() {
                     </Box>
 
                     {/* First Card Chart */}
-                    <Box w='100%' p={0}>
+                    <Box
+                        w='100%'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'>
+                        {/* Normal */}
                         <Box
                             p={4}
                             color='white'
                             height='500px'
-                            marginTop='50px'
+                            marginTop='30px'
                             borderRadius='md'
-                            display='flex'
+                            display={{ base: 'none', sm: 'none', md: 'none', lg: 'none', xl: 'flex' }}
                             alignItems='center'
                             justifyContent='center'
+                            w={{ lg: '80%', xl: '100%' }}
                         >
                             {/* Bar Chart */}
                             <GridItem
-                                ml='30px'
                                 paddingTop={2}
                                 w='100%'
                                 bg='white'
@@ -494,7 +499,6 @@ export default function Major() {
 
                             {/* Pie Chart */}
                             <GridItem
-                                mr='30px'
                                 paddingTop={2}
                                 w='100%'
                                 height='450px'
@@ -507,6 +511,91 @@ export default function Major() {
                                 <GridItem
                                     w='100%'
                                     height='450px'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    padding='4px'
+                                >
+                                    <PieChartUniv dataPie={newDataPie} />
+                                </GridItem>
+
+                            </GridItem>
+
+                        </Box>
+
+                        {/* Small */}
+                        <Box
+                            p={4}
+                            color="white"
+                            height="1300px"
+                            marginTop="30px"
+                            borderRadius="md"
+                            display={{ base: 'grid', sm: 'grid', md: 'grid', lg: 'grid', xl: 'none' }}
+                            gridTemplateColumns={{ base: '1fr', sm: '1fr' }}
+                            alignItems="center"
+                            justifyContent="center"
+                            w='80%'
+                        >
+                            {/* Bar Chart */}
+                            <GridItem
+                                paddingTop={2}
+                                w='100%'
+                                bg="white"
+                                height="400px"
+                                borderRadius="2xl"
+                                boxShadow="0px 4px 10px rgba(0, 0, 0, 0.2)"
+                                display="grid"
+                                alignItems="center"
+                                justifyContent="center"
+                                gridTemplateColumns="1fr"
+                            >
+                                <GridItem
+                                    w='100%'
+                                    height='370px'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    padding='4px'
+                                >
+                                    <BarChartProdi defaultBar={newDataBar} selectYear={newYear} idProdi={idProdi} />
+                                </GridItem>
+                            </GridItem>
+
+                            {/* Stacked Bar */}
+                            <GridItem
+                                paddingTop={2}
+                                w='100%'
+                                bg='white'
+                                height='400px'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                            >
+                                <GridItem
+                                    w='100%'
+                                    height='370px'
+                                    justifySelf='center'
+                                    alignSelf='center'
+                                    padding='4px'
+                                >
+                                    <StackedBarChart dataStacked={newDataStacked} />
+                                </GridItem>
+
+                            </GridItem>
+
+                            {/* Pie Chart */}
+                            <GridItem
+                                paddingTop={2}
+                                w='100%'
+                                bg='white'
+                                height='400px'
+                                borderRadius='2xl'
+                                boxShadow='0px 4px 10px rgba(0, 0, 0, 0.1)'
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                            >
+                                <GridItem
+                                    w='100%'
+                                    height='370px'
                                     justifySelf='center'
                                     alignSelf='center'
                                     padding='4px'

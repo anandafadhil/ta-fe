@@ -29,7 +29,7 @@ const generateExcel = async (
     //         fgColor: { argb: 'C0504D' },
     //     };
     //     headerCell.font = {
-    //         name: 'Times New Roman',
+    //         name: 'Arial',
     //         color: { argb: 'FFFFFFFF' },
     //         size: 16,
     //         bold: true,
@@ -47,7 +47,7 @@ const generateExcel = async (
     //     fgColor: { argb: '4F81BD' },
     // };
     // titleCell.font = {
-    //     name: 'Times New Roman',
+    //     name: 'Arial',
     //     color: { argb: 'FFFFFFFF' },
     //     size: 16,
     //     bold: true,
@@ -59,7 +59,7 @@ const generateExcel = async (
 
     const headers = title;
     headers.forEach((header, index) => {
-        const cell = worksheet.getCell(`${String.fromCharCode(65 + index)}5`);
+        const cell = worksheet.getCell(`${String.fromCharCode(65 + index)}1`);
         cell.value = header;
         cell.fill = {
             type: 'pattern',
@@ -67,9 +67,9 @@ const generateExcel = async (
             fgColor: { argb: '95B3D7' },
         };
         cell.font = {
-            name: 'Times New Roman',
+            name: 'Arial',
             color: { argb: '00000000' },
-            size: 14,
+            size: 12,
             bold: true,
         };
         cell.alignment = { vertical: 'middle', horizontal: 'center' };
@@ -81,17 +81,17 @@ const generateExcel = async (
             return item[param];
         });
         const row = worksheet.addRow([number, ...rowData]);
-        row.height = 50;
-        row.font = { name: 'Times New Roman', size: 14 };
+        row.height = 20;
+        row.font = { name: 'Arial', size: 12 };
 
         row.getCell(1).alignment = { vertical: 'middle', horizontal: 'center' };
         row.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
         row.getCell(3).alignment = { vertical: 'middle', horizontal: 'center' };
 
         if (rowData[1] === 'Tepat Waktu') {
-            row.getCell(3).font = { color: { argb: 'FF008000' }, name: 'Times New Roman', size: 14 };
+            row.getCell(3).font = { color: { argb: 'FF008000' }, name: 'Arial', size: 12 };
         } else {
-            row.getCell(3).font = { color: { argb: 'FFFF0000' }, name: 'Times New Roman', size: 14 };
+            row.getCell(3).font = { color: { argb: 'FFFF0000' }, name: 'Arial', size: 12 };
         }
 
         number += 1;
@@ -100,7 +100,7 @@ const generateExcel = async (
     const rowCount = worksheet.rowCount;
     const columnCount = headers.length;
 
-    for (let i = 5; i <= rowCount; i++) {
+    for (let i = 1; i <= rowCount; i++) {
         for (let j = 1; j <= columnCount; j++) {
             const cell = worksheet.getCell(`${String.fromCharCode(64 + j)}${i}`);
             cell.border = {
